@@ -8,39 +8,57 @@ import Footer from "../../components/Footer";
 const testimonials = [
 	{
 		name: "Ngobi Peter",
-		role: "Director, Northgate School",
-		company: "Northgate School",
-		text: "The DRAIS School Management System has completely transformed how we manage our school operations. From student enrollment to grade management, everything is now automated and efficient. Our teachers can easily input grades, parents receive real-time updates about their children's progress, and our administrative workload has reduced by over 60%. The parent-teacher communication portal has been particularly impressive - parents love being able to track attendance, assignments, and academic performance instantly. The system's reporting capabilities have also helped us make data-driven decisions for school improvement.",
+		role: "General Director, Northgate Schools",
+		company: "Northgate Schools",
+		text: "The DRAIS School Management System has completely transformed how we manage our school operations. We needed a fully customizable academic reporting system that matched our curriculum perfectly. DRAIS delivered exactly that — and more. Our teachers can easily input grades, parents receive real-time updates about their children's progress, and our administrative workload has dropped significantly. The reporting capabilities are truly world-class.",
 		rating: 5,
 		project: "DRAIS School Management System",
-		location: "Bulubandi, Iganga, Uganda",
-	},
-	{
-		name: "Ssekatawa Huzaifa",
-		role: "Secretary, Bugembe Islamic Institute",
-		company: "Bugembe Islamic Institute",
-		text: "As an Islamic educational institution, we needed a system that could handle both our academic and religious studies curriculum seamlessly. The customized school management solution from Xhenvolt has exceeded our expectations. The system efficiently manages our Quran memorization programs, Islamic studies classes, and regular academic subjects. The Arabic language support and Islamic calendar integration were particularly valuable. Student progress tracking for both academic and Quranic studies is now streamlined, and parents appreciate the detailed progress reports. The fee management module has also simplified our financial operations significantly.",
-		rating: 5,
-		project: "Custom Islamic School Management System",
-		location: "Bugembe, Jinja, Uganda",
+		location: "Iganga, Uganda",
 	},
 	{
 		name: "Wagogo Husama",
 		role: "Headteacher, Albayan Quran Memorization Center",
 		company: "Albayan Quran Memorization Center",
-		text: "Managing a Quran memorization center requires specialized tools that traditional school systems don't provide. Xhenvolt developed a tailored solution that tracks each student's memorization progress, verse by verse. The system includes features for recording recitation assessments, tracking Tajweed improvements, and managing different levels of Quranic studies. Teachers can easily input daily progress, and parents receive detailed reports about their child's memorization journey. The system has helped us increase our students' completion rates by 40% through better tracking and personalized learning paths.",
+		text: "Our programs are structured specifically for Quran memorization — completely different from standard schools. DRAIS was customized perfectly to fit our unique educational model and tracking needs. The system includes features for recording recitation assessments and managing different levels of Quranic studies. No other system could have done this.",
 		rating: 5,
-		project: "Quran Memorization Management System",
-		location: "Bugumba, Iganga, Uganda",
+		project: "Customized Program-Based Management System",
+		location: "Iganga, Uganda",
 	},
 	{
-		name: "Dr. John Doe",
-		role: "Medical Director, Kampala Children's Hospital",
-		company: "Kampala Example Hospital",
-		text: "Our custom hospital management system has streamlined patient care from admission to discharge. The pediatric-focused features, including growth tracking, vaccination schedules, and specialized pediatric treatment protocols, have improved our care quality significantly. The system integrates seamlessly with our laboratory and pharmacy, reducing waiting times and improving accuracy. Staff productivity has increased by 45%, and patient satisfaction scores have reached an all-time high.",
+		name: "Sheikh Hassan Mwaita",
+		role: "Director, Excel Islamic Schools & Principal, Ibun Baz Girls Secondary School",
+		company: "Excel Islamic Schools",
+		text: "Attendance tracking was our biggest challenge across multiple schools. With DRAIS biometric integration, we now have 100% accurate records. Parents love the real-time SMS updates and our administrative workload has dropped significantly. The full attendance system deployment at Ibun Baz has transformed how we monitor student presence.",
 		rating: 5,
-		project: "Pediatric Hospital Management System",
-		location: "Kampala, Uganda",
+		project: "DRAIS Attendance & School Management",
+		location: "Iganga, Uganda",
+	},
+	{
+		name: "Okurut Sylver",
+		role: "Head Teacher, Vision International Academy",
+		company: "Vision International Academy",
+		text: "Since adopting DRAIS, our teachers save hours every week on paperwork. The automated report generation alone was worth the investment — parents are impressed with the professional quality of reports. Xhenvolt also built us a stunning website that is mobile-friendly and gives parents 24/7 access to school information.",
+		rating: 5,
+		project: "DRAIS System & Institutional Website",
+		location: "Uganda",
+	},
+	{
+		name: "Hon. Rachel Magoola",
+		role: "School Board Chairperson, Walugogo Vocational Secondary School",
+		company: "Walugogo Vocational Secondary School",
+		text: "We were looking for a partner who understood vocational education. Xhenvolt built us a beautiful website that properly showcases both our academic and practical training programs. They truly understand institutional needs and deliver with precision.",
+		rating: 5,
+		project: "Institutional Website",
+		location: "Uganda",
+	},
+	{
+		name: "Abdul Fattaha Makubugu",
+		role: "Founder & Director, Al Muntahha Online School",
+		company: "Al Muntahha Online School",
+		text: "Xhenvolt helped us establish a strong digital presence for our online school. The website they built is fast, professional, and makes it easy for parents and students to find the information they need. It has become an essential part of our institution.",
+		rating: 5,
+		project: "Institutional Website",
+		location: "Uganda",
 	},
 ];
 
@@ -58,10 +76,10 @@ const happiestClient = {
 };
 
 const stats = [
-	{ number: "25+", label: "Successful Projects" },
-	{ number: "100%", label: "Wekesa's Satisfaction" },
-	{ number: "25+", label: "Happy Clients" },
-	{ number: "3", label: "Months in Business" },
+	{ number: "35", label: "Organizations Served" },
+	{ number: "29", label: "Schools Running DRAIS" },
+	{ number: "6", label: "Websites & Other Solutions" },
+	{ number: "99.9%", label: "System Uptime" },
 ];
 
 export default function TestimonialsPage() {
@@ -214,13 +232,7 @@ export default function TestimonialsPage() {
 								transition={{ delay: index * 0.1 }}
 								className="text-center"
 							>
-								<div className={`text-4xl md:text-5xl font-bold mb-2 ${
-									stat.label === "Wekesa's Satisfaction" 
-										? "text-yellow-600 dark:text-yellow-400" 
-										: stat.label === "Months in Business"
-										? "text-green-600 dark:text-green-400"
-										: "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-								}`}>
+							<div className={`text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent`}>
 									{stat.number}
 								</div>
 								<div className="text-gray-600 dark:text-gray-300 font-medium">
@@ -355,16 +367,16 @@ export default function TestimonialsPage() {
 							Trusted Across Industries
 						</h2>
 						<p className="text-xl text-gray-600 dark:text-gray-300">
-							From schools to SACCOs, hospitals to construction companies - delivering excellence since June 2025.
+							From schools to SACCOs, charities to online schools — delivering excellence across sectors.
 						</p>
 					</div>
 
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-8">
 						{[
-							{ sector: "Education", projects: "12+", icon: "🎓" },
-							{ sector: "Healthcare", projects: "6+", icon: "🏥" },
-							{ sector: "Finance/SACCOs", projects: "7+", icon: "🏦" },
-							{ sector: "Others", projects: "3+", icon: "🏢" },
+						{ sector: "Education", projects: "29+", icon: "🎓" },
+						{ sector: "Websites", projects: "6+", icon: "🌐" },
+						{ sector: "Finance", projects: "2+", icon: "🏦" },
+						{ sector: "NGOs", projects: "3+", icon: "🏢" },
 						].map((item, index) => (
 							<motion.div
 								key={index}

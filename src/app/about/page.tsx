@@ -31,24 +31,24 @@ const values = [
 
 const milestones = [
 	{
-		year: "June 2025",
+		year: "2023",
 		title: "Company Founded",
-		description: "Xhenvolt Uganda was established with a vision to transform businesses through technology, marking the beginning of our journey in digital innovation."
+		description: "Xhenvolt was established with a vision to build real digital infrastructure for institutions. Our first DRAIS prototype was developed and initial school partnerships were formed."
 	},
 	{
-		year: "July 2025",
-		title: "First Major Clients",
-		description: "Successfully launched with major clients: delivered DRAIS School Management System to Northgate School and Zyra SACCO Management System to Bumwena Scrap SACCO, establishing our foundation in educational and financial technology solutions."
+		year: "2024",
+		title: "DRAIS Launch & Early Adoption",
+		description: "DRAIS was officially launched as our flagship school management system. Northgate Schools and Albayan Quran Memorization Center became early adopters, with biometric attendance integration completed."
 	},
 	{
-		year: "August 2025",
-		title: "Islamic Education Solutions",
-		description: "Expanded into specialized educational solutions, developing custom systems for Bugembe Islamic Institute and Albayan Quran Memorization Center, along with several other educational institutions."
+		year: "2024",
+		title: "Rapid Expansion",
+		description: "Growing trust led to rapid expansion. Excel Islamic Schools, Al Hanan Education Center, and multiple other institutions adopted DRAIS. Website development projects began alongside school systems."
 	},
 	{
-		year: "September 2025",
-		title: "Rapid Growth Phase",
-		description: "Achieved 25+ successful project deliveries across education, healthcare, finance, and other sectors, establishing ourselves as a trusted technology partner in East Africa."
+		year: "2025",
+		title: "Major Installation Wave",
+		description: "A landmark period — Xhenvolt deployed attendance monitoring systems at Ibun Baz Girls Secondary School and Hillside Ways Secondary School. Multiple website projects were completed for organizations including Seek and Give, Unity Bridge, Vision International Academy, and more. Reached 35 organizations served."
 	}
 ];
 
@@ -70,7 +70,7 @@ export default function AboutPage() {
 							Pioneering Digital Transformation in East Africa
 						</h1>
 						<p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-							Since June 2025, we&apos;ve been rapidly empowering organizations across East Africa with innovative technology solutions that drive growth, efficiency, and success.
+							Since 2023, we&apos;ve been empowering organizations across East Africa with innovative technology solutions that drive growth, efficiency, and success.
 						</p>
 					</motion.div>
 				</div>
@@ -124,7 +124,7 @@ export default function AboutPage() {
 							</div>
 							<h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Impact</h3>
 							<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-								In just 3 months since our founding in June 2025, we&apos;ve delivered 25+ successful projects, serving 25+ satisfied clients across education, healthcare, finance, and construction sectors throughout East Africa.
+								In our journey so far, we&apos;ve delivered 35+ successful projects, serving 35 satisfied clients across education and organizational sectors throughout East Africa.
 							</p>
 						</motion.div>
 					</div>
@@ -142,7 +142,7 @@ export default function AboutPage() {
 						<div className="text-center mb-12">
 							<h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">Our Story</h2>
 							<p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-								Since our founding in June 2025, we&apos;ve been on a mission to transform African businesses through innovative technology solutions that make a real difference.
+								Since our founding, we&apos;ve been on a mission to transform African institutions through innovative technology solutions that make a real difference.
 							</p>
 						</div>
 
@@ -152,10 +152,10 @@ export default function AboutPage() {
 									From Vision to Reality
 								</h3>
 								<p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-									Founded by visionary entrepreneur Hamuza Ibrahim, Xhenvolt Uganda emerged from a simple yet powerful idea: that every African business deserves access to world-class technology solutions. What started as a vision has quickly become a reality, with 25+ successful projects delivered in just our first three months of operation.
+									Founded by visionary entrepreneur Hamuza Ibrahim, Xhenvolt emerged from a simple yet powerful idea: that every African institution deserves access to world-class technology solutions. What started as a vision has become a reality, with 35 organizations now running on our systems.
 								</p>
 								<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-									Our rapid growth isn&apos;t just about numbers—it&apos;s about the real impact we&apos;re making. From helping schools reduce administrative burden by 60% to enabling SACCOs to serve 500+ members efficiently, we&apos;re proving that great technology can transform lives and communities across East Africa.
+									Our growth isn&apos;t just about numbers—it&apos;s about the real impact we&apos;re making. From helping schools automate attendance with biometric systems to enabling organizations to establish professional digital presence, we&apos;re proving that great technology can transform lives and communities across East Africa.
 								</p>
 							</div>
 							
@@ -221,7 +221,7 @@ export default function AboutPage() {
 							Our Journey
 						</h2>
 						<p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-							Remarkable milestones achieved in just 3 months since our founding in June 2025.
+							Remarkable milestones achieved in our journey of building digital infrastructure for institutions.
 						</p>
 					</motion.div>
 

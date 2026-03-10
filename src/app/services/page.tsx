@@ -31,7 +31,7 @@ const services = [
 			"Data Analytics & Reporting",
 			"API Development & Integration"
 		],
-		technologies: ["React", "Node.js", "Python", "PostgreSQL", "AWS"],
+		technologies: ["Enterprise-Grade", "Scalable", "Secure", "Cloud-Ready", "Reliable"],
 		projects: ["Custom Business Management Systems", "Zyra SACCO System"],
 		color: "from-blue-500 to-cyan-500"
 	},
@@ -47,7 +47,7 @@ const services = [
 			"Mobile Commerce Integration",
 			"Push Notifications & Analytics"
 		],
-		technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Firebase"],
+		technologies: ["Cross-Platform", "High Performance", "Offline-Capable", "Secure", "Responsive"],
 		projects: ["E-commerce Mobile Apps", "Service Booking Platforms"],
 		color: "from-purple-500 to-pink-500"
 	},
@@ -63,7 +63,7 @@ const services = [
 			"Customer Loyalty Programs",
 			"Offline Mode Capability"
 		],
-		technologies: ["React", "Express.js", "MongoDB", "Node.js", "Electron"],
+		technologies: ["Real-Time", "Multi-Location", "Reliable", "Fast", "Offline-Ready"],
 		projects: ["Retail POS Systems", "Lypha Pharmacy System"],
 		color: "from-green-500 to-emerald-500"
 	},
@@ -79,7 +79,7 @@ const services = [
 			"Fee Management & Billing",
 			"Online Learning Integration"
 		],
-		technologies: ["Vue.js", "Laravel", "MySQL", "WebRTC", "Socket.io"],
+		technologies: ["Biometric-Enabled", "Cloud-Hosted", "Scalable", "Real-Time", "Secure"],
 		projects: ["DRAIS School Management System"],
 		color: "from-orange-500 to-red-500"
 	},
@@ -95,7 +95,7 @@ const services = [
 			"Data Processing & Migration",
 			"Integration with Existing Systems"
 		],
-		technologies: ["Python", "RPA Tools", "Zapier", "Microsoft Power Automate"],
+		technologies: ["Automated", "Integrated", "Scalable", "Enterprise-Ready"],
 		projects: ["Document Processing Systems", "HR Automation Platforms"],
 		color: "from-indigo-500 to-purple-500"
 	},
@@ -111,7 +111,7 @@ const services = [
 			"Responsive Web Design",
 			"Usability Testing & Optimization"
 		],
-		technologies: ["Figma", "Adobe Creative Suite", "Sketch", "InVision", "Principle"],
+		technologies: ["User-Centered", "Responsive", "Accessible", "Modern", "Brand-Focused"],
 		projects: ["Corporate Websites", "Mobile App Interfaces"],
 		color: "from-pink-500 to-rose-500"
 	}

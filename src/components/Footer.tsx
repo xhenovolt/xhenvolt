@@ -9,14 +9,13 @@ export default function Footer() {
     "Company": [
       { name: "About Us", href: "/about" },
       { name: "Our Team", href: "/about#team" },
-      { name: "Careers", href: "/careers" },
       { name: "Contact", href: "/contact" }
     ],
-    "Services": [
-      { name: "Custom Software", href: "/services" },
-      { name: "Mobile Apps", href: "/services" },
-      { name: "POS Systems", href: "/services" },
-      { name: "UI/UX Design", href: "/services" }
+    "Products": [
+      { name: "DRAIS — School System", href: "https://drais.pro", external: true },
+      { name: "Jeton — Financial System", href: "https://jeton.xhenvolt.com", external: true },
+      { name: "Website Development", href: "/services" },
+      { name: "Custom Software", href: "/services" }
     ],
     "Resources": [
       { name: "Case Studies", href: "/case-studies" },
@@ -87,17 +86,24 @@ export default function Footer() {
                 {category}
               </h4>
               <ul className="space-y-3">
-                {links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <Link
-                      href={link.href}
-                      className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group"
-                    >
-                      {link.name}
-                      <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-                    </Link>
-                  </li>
-                ))}
+                {links.map((link, linkIndex) => {
+                  const isExternal = (link as any).external;
+                  const LinkComponent = isExternal ? 'a' : Link;
+                  const linkProps = isExternal 
+                    ? { href: link.href, target: "_blank", rel: "noopener noreferrer" }
+                    : { href: link.href };
+                  return (
+                    <li key={linkIndex}>
+                      <LinkComponent
+                        {...linkProps}
+                        className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group"
+                      >
+                        {link.name}
+                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                      </LinkComponent>
+                    </li>
+                  );
+                })}
               </ul>
             </motion.div>
           ))}

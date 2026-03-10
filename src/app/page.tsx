@@ -15,16 +15,21 @@ import {
   Mail,
   Star,
   Monitor,
-  Wifi,
-  Layout,
   TrendingUp,
   Shield,
   Award,
+  Play,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import DraisMicroDemo from "../components/DraisMicroDemo";
+import MiniProductTour from "../components/MiniProductTour";
+import ClientLogosCarousel from "../components/ClientLogosCarousel";
+import InteractiveProductStory from "../components/InteractiveProductStory";
+import OurJourney from "../components/OurJourney";
+import RealDeployments from "../components/RealDeployments";
 
 /* ─────────────── DATA ─────────────── */
 
@@ -58,112 +63,264 @@ const draisFeatures = [
 ];
 
 const testimonials = [
+  // ── DRAIS Deployment Testimonials ──
+  {
+    name: "Sheikh Hassan Mwaita",
+    position: "Director – Excel Islamic Schools & Principal – Ibun Baz Girls Secondary School",
+    institution: "Excel Islamic Schools",
+    quote:
+      "Attendance tracking was our biggest challenge across multiple schools. With DRAIS biometric integration, we now have 100% accurate records. Parents love the real-time SMS updates and our administrative workload has dropped significantly.",
+    logo: null,
+    category: "drais",
+  },
   {
     name: "Ngobi Peter",
     position: "General Director",
     institution: "Northgate Schools",
     quote:
-      "We needed a fully customizable report system that matched our curriculum. DRAIS delivered exactly that — and more. Our operations have never been smoother.",
+      "We needed a fully customizable academic reporting system that matched our curriculum perfectly. DRAIS delivered exactly that — and more. Our operations have never been smoother, and the reporting capabilities are truly world-class.",
     logo: "northgateschool.png",
+    category: "drais",
   },
   {
     name: "Wagogo Husama",
     position: "Headteacher",
     institution: "Albayan Quran Memorization Center",
     quote:
-      "Our programs are structured specifically for Quran memorization. DRAIS was customized perfectly to fit our unique educational model and tracking needs.",
+      "Our programs are structured specifically for Quran memorization — completely different from standard schools. DRAIS was customized perfectly to fit our unique educational model and tracking needs. No other system could have done this.",
     logo: "albayan.png",
-  },
-  {
-    name: "Sheikh Hassan Mwaita",
-    position: "Director",
-    institution: "Excel Islamic Nursery and Primary School",
-    quote:
-      "The school system customization we received from Xhenvolt was remarkable. Every feature was tailored to how our school actually operates day to day.",
-    logo: null,
+    category: "drais",
   },
   {
     name: "Sheikh Hassan Mwaita",
     position: "Principal",
     institution: "Ibun Baz Girls Secondary School",
     quote:
-      "Attendance tracking was our biggest challenge. With DRAIS biometric integration, we now have 100% accurate records and parents love the real-time updates.",
+      "The full attendance system deployment at Ibun Baz has transformed how we monitor student presence. The biometric devices work flawlessly, and we get real-time data that helps us make informed decisions about student welfare.",
     logo: null,
+    category: "drais",
+  },
+  {
+    name: "School Administration",
+    position: "Administration",
+    institution: "Hillside Ways Secondary School",
+    quote:
+      "The attendance monitoring system deployed by Xhenvolt has given us complete visibility into student attendance patterns. The automation has saved our teachers hours of manual work every week.",
+    logo: null,
+    category: "drais",
+  },
+  {
+    name: "Sheikh Faisal Naminya",
+    position: "Founder",
+    institution: "Al Hanan Education Center",
+    quote:
+      "DRAIS gave us visibility into our school operations that we never had before. From daily attendance to term-end analytics — everything is right on the dashboard. It has become the backbone of our school management.",
+    logo: null,
+    category: "drais",
+  },
+  {
+    name: "Okurut Sylver",
+    position: "Head Teacher",
+    institution: "Vision International Academy",
+    quote:
+      "Since adopting DRAIS, our teachers save hours every week on paperwork. The automated report generation alone was worth the investment — parents are impressed with the professional quality of reports.",
+    logo: null,
+    category: "drais",
   },
   {
     name: "Mr. Mwondha Hassan",
     position: "Administrator",
     institution: "School Operations",
     quote:
-      "The attendance and operational systems from Xhenvolt have transformed how we manage daily school activities. Everything is automated and reliable.",
+      "The attendance and operational systems from Xhenvolt have transformed how we manage daily school activities. Everything is automated, reliable, and we can trust the data completely.",
     logo: null,
+    category: "drais",
+  },
+  // ── Website Development Testimonials ──
+  {
+    name: "Wasukulu Shafik",
+    position: "Leader",
+    institution: "Seek and Give Charity Organization",
+    quote:
+      "Xhenvolt didn't just build us a website — they built a professional platform that helps us connect with donors, showcase our programs, and build credibility. The quality exceeded our expectations.",
+    logo: null,
+    category: "website",
+  },
+  {
+    name: "Kanyere Sahal",
+    position: "Leader",
+    institution: "Unity Bridge Foundation",
+    quote:
+      "Our new website from Xhenvolt has completely changed how stakeholders perceive our foundation. It's modern, responsive, and perfectly represents our mission. We've seen a real increase in engagement.",
+    logo: null,
+    category: "website",
+  },
+  {
+    name: "Abdul Fattaha Makubugu",
+    position: "Founder & Director",
+    institution: "Al Muntahha Online School",
+    quote:
+      "Xhenvolt helped us establish a strong digital presence for our online school. The website they built is fast, professional, and makes it easy for parents and students to find the information they need.",
+    logo: null,
+    category: "website",
+  },
+  {
+    name: "Okurut Sylver",
+    position: "Leader",
+    institution: "Vision International Academy",
+    quote:
+      "The website Xhenvolt built for our academy is stunning. It's mobile-friendly, loads fast, and gives parents 24/7 access to school information. It has elevated our institution's image significantly.",
+    logo: null,
+    category: "website",
+  },
+  {
+    name: "Sheikh Hassan Mwaita",
+    position: "Director",
+    institution: "Excel Islamic Secondary School",
+    quote:
+      "Having a professional website built by Xhenvolt has given our school a commanding digital presence. Parents and prospective students can now learn about our programs and values from anywhere.",
+    logo: null,
+    category: "website",
+  },
+  {
+    name: "Hon. Rachel Magoola",
+    position: "School Board Chairperson",
+    institution: "Walugogo Vocational Secondary School",
+    quote:
+      "We were looking for a partner who understood vocational education. Xhenvolt built us a beautiful website that properly showcases both our academic and practical training programs with precision.",
+    logo: null,
+    category: "website",
   },
 ];
 
 const organizations = [
   {
-    name: "Almuntahha Online School",
-    contact: "Abdul Fattaha Makubugu",
-    role: "Client",
+    name: "Northgate Schools",
+    contact: "Ngobi Peter",
+    role: "General Director",
+    logo: "northgateschool.png",
+    system: "DRAIS",
+  },
+  {
+    name: "Albayan Quran Memorization Center",
+    contact: "Wagogo Husama",
+    role: "Headteacher",
+    logo: "albayan.png",
+    system: "DRAIS",
+  },
+  {
+    name: "Excel Islamic Schools",
+    contact: "Sheikh Hassan Mwaita",
+    role: "Director",
     logo: null,
+    system: "DRAIS",
+  },
+  {
+    name: "Ibun Baz Girls Secondary School",
+    contact: "Sheikh Hassan Mwaita",
+    role: "Principal",
+    logo: null,
+    system: "DRAIS",
+  },
+  {
+    name: "Hillside Ways Secondary School",
+    contact: null,
+    role: null,
+    logo: null,
+    system: "DRAIS",
   },
   {
     name: "Vision International Academy",
     contact: "Okurut Sylver",
     role: "Head Teacher",
     logo: null,
-  },
-  {
-    name: "Excel Islamic School",
-    contact: null,
-    role: null,
-    logo: null,
-  },
-  {
-    name: "Walugogo Vocational Secondary School",
-    contact: "Hon. Rachel Magoola",
-    role: "Led by",
-    logo: null,
-  },
-  {
-    name: "Seek and Give Charity Organization",
-    contact: null,
-    role: null,
-    logo: null,
+    system: "DRAIS",
   },
   {
     name: "Al Hanan Education Center",
     contact: "Sheikh Faisal Naminya",
-    role: "Client",
+    role: "Founder",
     logo: null,
+    system: "DRAIS",
+  },
+  {
+    name: "Walugogo Vocational Secondary School",
+    contact: "Hon. Rachel Magoola",
+    role: "Board Chair",
+    logo: null,
+    system: "Website",
+  },
+  {
+    name: "Seek and Give Charity Organization",
+    contact: "Wasukulu Shafik",
+    role: "Leader",
+    logo: null,
+    system: "Website",
+  },
+  {
+    name: "Unity Bridge Foundation",
+    contact: "Kanyere Sahal",
+    role: "Leader",
+    logo: null,
+    system: "Website",
+  },
+  {
+    name: "Al Muntahha Online School",
+    contact: "Abdul Fattaha Makubugu",
+    role: "Founder",
+    logo: null,
+    system: "Website",
+  },
+  {
+    name: "Bugembe Islamic Institute",
+    contact: null,
+    role: null,
+    logo: "Bugembe.jpeg",
+    system: "DRAIS",
   },
 ];
 
-const featureBlocks = [
+const trustIndicators = [
   {
-    title: "Digital Attendance for Schools",
+    icon: <Shield className="w-8 h-8" />,
+    title: "High Reliability Infrastructure",
     description:
-      "Biometric and digital attendance systems that eliminate manual registers, reduce errors, and give real-time visibility into student presence across all campuses.",
+      "Our systems are built on robust infrastructure with 99.9% uptime. Schools depend on us for daily operations — and we deliver without fail.",
+    metric: "99.9%",
+    metricLabel: "Uptime",
     gradient: "from-blue-600 to-cyan-500",
   },
   {
-    title: "Online Learning Infrastructure",
+    icon: <TrendingUp className="w-8 h-8" />,
+    title: "Fast Deployment",
     description:
-      "Complete digital learning platforms that enable schools to deliver curriculum online, manage assignments, and track student progress from anywhere.",
+      "From initial consultation to fully operational system — we deploy within days, not months. Your institution starts benefiting immediately.",
+    metric: "Days",
+    metricLabel: "To Deploy",
     gradient: "from-purple-600 to-pink-500",
   },
   {
-    title: "Professional Institutional Websites",
+    icon: <Monitor className="w-8 h-8" />,
+    title: "Cross-Device Compatibility",
     description:
-      "Custom-built, mobile-first websites that establish credibility, showcase programs, and provide parents with essential school information 24/7.",
+      "Access your dashboards from any device — desktop, tablet, or smartphone. Our systems adapt seamlessly to any screen size.",
+    metric: "100%",
+    metricLabel: "Responsive",
     gradient: "from-emerald-600 to-teal-500",
   },
 ];
 
+const trustPillars = [
+  { icon: <Shield className="w-6 h-6" />, label: "Secure Data Handling", color: "blue" },
+  { icon: <TrendingUp className="w-6 h-6" />, label: "Scalable Infrastructure", color: "purple" },
+  { icon: <Monitor className="w-6 h-6" />, label: "Optimized Performance", color: "cyan" },
+  { icon: <Award className="w-6 h-6" />, label: "Long-Term Reliability", color: "green" },
+];
+
 const trustMetrics = [
-  { value: "10+", label: "Schools Using DRAIS", icon: <School className="w-8 h-8" /> },
-  { value: "15+", label: "Organizations Served", icon: <Building2 className="w-8 h-8" /> },
-  { value: "25+", label: "Systems Deployed", icon: <Monitor className="w-8 h-8" /> },
+  { value: "29", label: "Schools Running DRAIS", icon: <School className="w-8 h-8" /> },
+  { value: "35", label: "Organizations Served", icon: <Building2 className="w-8 h-8" /> },
+  { value: "35+", label: "Systems Deployed", icon: <Monitor className="w-8 h-8" /> },
   { value: "99.9%", label: "System Uptime", icon: <TrendingUp className="w-8 h-8" /> },
 ];
 
@@ -274,6 +431,88 @@ function ClientLogo({ name, filename, size = 56 }) {
   );
 }
 
+/* ─────────────── TESTIMONIALS W/ SHOW MORE ─────────────── */
+
+function TestimonialsSection() {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? testimonials : testimonials.slice(0, 6);
+
+  return (
+    <section className="py-28 bg-white/50 dark:bg-gray-800/30">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
+            What Institutions Say About Us
+          </h2>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Real feedback from {testimonials.length} institutions that trust
+            Xhenvolt with their daily operations.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {visible.map((t, index) => (
+            <motion.div
+              key={`${t.name}-${t.institution}`}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: Math.min(index, 5) * 0.1 }}
+              whileHover={{ scale: 1.02, y: -5 }}
+              className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-500 flex flex-col"
+            >
+              <div className="flex-1">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+              </div>
+              <div className="flex items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-700">
+                <ClientLogo name={t.institution} filename={t.logo} size={48} />
+                <div>
+                  <div className="font-bold text-gray-900 dark:text-white">
+                    {t.name}
+                  </div>
+                  <div className="text-sm text-blue-600 dark:text-blue-400">
+                    {t.position}
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    {t.institution}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {testimonials.length > 6 && (
+          <div className="text-center mt-12">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowAll((p) => !p)}
+              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              {showAll ? "Show Less" : `Show All ${testimonials.length} Testimonials`}
+              <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${showAll ? "-rotate-90" : "rotate-90"}`} />
+            </motion.button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 /* ─────────────── PAGE ─────────────── */
 
 export default function HomePage() {
@@ -293,7 +532,7 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/40 rounded-full mb-6">
                 <Shield className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
-                  Trusted by 15+ Institutions
+                  Trusted by 35 Organizations
                 </span>
               </div>
 
@@ -323,23 +562,24 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <a
-                    href="#drais"
+                    href="#drais-demo"
                     className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 gap-2"
                   >
-                    Explore DRAIS
-                    <ArrowRight className="w-5 h-5" />
+                    <Play className="w-5 h-5" />
+                    See DRAIS in Action
                   </a>
                 </motion.div>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <a
-                    href="#organizations"
-                    className="inline-flex items-center px-8 py-4 border-2 border-blue-600 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300"
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center px-8 py-4 border-2 border-blue-600 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 gap-2"
                   >
-                    View Our Work
-                  </a>
+                    Book a Free Demo
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
                 </motion.div>
               </div>
             </motion.div>
@@ -553,72 +793,15 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══════ SECTION 3b — DRAIS MICRO-DEMO CAROUSEL ═══════ */}
+      <div id="drais-demo">
+        <DraisMicroDemo />
+      </div>
+
       {/* ═══════ SECTION 4 — SCHOOL TESTIMONIALS ═══════ */}
-      <section className="py-28 bg-white/50 dark:bg-gray-800/30">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
-              What Schools Say About DRAIS
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Real feedback from real institutions that trust Xhenvolt with
-              their operations every single day.
-            </p>
-          </motion.div>
+      <TestimonialsSection />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((t, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, y: -5 }}
-                className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-500 flex flex-col"
-              >
-                {/* Quote */}
-                <div className="flex-1">
-                  <div className="text-4xl text-blue-600 dark:text-blue-400 mb-4 leading-none">
-                    &ldquo;
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg mb-6">
-                    {t.quote}
-                  </p>
-                </div>
-
-                {/* Author */}
-                <div className="flex items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-700">
-                  <ClientLogo
-                    name={t.institution}
-                    filename={t.logo}
-                    size={48}
-                  />
-                  <div>
-                    <div className="font-bold text-gray-900 dark:text-white">
-                      {t.name}
-                    </div>
-                    <div className="text-sm text-blue-600 dark:text-blue-400">
-                      {t.position}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {t.institution}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════ SECTION 5 — ORGANIZATIONS POWERED BY XHENVOLT ═══════ */}
+      {/* ═══════ SECTION 5 — ORGANIZATIONS THAT TRUST XHENVOLT ═══════ */}
       <section id="organizations" className="py-28">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
@@ -629,12 +812,27 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
-              Organizations Powered by Xhenvolt
+              Organizations That Trust Xhenvolt
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              From schools to charities — institutions across Uganda rely on our
-              systems every day.
+              35 organizations and counting — schools, NGOs, and institutions across Uganda
+              rely on our systems every day.
             </p>
+            {/* Quick stats */}
+            <div className="flex flex-wrap justify-center gap-6 mt-8">
+              <div className="flex items-center gap-2 px-5 py-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-full">
+                <School className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-bold text-blue-700 dark:text-blue-300">29 Schools Using DRAIS</span>
+              </div>
+              <div className="flex items-center gap-2 px-5 py-2.5 bg-purple-50 dark:bg-purple-900/30 rounded-full">
+                <Globe className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                <span className="text-sm font-bold text-purple-700 dark:text-purple-300">6 Websites & Other Solutions</span>
+              </div>
+              <div className="flex items-center gap-2 px-5 py-2.5 bg-green-50 dark:bg-green-900/30 rounded-full">
+                <Building2 className="w-4 h-4 text-green-600 dark:text-green-400" />
+                <span className="text-sm font-bold text-green-700 dark:text-green-300">35 Total Organizations</span>
+              </div>
+            </div>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -644,21 +842,28 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: Math.min(index, 5) * 0.08 }}
                 whileHover={{ scale: 1.03, y: -5 }}
                 className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-500 flex items-center gap-5"
               >
                 <ClientLogo name={org.name} filename={org.logo} size={56} />
-                <div>
-                  <div className="font-bold text-gray-900 dark:text-white text-lg">
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-gray-900 dark:text-white text-lg truncate">
                     {org.name}
                   </div>
                   {org.contact && (
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
                       {org.role ? `${org.role}: ` : ""}
                       {org.contact}
                     </div>
                   )}
+                  <span className={`inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                    org.system === "DRAIS"
+                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                      : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                  }`}>
+                    {org.system}
+                  </span>
                 </div>
               </motion.div>
             ))}
@@ -666,47 +871,83 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════ SECTION 6 — VISUAL FEATURE BLOCKS (Screenshot-worthy) ═══════ */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6 space-y-16">
-          {featureBlocks.map((block, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className={`bg-gradient-to-r ${block.gradient} rounded-3xl p-12 md:p-16 text-white relative overflow-hidden shadow-2xl`}
-            >
-              {/* decorative */}
-              <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full translate-x-1/3 -translate-y-1/3" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -translate-x-1/4 translate-y-1/4" />
+      {/* ═══════ CLIENT LOGOS CAROUSEL ═══════ */}
+      <ClientLogosCarousel />
 
-              <div className="relative z-10 max-w-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                  {index === 0 && <Fingerprint className="w-8 h-8" />}
-                  {index === 1 && <Wifi className="w-8 h-8" />}
-                  {index === 2 && <Layout className="w-8 h-8" />}
+      {/* ═══════ INTERACTIVE PRODUCT STORY ═══════ */}
+      <InteractiveProductStory />
+
+      {/* ═══════ REAL DEPLOYMENTS ═══════ */}
+      <RealDeployments />
+
+      {/* ═══════ SECTION 6 — WHY TRUST XHENVOLT ═══════ */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
+              Why Institutions Trust Our Systems
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Built for reliability, security, and performance — our infrastructure keeps institutions running smoothly.
+            </p>
+            {/* Trust pillars */}
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              {trustPillars.map((p, i) => (
+                <div key={i} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-sm border border-gray-100 dark:border-gray-700">
+                  <span className="text-blue-600 dark:text-blue-400">{p.icon}</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{p.label}</span>
                 </div>
-                <h3 className="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">
-                  {block.title}
-                </h3>
-                <p className="text-lg md:text-xl text-white/90 leading-relaxed">
-                  {block.description}
-                </p>
-                <div className="mt-8">
-                  <a
-                    href="#drais"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm rounded-xl font-semibold hover:bg-white/30 transition-all duration-300 border border-white/20"
-                  >
-                    Learn More <ArrowRight className="w-4 h-4" />
-                  </a>
+              ))}
+            </div>
+          </motion.div>
+
+          <div className="space-y-12">
+            {trustIndicators.map((block, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className={`bg-gradient-to-r ${block.gradient} rounded-3xl p-12 md:p-16 text-white relative overflow-hidden shadow-2xl`}
+              >
+                <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full translate-x-1/3 -translate-y-1/3" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -translate-x-1/4 translate-y-1/4" />
+
+                <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-6">
+                      {block.icon}
+                    </div>
+                    <h3 className="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">
+                      {block.title}
+                    </h3>
+                    <p className="text-lg md:text-xl text-white/90 leading-relaxed">
+                      {block.description}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 bg-white/20 backdrop-blur-sm rounded-2xl p-8 text-center min-w-[140px]">
+                    <div className="text-4xl md:text-5xl font-extrabold">{block.metric}</div>
+                    <div className="text-sm text-white/80 mt-1">{block.metricLabel}</div>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* ═══════ OUR JOURNEY ═══════ */}
+      <OurJourney />
+
+      {/* ═══════ MINI PRODUCT TOUR ═══════ */}
+      <MiniProductTour />
 
       {/* ═══════ SECTION 7 — TRUST METRICS ═══════ */}
       <section className="py-24 bg-white/50 dark:bg-gray-800/30">
@@ -766,12 +1007,11 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
             >
               <h2 className="text-4xl md:text-5xl font-extrabold mb-6">
-                Ready to Build Your Digital Infrastructure?
+                Ready to Transform Your Institution?
               </h2>
               <p className="text-xl text-white/80 mb-10 leading-relaxed">
-                Join the growing list of institutions that trust Xhenvolt to
-                power their operations. Let&apos;s talk about what we can build
-                for you.
+                Join 35 organizations already running on Xhenvolt systems.
+                Book a free demo and see DRAIS in action — no commitment required.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <motion.div
@@ -782,7 +1022,7 @@ export default function HomePage() {
                     href="/contact"
                     className="inline-flex items-center px-8 py-4 bg-white text-blue-700 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 gap-2"
                   >
-                    Get Free Consultation <ArrowRight className="w-5 h-5" />
+                    Book a Free Demo <ArrowRight className="w-5 h-5" />
                   </Link>
                 </motion.div>
                 <motion.div
@@ -790,9 +1030,12 @@ export default function HomePage() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <a
-                    href="#drais"
-                    className="inline-flex items-center px-8 py-4 border-2 border-white/30 text-white rounded-xl font-semibold hover:bg-white/10 transition-all duration-300"
+                    href="https://drais.pro"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-8 py-4 border-2 border-white/30 text-white rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 gap-2"
                   >
+                    <Play className="w-5 h-5" />
                     Explore DRAIS
                   </a>
                 </motion.div>
@@ -832,6 +1075,15 @@ export default function HomePage() {
                       <div className="font-medium">0760 700 954</div>
                       <div className="font-medium">0745 726 350</div>
                     </div>
+                  </div>
+                  {/* Quick Links */}
+                  <div className="pt-4 border-t border-white/10 space-y-2">
+                    <a href="https://drais.pro" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors">
+                      <ArrowRight className="w-3 h-3" /> Explore DRAIS — drais.pro
+                    </a>
+                    <a href="https://jeton.xhenvolt.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors">
+                      <ArrowRight className="w-3 h-3" /> Jeton Financial System — jeton.xhenvolt.com
+                    </a>
                   </div>
                 </div>
               </div>
