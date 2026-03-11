@@ -14,8 +14,8 @@ import {
 
 const milestones = [
   {
-    year: "2023",
-    quarter: "Q3–Q4",
+    year: "2025",
+    quarter: "June",
     title: "Foundation & First Clients",
     description:
       "Xhenvolt was founded with a mission to build real digital infrastructure for institutions. Our first clients included schools in need of modern management systems.",
@@ -28,8 +28,8 @@ const milestones = [
     color: "#3b82f6",
   },
   {
-    year: "2024",
-    quarter: "Q1–Q2",
+    year: "2025",
+    quarter: "Jul–Aug",
     title: "DRAIS Launch & Early Adoption",
     description:
       "DRAIS was officially launched as our flagship school management system. Early adopters included Northgate Schools and Albayan Quran Memorization Center.",
@@ -43,8 +43,8 @@ const milestones = [
     color: "#8b5cf6",
   },
   {
-    year: "2024",
-    quarter: "Q3–Q4",
+    year: "2025",
+    quarter: "Sep–Oct",
     title: "Rapid Expansion",
     description:
       "Growing trust led to rapid expansion across multiple schools and organizations. We crossed 15 active clients and began building institutional websites alongside DRAIS.",
@@ -59,7 +59,7 @@ const milestones = [
   },
   {
     year: "2025",
-    quarter: "Q1–Q2",
+    quarter: "Nov–Dec",
     title: "Website Development Wave",
     description:
       "A surge in website development projects as organizations recognized the need for professional digital presence. Multiple institutional websites built and launched.",
@@ -75,8 +75,8 @@ const milestones = [
     color: "#10b981",
   },
   {
-    year: "2025",
-    quarter: "Feb–Mar",
+    year: "2026",
+    quarter: "Jan–Feb",
     title: "Major Installation Wave",
     description:
       "A landmark period — Xhenvolt deployed multiple attendance monitoring systems and completed several website projects simultaneously, reaching 29 DRAIS clients.",
