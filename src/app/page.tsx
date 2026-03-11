@@ -30,6 +30,7 @@ import ClientLogosCarousel from "../components/ClientLogosCarousel";
 import InteractiveProductStory from "../components/InteractiveProductStory";
 import OurJourney from "../components/OurJourney";
 import RealDeployments from "../components/RealDeployments";
+import ObjectionCrusher from "../components/ObjectionCrusher";
 
 /* ─────────────── DATA ─────────────── */
 
@@ -942,6 +943,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ═══════ OBJECTION CRUSHER ═══════ */}
+      <div id="objections">
+        <ObjectionCrusher />
+      </div>
 
       {/* ═══════ OUR JOURNEY ═══════ */}
       <OurJourney />
