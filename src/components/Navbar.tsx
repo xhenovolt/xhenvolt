@@ -47,6 +47,16 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     {
+      name: "DRAIS Solutions",
+      href: "/drais-attendance-system",
+      dropdown: [
+        { name: "School Attendance System", href: "/school-attendance-system-uganda" },
+        { name: "Biometric Attendance", href: "/biometric-attendance-uganda" },
+        { name: "School Management System", href: "/school-management-system-uganda" },
+        { name: "DRAIS Product Overview", href: "/drais-attendance-system" }
+      ]
+    },
+    {
       name: "Services",
       href: "/services",
       dropdown: [
@@ -97,13 +107,42 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
+              <div
                 key={item.name}
-                href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium"
+                className="relative"
+                onMouseEnter={() => item.dropdown && setActiveDropdown(item.name)}
+                onMouseLeave={() => setActiveDropdown(null)}
               >
-                {item.name}
-              </Link>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium"
+                >
+                  {item.name}
+                  {item.dropdown && <ChevronDown className="w-4 h-4" />}
+                </Link>
+                <AnimatePresence>
+                  {item.dropdown && activeDropdown === item.name && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden z-50"
+                    >
+                      {item.dropdown.map((dropItem) => (
+                        <Link
+                          key={dropItem.name}
+                          href={dropItem.href}
+                          className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                          onClick={() => setActiveDropdown(null)}
+                        >
+                          {dropItem.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ))}
           </div>
 

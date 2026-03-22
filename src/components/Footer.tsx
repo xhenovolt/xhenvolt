@@ -13,8 +13,10 @@ export default function Footer() {
     ],
     "Products": [
       { name: "DRAIS — School System", href: "https://drais.pro", external: true },
+      { name: "School Attendance System Uganda", href: "/school-attendance-system-uganda" },
+      { name: "Biometric Attendance Uganda", href: "/biometric-attendance-uganda" },
+      { name: "School Management System Uganda", href: "/school-management-system-uganda" },
       { name: "Jeton — Financial System", href: "https://jeton.xhenvolt.com", external: true },
-      { name: "Website Development", href: "/services" },
       { name: "Custom Software", href: "/services" }
     ],
     "Resources": [
