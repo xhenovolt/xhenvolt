@@ -2,22 +2,23 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { School, Building2, Award } from "lucide-react";
 
 const allClients = [
-  { name: "Northgate Schools", logo: "northgateschool.png" },
-  { name: "Albayan Quran Memorization Center", logo: "albayan.png" },
-  { name: "Bugembe Islamic Institute", logo: "Bugembe.jpeg" },
-  { name: "Bumwena Scrap SACCO", logo: "bumwenascrap.jpeg" },
-  { name: "Excel Islamic Schools", logo: null },
-  { name: "Ibun Baz Girls Secondary School", logo: null },
-  { name: "Hillside Ways Secondary School", logo: null },
-  { name: "Vision International Academy", logo: null },
-  { name: "Walugogo Vocational Secondary School", logo: null },
-  { name: "Al Hanan Education Center", logo: null },
-  { name: "Al Muntahha Online School", logo: null },
-  { name: "Seek and Give Charity Organization", logo: null },
-  { name: "Unity Bridge Foundation", logo: null },
-  { name: "Excel Islamic Secondary School", logo: null },
+  { name: "Northgate Schools", logo: "northgateschool.png", badge: false },
+  { name: "Albayan Quran Memorization Center", logo: "albayan.png", badge: false },
+  { name: "Bugembe Islamic Institute", logo: "Bugembe.jpeg", badge: false },
+  { name: "Bumwena Scrap SACCO", logo: "bumwenascrap.jpeg", badge: false },
+  { name: "Excel Islamic Schools", logo: null, badge: false },
+  { name: "Ibun Baz Girls Secondary School", logo: null, badge: false },
+  { name: "Hill Side Ways Nursery and Primary School", logo: null, badge: false },
+  { name: "Vision International Academy", logo: null, badge: false },
+  { name: "Walugogo Vocational Secondary School", logo: null, badge: false },
+  { name: "Al Hanan Education Center", logo: null, badge: false },
+  { name: "Al Muntahha Online School", logo: null, badge: false },
+  { name: "Seek and Give Charity Organization", logo: null, badge: false },
+  { name: "Unity Bridge Foundation", logo: null, badge: false },
+  { name: "Excel Islamic Secondary School", logo: null, badge: false },
 ];
 
 function getInitials(name: string) {
@@ -47,27 +48,22 @@ function LogoPlaceholder({ name, size = 64 }: { name: string; size?: number }) {
   const id = `lg-${name.replace(/\s+/g, "")}`;
 
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" className="rounded-xl flex-shrink-0">
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={c1} />
-          <stop offset="100%" stopColor={c2} />
-        </linearGradient>
-      </defs>
-      <rect width="64" height="64" rx="12" fill={`url(#${id})`} />
-      <text
-        x="32"
-        y="34"
-        textAnchor="middle"
-        dominantBaseline="central"
-        fill="white"
-        fontSize="20"
-        fontWeight="700"
-        fontFamily="Arial, sans-serif"
-      >
+    <div
+      style={{
+        width: size,
+        height: size,
+        background: `linear-gradient(135deg, ${c1}, ${c2})`,
+        borderRadius: 12,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+      }}
+    >
+      <span style={{ color: "white", fontSize: size * 0.32, fontWeight: 700, fontFamily: "Arial, sans-serif" }}>
         {initials}
-      </text>
-    </svg>
+      </span>
+    </div>
   );
 }
 
@@ -83,21 +79,29 @@ function ClientLogoImage({ client, size = 64 }: { client: (typeof allClients)[0]
     const img = new window.Image();
     img.onload = () => { setOk(true); setChecked(true); };
     img.onerror = () => { setOk(false); setChecked(true); };
-    img.src = `/client_logos/${client.logo}`;
+    img.src = `/clients_logos/${client.logo}`;
   }, [client.logo]);
 
   if (!checked) return <div style={{ width: size, height: size }} className="rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />;
-  if (ok && client.logo) return <Image src={`/client_logos/${client.logo}`} alt={client.name} width={size} height={size} className="rounded-xl object-cover" />;
+  if (ok && client.logo) return (
+    <Image
+      src={`/clients_logos/${client.logo}`}
+      alt={client.name}
+      width={size}
+      height={size}
+      className="rounded-xl object-contain"
+      loading="lazy"
+    />
+  );
   return <LogoPlaceholder name={client.name} size={size} />;
 }
 
 export default function ClientLogosCarousel() {
-  // Double the list for seamless infinite scroll
   const doubled = [...allClients, ...allClients];
 
   return (
-    <section className="py-16 bg-white/50 dark:bg-gray-800/30 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-10">
+    <section className="py-20 bg-white/50 dark:bg-gray-800/30 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -105,18 +109,32 @@ export default function ClientLogosCarousel() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Trusted by Institutions Across Uganda
+          <h3 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-3">
+            37+ Institutions Supported
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Schools, NGOs, and organizations running on Xhenvolt systems every day.
+          <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
+            Schools, NGOs, and organizations running on Xhenvolt systems every day across Uganda.
           </p>
+          {/* Stats row */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            <div className="flex items-center gap-2 px-5 py-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-full border border-blue-100 dark:border-blue-800">
+              <School className="w-4 h-4 text-blue-600" />
+              <span className="text-sm font-bold text-blue-700 dark:text-blue-300">29+ Schools on DRAIS</span>
+            </div>
+            <div className="flex items-center gap-2 px-5 py-2.5 bg-purple-50 dark:bg-purple-900/30 rounded-full border border-purple-100 dark:border-purple-800">
+              <Building2 className="w-4 h-4 text-purple-600" />
+              <span className="text-sm font-bold text-purple-700 dark:text-purple-300">8+ Organizations</span>
+            </div>
+            <div className="flex items-center gap-2 px-5 py-2.5 bg-yellow-50 dark:bg-yellow-900/30 rounded-full border border-yellow-100 dark:border-yellow-800">
+              <Award className="w-4 h-4 text-yellow-600" />
+              <span className="text-sm font-bold text-yellow-700 dark:text-yellow-300">Real-time Attendance Tracking</span>
+            </div>
+          </div>
         </motion.div>
       </div>
 
       {/* Infinite scrolling row */}
       <div className="relative">
-        {/* Fade edges */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10 pointer-events-none" />
 
@@ -124,7 +142,7 @@ export default function ClientLogosCarousel() {
           className="flex gap-8 items-center"
           animate={{ x: ["0%", "-50%"] }}
           transition={{
-            x: { duration: 30, repeat: Infinity, ease: "linear" },
+            x: { duration: 35, repeat: Infinity, ease: "linear" },
           }}
           style={{ width: "fit-content" }}
         >
@@ -133,7 +151,7 @@ export default function ClientLogosCarousel() {
               key={`${client.name}-${i}`}
               className="flex flex-col items-center gap-3 min-w-[120px]"
             >
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:scale-105 transition-all duration-300">
                 <ClientLogoImage client={client} size={64} />
               </div>
               <span className="text-xs text-gray-500 dark:text-gray-400 font-medium text-center max-w-[100px] leading-tight">

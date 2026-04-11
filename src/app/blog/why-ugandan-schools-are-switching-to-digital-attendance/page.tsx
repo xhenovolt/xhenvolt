@@ -43,7 +43,7 @@ Biometric attendance eliminates this entirely. A fingerprint cannot be transferr
       heading: "What Digital Attendance Actually Looks Like in a Ugandan School",
       content: `At schools using DRAIS, the morning arrival process works like this: students arrive at the school gate or classroom entrance, place their finger on a scanner, and walk in. The entire interaction takes under 2 seconds. By 8:05 AM, the school director has a live dashboard showing: which classes are full, which students are absent, and which SMS alerts have been sent to parents.
 
-This is not theoretical. This is live in schools across Uganda right now — including Northgate Schools, Excel Islamic Schools, Hillside Ways Secondary School, and Ibun Baz Girls Secondary School.`,
+This is not theoretical. This is live in schools across Uganda right now — including Northgate Schools, Excel Islamic Schools, Hill Side Ways Nursery and Primary School, and Ibun Baz Girls Secondary School.`,
     },
     {
       heading: "The Cost of Doing Nothing",

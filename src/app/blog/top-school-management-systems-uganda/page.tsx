@@ -50,7 +50,7 @@ Strengths: Offline-first architecture (works during power and internet outages),
 
 Key modules: Biometric Attendance, Fee Management, Academic Records (grades/transcripts), Timetable Scheduling, Parent Communication Portal, Staff Management, Exam Results.
 
-Currently deployed in 35+ Ugandan schools including Excel Islamic Schools, Northgate Schools, and Hillside Ways Secondary School.
+Currently deployed in 37+ Ugandan schools including Excel Islamic Schools, Northgate Schools, and Hill Side Ways Nursery and Primary School.
 
 Pricing: UGX 150,000–400,000/month depending on school size.
 

@@ -103,7 +103,7 @@ const deployments = [
     contact: "Ngobi Peter, General Director",
   },
   {
-    name: "Hillside Ways Secondary School",
+    name: "Hill Side Ways Nursery and Primary School",
     location: "Uganda",
     result: "Attendance monitoring system fully deployed with biometric devices",
     contact: "School Administration",

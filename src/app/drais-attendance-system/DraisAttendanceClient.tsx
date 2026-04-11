@@ -25,7 +25,7 @@ const testimonials = [
   },
   {
     name: "School Administration",
-    role: "Hillside Ways Secondary School",
+    role: "Hill Side Ways Nursery and Primary School",
     quote: "Since installing DRAIS, we've noticed a meaningful increase in student punctuality. Students know the system tracks exactly when they arrive. It has created a culture of accountability.",
     stars: 5,
   },

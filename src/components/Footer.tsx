@@ -17,6 +17,8 @@ export default function Footer() {
       { name: "Biometric Attendance Uganda", href: "/biometric-attendance-uganda" },
       { name: "School Management System Uganda", href: "/school-management-system-uganda" },
       { name: "Jeton — Financial System", href: "https://jeton.xhenvolt.com", external: true },
+      { name: "Xhaira — HR System", href: "https://xhaira.xhenvolt.com", external: true },
+      { name: "Consty — Project Management", href: "https://consty.xhenvolt.com", external: true },
       { name: "Custom Software", href: "/services" }
     ],
     "Resources": [

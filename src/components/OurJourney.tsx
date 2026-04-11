@@ -82,9 +82,9 @@ const milestones = [
       "A landmark period — Xhenvolt deployed multiple attendance monitoring systems and completed several website projects simultaneously, reaching 29 DRAIS clients.",
     events: [
       "Ibun Baz Girls Secondary School — attendance system deployed",
-      "Hillside Ways Secondary School — attendance system deployed",
+      "Hill Side Ways Nursery and Primary School — attendance system deployed",
       "Multiple website launches completed",
-      "29 schools now running DRAIS",
+      "29+ schools now running DRAIS",
     ],
     icon: <Fingerprint className="w-5 h-5" />,
     color: "#f59e0b",
@@ -92,14 +92,31 @@ const milestones = [
   },
   {
     year: "2026",
-    quarter: "Present",
-    title: "35 Organizations & Growing",
+    quarter: "Mar",
+    title: "Expansion & System Upgrades",
     description:
-      "Today, Xhenvolt serves 35 organizations — 29 schools running DRAIS and 6 organizations using other Xhenvolt solutions. The mission continues.",
+      "March 2026 marks continued expansion with new school onboardings, biometric device upgrades, and key DRAIS feature rollouts including enhanced analytics and new reporting modules.",
     events: [
-      "35 total organizations served",
-      "29 schools running DRAIS",
-      "6 organizations using websites & other systems",
+      "New school partnerships signed",
+      "Biometric device upgrades completed",
+      "DRAIS analytics module enhanced",
+      "Parent notification system upgraded",
+      "New region coverage: Gulu, Mbale, Mbarara",
+    ],
+    icon: <ArrowRight className="w-5 h-5" />,
+    color: "#8b5cf6",
+    highlight: true,
+  },
+  {
+    year: "2026",
+    quarter: "Present",
+    title: "37+ Organizations & Growing",
+    description:
+      "Today, Xhenvolt serves 37+ organizations — 29+ schools running DRAIS and 8+ organizations using other Xhenvolt solutions. The mission continues.",
+    events: [
+      "37+ total organizations served",
+      "29+ schools running DRAIS",
+      "8+ organizations using websites & other systems",
       "Continuous feature development",
     ],
     icon: <Users className="w-5 h-5" />,
@@ -212,7 +229,7 @@ export default function OurJourney() {
             Building History, One Deployment at a Time
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            From our first prototype to 35 organizations — a timeline of growth, trust, and real impact.
+            From our first prototype to 37+ organizations — a timeline of growth, trust, and real impact.
           </p>
         </motion.div>
 

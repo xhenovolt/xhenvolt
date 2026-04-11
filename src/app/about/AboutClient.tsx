@@ -48,7 +48,7 @@ const milestones = [
 	{
 		year: "2025",
 		title: "Major Installation Wave",
-		description: "A landmark period — Xhenvolt deployed attendance monitoring systems at Ibun Baz Girls Secondary School and Hillside Ways Secondary School. Multiple website projects were completed for organizations including Seek and Give, Unity Bridge, Vision International Academy, and more. Reached 35 organizations served."
+		description: "A landmark period — Xhenvolt deployed attendance monitoring systems at Ibun Baz Girls Secondary School and Hill Side Ways Nursery and Primary School. Multiple website projects were completed for organizations including Seek and Give, Unity Bridge, Vision International Academy, and more. Reached 37+ organizations served."
 	}
 ];
 
@@ -152,7 +152,7 @@ export default function AboutClient() {
 									From Vision to Reality
 								</h3>
 								<p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-									Founded by visionary entrepreneur Hamuza Ibrahim, Xhenvolt emerged from a simple yet powerful idea: that every African institution deserves access to world-class technology solutions. What started as a vision has become a reality, with 35 organizations now running on our systems.
+									Founded by visionary entrepreneur Hamuza Ibrahim, Xhenvolt emerged from a simple yet powerful idea: that every African institution deserves access to world-class technology solutions. What started as a vision has become a reality, with 37+ organizations now running on our systems.
 								</p>
 								<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
 									Our growth isn&apos;t just about numbers—it&apos;s about the real impact we&apos;re making. From helping schools automate attendance with biometric systems to enabling organizations to establish professional digital presence, we&apos;re proving that great technology can transform lives and communities across East Africa.

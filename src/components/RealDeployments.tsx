@@ -28,12 +28,12 @@ const deployments = [
     region: "Uganda",
   },
   {
-    institution: "Hillside Ways Secondary School",
-    person: null,
-    role: null,
+    institution: "Hill Side Ways Nursery and Primary School",
+    person: "Mwondha Hassan",
+    role: "Director",
     system: "Attendance Tracking System",
     type: "drais",
-    impact: "Automated attendance monitoring deployed across the entire school, providing administrators real-time visibility.",
+    impact: "Automated attendance monitoring deployed across the entire school, providing administrators real-time visibility into learner and staff presence.",
     logo: null,
     region: "Uganda",
   },
@@ -192,13 +192,13 @@ function DeploymentLogo({ institution, logo }) {
     const img = new window.Image();
     img.onload = () => { setOk(true); setChecked(true); };
     img.onerror = () => { setChecked(true); };
-    img.src = `/client_logos/${logo}`;
+    img.src = `/clients_logos/${logo}`;
   }, [logo]);
 
   if (!checked) return <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />;
   
   if (ok && logo) {
-    return <Image src={`/client_logos/${logo}`} alt={institution} width={48} height={48} className="rounded-xl object-cover" />;
+    return <Image src={`/clients_logos/${logo}`} alt={institution} width={48} height={48} className="rounded-xl object-cover" />;
   }
 
   const initials = institution.split(" ").filter(w => w.length > 2).map(w => w[0]).join("").toUpperCase().slice(0, 2);
