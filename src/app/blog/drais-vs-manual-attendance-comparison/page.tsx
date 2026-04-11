@@ -82,7 +82,7 @@ In Uganda, power cuts and weather events regularly damage or destroy physical re
 **DRAIS reliability:**
 DRAIS stores data locally (survives internet outages of any duration) and backs up to the cloud when connectivity resumes. A power cut halts scanning but resumes when power returns; no data is lost. If the scanning laptop fails, data is recovered from the cloud backup.
 
-DRAIS has not experienced permanent data loss in any deployment since 2023.
+DRAIS has not experienced permanent data loss in any deployment since June 2025.
 
 **Verdict: DRAIS is more reliable in both normal operation and failure scenarios.**`,
     },

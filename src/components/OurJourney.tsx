@@ -6,21 +6,19 @@ import {
   Rocket,
   Globe,
   Users,
-  Building2,
   School,
   Fingerprint,
-  ArrowRight,
 } from "lucide-react";
 
 const milestones = [
   {
     year: "2025",
-    quarter: "June",
+    quarter: "Jun",
     title: "Foundation & First Clients",
     description:
-      "Xhenvolt was founded with a mission to build real digital infrastructure for institutions. Our first clients included schools in need of modern management systems.",
+      "Xhenvolt was founded in June 2025 with a mission to build real digital infrastructure for institutions. The first DRAIS prototype was built and initial school partnerships formed within weeks.",
     events: [
-      "Company established",
+      "Company established — June 2025",
       "First DRAIS prototype developed",
       "Initial school partnerships formed",
     ],
@@ -29,10 +27,10 @@ const milestones = [
   },
   {
     year: "2025",
-    quarter: "Jul–Aug",
+    quarter: "Jul–Sep",
     title: "DRAIS Launch & Early Adoption",
     description:
-      "DRAIS was officially launched as our flagship school management system. Early adopters included Northgate Schools and Albayan Quran Memorization Center.",
+      "DRAIS was officially launched as our flagship school management system. Early adopters included Northgate Schools and Albayan Quran Memorization Center, both deploying biometric attendance in this period.",
     events: [
       "DRAIS v1.0 launched",
       "Northgate Schools onboarded — advanced reporting",
@@ -44,47 +42,36 @@ const milestones = [
   },
   {
     year: "2025",
-    quarter: "Sep–Oct",
-    title: "Rapid Expansion",
+    quarter: "Oct–Dec",
+    title: "Rapid Expansion + Website Wave",
     description:
-      "Growing trust led to rapid expansion across multiple schools and organizations. We crossed 15 active clients and began building institutional websites alongside DRAIS.",
+      "Growing trust led to rapid expansion across multiple schools and organizations. Excel Islamic Schools, Al Hanan, and more adopted DRAIS. Six organizational websites were launched in this quarter.",
     events: [
       "Excel Islamic Schools adopted DRAIS",
-      "Al Hanan Education Center deployment",
-      "Multiple website projects commissioned",
-      "Jeton financial system development started",
+      "Al Hanan Education Center — DRAIS deployment",
+      "Seek and Give Charity — website launched",
+      "Unity Bridge Foundation — website launched",
+      "Al Muntahha Online School — website launched",
+      "Vision International Academy — website launched",
+      "Excel Islamic Secondary School — website launched",
+      "Walugogo Vocational Secondary School — website launched",
     ],
-    icon: <Building2 className="w-5 h-5" />,
+    icon: <Globe className="w-5 h-5" />,
     color: "#06b6d4",
   },
   {
-    year: "2025",
-    quarter: "Nov–Dec",
-    title: "Website Development Wave",
-    description:
-      "A surge in website development projects as organizations recognized the need for professional digital presence. Multiple institutional websites built and launched.",
-    events: [
-      "Seek and Give Charity Organization — website",
-      "Unity Bridge Foundation — website",
-      "Al Muntahha Online School — website",
-      "Vision International Academy — website",
-      "Excel Islamic Secondary School — website",
-      "Walugogo Vocational Secondary School — website",
-    ],
-    icon: <Globe className="w-5 h-5" />,
-    color: "#10b981",
-  },
-  {
     year: "2026",
-    quarter: "Jan–Feb",
-    title: "Major Installation Wave",
+    quarter: "Jan–Mar",
+    title: "Major Installation Wave — 31 Schools",
     description:
-      "A landmark period — Xhenvolt deployed multiple attendance monitoring systems and completed several website projects simultaneously, reaching 29 DRAIS clients.",
+      "A landmark quarter — Xhenvolt deployed multiple biometric attendance systems and completed several website projects simultaneously. Reached 31 schools running DRAIS across Uganda.",
     events: [
       "Ibun Baz Girls Secondary School — attendance system deployed",
       "Hill Side Ways Nursery and Primary School — attendance system deployed",
-      "Multiple website launches completed",
-      "29+ schools now running DRAIS",
+      "DRAIS analytics module enhanced",
+      "Parent notification system upgraded",
+      "New region coverage: Gulu, Mbale, Mbarara",
+      "31 schools now running DRAIS",
     ],
     icon: <Fingerprint className="w-5 h-5" />,
     color: "#f59e0b",
@@ -92,32 +79,15 @@ const milestones = [
   },
   {
     year: "2026",
-    quarter: "Mar",
-    title: "Expansion & System Upgrades",
+    quarter: "Apr — Today",
+    title: "37+ Organizations & Continuing Growth",
     description:
-      "March 2026 marks continued expansion with new school onboardings, biometric device upgrades, and key DRAIS feature rollouts including enhanced analytics and new reporting modules.",
-    events: [
-      "New school partnerships signed",
-      "Biometric device upgrades completed",
-      "DRAIS analytics module enhanced",
-      "Parent notification system upgraded",
-      "New region coverage: Gulu, Mbale, Mbarara",
-    ],
-    icon: <ArrowRight className="w-5 h-5" />,
-    color: "#8b5cf6",
-    highlight: true,
-  },
-  {
-    year: "2026",
-    quarter: "Present",
-    title: "37+ Organizations & Growing",
-    description:
-      "Today, Xhenvolt serves 37+ organizations — 29+ schools running DRAIS and 8+ organizations using other Xhenvolt solutions. The mission continues.",
+      "Xhenvolt now serves 37+ organizations across Uganda — 31 schools running DRAIS and 6+ organizations on other Xhenvolt solutions. Launched less than a year ago, the growth continues.",
     events: [
       "37+ total organizations served",
-      "29+ schools running DRAIS",
-      "8+ organizations using websites & other systems",
-      "Continuous feature development",
+      "31 schools running DRAIS",
+      "6+ organizations on websites & other systems",
+      "Continuous feature development & support",
     ],
     icon: <Users className="w-5 h-5" />,
     color: "#ef4444",
@@ -229,7 +199,7 @@ export default function OurJourney() {
             Building History, One Deployment at a Time
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            From our first prototype to 37+ organizations — a timeline of growth, trust, and real impact.
+            From our first client in June 2025 to 37+ organizations — a timeline of growth, trust, and real impact.
           </p>
         </motion.div>
 

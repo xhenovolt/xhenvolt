@@ -31,24 +31,24 @@ const values = [
 
 const milestones = [
 	{
-		year: "2023",
+		year: "Jun 2025",
 		title: "Company Founded",
-		description: "Xhenvolt was established with a vision to build real digital infrastructure for institutions. Our first DRAIS prototype was developed and initial school partnerships were formed."
+		description: "Xhenvolt was established in June 2025 with a vision to build real digital infrastructure for institutions. The first DRAIS prototype was developed and initial school partnerships formed."
 	},
 	{
-		year: "2024",
+		year: "Jul–Sep 2025",
 		title: "DRAIS Launch & Early Adoption",
 		description: "DRAIS was officially launched as our flagship school management system. Northgate Schools and Albayan Quran Memorization Center became early adopters, with biometric attendance integration completed."
 	},
 	{
-		year: "2024",
+		year: "Oct–Dec 2025",
 		title: "Rapid Expansion",
-		description: "Growing trust led to rapid expansion. Excel Islamic Schools, Al Hanan Education Center, and multiple other institutions adopted DRAIS. Website development projects began alongside school systems."
+		description: "Growing trust led to rapid expansion. Excel Islamic Schools, Al Hanan Education Center, and multiple other institutions adopted DRAIS. Website development projects began alongside school systems, with 6+ organizational websites launched."
 	},
 	{
-		year: "2025",
-		title: "Major Installation Wave",
-		description: "A landmark period — Xhenvolt deployed attendance monitoring systems at Ibun Baz Girls Secondary School and Hill Side Ways Nursery and Primary School. Multiple website projects were completed for organizations including Seek and Give, Unity Bridge, Vision International Academy, and more. Reached 37+ organizations served."
+		year: "Jan–Mar 2026",
+		title: "Major Installation Wave & 31 Schools",
+		description: "A landmark period — Xhenvolt deployed attendance monitoring systems at Ibun Baz Girls Secondary School and Hill Side Ways Nursery and Primary School. Multiple website projects completed. Now at 31 schools running DRAIS across Uganda."
 	}
 ];
 
@@ -70,7 +70,7 @@ export default function AboutClient() {
 							Pioneering Digital Transformation in East Africa
 						</h1>
 						<p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-							Since 2023, we&apos;ve been empowering organizations across East Africa with innovative technology solutions that drive growth, efficiency, and success.
+							Since June 2025, we&apos;ve been empowering organizations across East Africa with innovative technology solutions that drive growth, efficiency, and success.
 						</p>
 					</motion.div>
 				</div>

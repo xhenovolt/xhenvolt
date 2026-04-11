@@ -31,8 +31,8 @@ const products = [
 ];
 
 const stats = [
-  { value: "35+", label: "Institutions Served" },
-  { value: "2023", label: "Founded in Uganda" },
+  { value: "37+", label: "Institutions Served" },
+  { value: "June 2025", label: "Founded in Uganda" },
   { value: "5+", label: "Core Products" },
   { value: "100%", label: "Ugandan-Built Team" },
 ];
@@ -62,7 +62,7 @@ export default function TopTechCompanyClient() {
     },
     telephone: "+256741341483",
     email: "drais@xhenvolt.com",
-    foundingDate: "2023",
+    foundingDate: "2025-06",
     areaServed: {
       "@type": "Country",
       name: "Uganda",
@@ -100,9 +100,9 @@ export default function TopTechCompanyClient() {
                   <span className="text-blue-600">African Institutions</span>
                 </h1>
                 <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                  Founded in 2023, Xhenvolt Uganda is a technology company dedicated to solving real
+                  Founded in June 2025, Xhenvolt Uganda is a technology company dedicated to solving real
                   institutional problems — starting with Uganda&apos;s schools. Our flagship product
-                  DRAIS is used by 35+ Ugandan institutions to automate attendance and school management.
+                  DRAIS is used by 37+ Ugandan institutions to automate attendance and school management.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link

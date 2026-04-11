@@ -44,7 +44,7 @@ For DRAIS deployments in Uganda, setup is completed in a single day. Fingerprint
     },
     {
       heading: "Results from Ugandan Schools Using DRAIS",
-      content: `Since 2023, DRAIS has been deployed in over 37 schools across Uganda, including Excel Islamic Schools (Kampala), Northgate Schools, Hill Side Ways Nursery and Primary School, and Al Hanan Education Center.
+      content: `Since June 2025, DRAIS has been deployed in over 31 schools across Uganda, including Excel Islamic Schools (Kampala), Northgate Schools, Hill Side Ways Nursery and Primary School, and Al Hanan Education Center.
 
 Quantified outcomes reported by administrators:
 

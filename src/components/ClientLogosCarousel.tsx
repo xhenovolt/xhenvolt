@@ -119,7 +119,7 @@ export default function ClientLogosCarousel() {
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <div className="flex items-center gap-2 px-5 py-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-full border border-blue-100 dark:border-blue-800">
               <School className="w-4 h-4 text-blue-600" />
-              <span className="text-sm font-bold text-blue-700 dark:text-blue-300">29+ Schools on DRAIS</span>
+              <span className="text-sm font-bold text-blue-700 dark:text-blue-300">31 Schools on DRAIS</span>
             </div>
             <div className="flex items-center gap-2 px-5 py-2.5 bg-purple-50 dark:bg-purple-900/30 rounded-full border border-purple-100 dark:border-purple-800">
               <Building2 className="w-4 h-4 text-purple-600" />

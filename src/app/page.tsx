@@ -122,8 +122,8 @@ const testimonials = [
     category: "drais",
   },
   {
-    name: "Sheikh Faisal Naminya",
-    position: "Founder",
+    name: "Sheikh Naminya Faisal",
+    position: "Director",
     institution: "Al Hanan Education Center",
     quote:
       "DRAIS gave us visibility into our school operations that we never had before. From daily attendance to term-end analytics — everything is right on the dashboard. It has become the backbone of our school management.",
@@ -150,11 +150,20 @@ const testimonials = [
   },
   // ── Website Development Testimonials ──
   {
-    name: "Wasukulu Shafik",
-    position: "Leader",
+    name: "Sheikh Naminya Faisal",
+    position: "Director",
+    institution: "Al Hanan Education Center",
+    quote:
+      "Xhenvolt built us a website that truly reflects who we are as an institution. Our parents and students can now find everything they need online — program details, contacts, announcements. It gave us a professional presence we never had before. Highly recommended.",
+    logo: null,
+    category: "website",
+  },
+  {
+    name: "Wasukulu Ali Shafik",
+    position: "Director",
     institution: "Seek and Give Charity Organization",
     quote:
-      "Xhenvolt didn't just build us a website — they built a professional platform that helps us connect with donors, showcase our programs, and build credibility. The quality exceeded our expectations.",
+      "Xhenvolt didn't just build us a website — they built a professional platform that helps us connect with donors, showcase our programs, and build credibility. The quality exceeded our expectations. Our visibility has increased significantly.",
     logo: null,
     category: "website",
   },
@@ -178,10 +187,10 @@ const testimonials = [
   },
   {
     name: "Okurut Sylver",
-    position: "Leader",
+    position: "Headteacher",
     institution: "Vision International Academy",
     quote:
-      "The website Xhenvolt built for our academy is stunning. It's mobile-friendly, loads fast, and gives parents 24/7 access to school information. It has elevated our institution's image significantly.",
+      "The website Xhenvolt built for our academy is outstanding. It's mobile-friendly, loads fast, and gives parents 24/7 access to school information. We've seen more parent engagement and inquiries since it launched. It has elevated our institution's image significantly.",
     logo: null,
     category: "website",
   },
@@ -250,7 +259,7 @@ const organizations = [
   },
   {
     name: "Al Hanan Education Center",
-    contact: "Sheikh Faisal Naminya",
+    contact: "Sheikh Naminya Faisal",
     role: "Founder",
     logo: null,
     system: "DRAIS",
@@ -264,7 +273,7 @@ const organizations = [
   },
   {
     name: "Seek and Give Charity Organization",
-    contact: "Wasukulu Shafik",
+    contact: "Wasukulu Ali Shafik",
     role: "Leader",
     logo: null,
     system: "Website",
@@ -330,7 +339,7 @@ const trustPillars = [
 ];
 
 const trustMetrics = [
-  { value: "29+", label: "Schools Running DRAIS", icon: <School className="w-8 h-8" /> },
+  { value: "31", label: "Schools Running DRAIS", icon: <School className="w-8 h-8" /> },
   { value: "37+", label: "Organizations Served", icon: <Building2 className="w-8 h-8" /> },
   { value: "37+", label: "Systems Deployed", icon: <Monitor className="w-8 h-8" /> },
   { value: "99.9%", label: "System Uptime", icon: <TrendingUp className="w-8 h-8" /> },
@@ -707,7 +716,7 @@ export default function HomePage() {
             {[
               { step: "PROBLEM", color: "from-red-500 to-orange-500", bg: "bg-red-50 dark:bg-red-900/20", border: "border-red-100 dark:border-red-800/30", icon: "⚠️", title: "Manual Systems Fail", desc: "Missing registers, proxy attendance, and inaccurate records undermine your school's operations and credibility." },
               { step: "SOLUTION", color: "from-blue-500 to-purple-600", bg: "bg-blue-50 dark:bg-blue-900/20", border: "border-blue-100 dark:border-blue-800/30", icon: "🎯", title: "DRAIS Automates Everything", desc: "Biometric attendance, automated reports, parent alerts, and real-time dashboards — all in one school management system." },
-              { step: "PROOF", color: "from-green-500 to-emerald-500", bg: "bg-green-50 dark:bg-green-900/20", border: "border-green-100 dark:border-green-800/30", icon: "✅", title: "29+ Schools Trust DRAIS", desc: "Northgate, Excel Islamic, Albayan, Ibun Baz, and 25+ more institutions run on DRAIS daily across Uganda." },
+              { step: "PROOF", color: "from-green-500 to-emerald-500", bg: "bg-green-50 dark:bg-green-900/20", border: "border-green-100 dark:border-green-800/30", icon: "✅", title: "31 Schools Trust DRAIS", desc: "Northgate, Excel Islamic, Albayan, Ibun Baz, and 27+ more institutions run on DRAIS daily across Uganda." },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -792,7 +801,7 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="flex-shrink-0 grid grid-cols-2 gap-3 min-w-[240px]">
-                {[{ v: "29+", l: "Schools" }, { v: "96%", l: "Accuracy" }, { v: "Days", l: "To Deploy" }, { v: "99.9%", l: "Uptime" }].map((s, i) => (
+                {[{ v: "31", l: "Schools" }, { v: "96%", l: "Accuracy" }, { v: "Days", l: "To Deploy" }, { v: "99.9%", l: "Uptime" }].map((s, i) => (
                   <div key={i} className="bg-white/15 backdrop-blur rounded-2xl p-4 text-center">
                     <div className="text-2xl font-extrabold">{s.v}</div>
                     <div className="text-xs text-white/70 mt-1">{s.l}</div>
@@ -1064,7 +1073,7 @@ export default function HomePage() {
             <div className="flex flex-wrap justify-center gap-6 mt-8">
               <div className="flex items-center gap-2 px-5 py-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-full">
                 <School className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span className="text-sm font-bold text-blue-700 dark:text-blue-300">29+ Schools Using DRAIS</span>
+                <span className="text-sm font-bold text-blue-700 dark:text-blue-300">31 Schools Using DRAIS</span>
               </div>
               <div className="flex items-center gap-2 px-5 py-2.5 bg-purple-50 dark:bg-purple-900/30 rounded-full">
                 <Globe className="w-4 h-4 text-purple-600 dark:text-purple-400" />

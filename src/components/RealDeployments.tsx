@@ -69,7 +69,7 @@ const deployments = [
   },
   {
     institution: "Seek and Give Charity Organization",
-    person: "Wasukulu Shafik",
+    person: "Wasukulu Ali Shafik",
     role: "Leader",
     system: "Institutional Website",
     type: "website",
