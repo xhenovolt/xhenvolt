@@ -209,7 +209,7 @@ export default function BlogArticleClient({ article }: { article: Article }) {
               Transform Attendance at Your School
             </h2>
             <p className="text-blue-100 mb-6">
-              DRAIS is already live in 35+ Ugandan schools. Join them.
+              DRAIS is already live in 31+ Ugandan schools. Join them.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a

@@ -280,7 +280,7 @@ export default function SchoolAttendanceUgandaClient() {
                 </div>
                 <div className="flex flex-wrap gap-6 mt-8">
                   {[
-                    "35+ Schools Using DRAIS",
+                    "31+ Schools Using DRAIS",
                     "100% Accurate Records",
                     "Works Offline",
                     "SMS Parent Alerts",

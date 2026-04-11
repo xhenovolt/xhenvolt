@@ -4,7 +4,7 @@ import SchoolManagementClient from "./SchoolManagementClient";
 export const metadata: Metadata = {
   title: "School Management System Uganda | DRAIS – Complete School ERP",
   description:
-    "Uganda's best school management system. DRAIS handles attendance, student records, fees, reports, and parent communication. Trusted by 35+ institutions. Free demo for Ugandan schools.",
+    "Uganda's best school management system. DRAIS handles attendance, student records, fees, reports, and parent communication. Trusted by 37+ institutions. Free demo for Ugandan schools.",
   keywords: [
     "school management system Uganda",
     "school ERP Uganda",

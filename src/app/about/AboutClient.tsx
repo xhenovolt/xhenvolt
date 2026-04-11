@@ -124,7 +124,7 @@ export default function AboutClient() {
 							</div>
 							<h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Impact</h3>
 							<p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-								In our journey so far, we&apos;ve delivered 35+ successful projects, serving 35 satisfied clients across education and organizational sectors throughout East Africa.
+								In our journey so far, we&apos;ve delivered 37+ successful projects, serving 37+ organizations across education and organizational sectors throughout East Africa.
 							</p>
 						</motion.div>
 					</div>

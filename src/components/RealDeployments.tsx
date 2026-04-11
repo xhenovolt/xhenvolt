@@ -220,7 +220,7 @@ export default function RealDeployments() {
   const filtered = filter === "all" ? deployments : deployments.filter(d => d.type === filter);
 
   const stats = [
-    { value: 35, suffix: "", label: "Organizations Served", icon: <Building2 className="w-7 h-7" /> },
+    { value: 37, suffix: "", label: "Organizations Served", icon: <Building2 className="w-7 h-7" /> },
     { value: 29, suffix: "", label: "Schools Running DRAIS", icon: <School className="w-7 h-7" /> },
     { value: 6, suffix: "", label: "Website & Other Solutions", icon: <Globe className="w-7 h-7" /> },
     { value: 99, suffix: ".9%", label: "System Uptime", icon: <Monitor className="w-7 h-7" /> },

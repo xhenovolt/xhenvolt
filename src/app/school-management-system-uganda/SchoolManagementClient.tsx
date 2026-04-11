@@ -198,7 +198,7 @@ export default function SchoolManagementClient() {
                 </a>
               </div>
               <div className="flex flex-wrap justify-center gap-6 mt-8">
-                {["35+ Schools Using DRAIS", "Uganda Curriculum Support", "Multi-School Ready", "Works Offline"].map((b) => (
+                {["31+ Schools Using DRAIS", "Uganda Curriculum Support", "Multi-School Ready", "Works Offline"].map((b) => (
                   <div key={b} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <CheckCircle className="w-4 h-4 text-green-500" />
                     {b}

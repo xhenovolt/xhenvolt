@@ -9,7 +9,7 @@ import Footer from "../../components/Footer";
 const products = [
   {
     name: "DRAIS — School Management System",
-    desc: "Uganda's #1 biometric attendance and school operating system. Trusted by 35+ institutions.",
+    desc: "Uganda's #1 biometric attendance and school operating system. Trusted by 37+ institutions.",
     link: "/drais-attendance-system",
     linkText: "Learn About DRAIS",
     badge: "Flagship Product",

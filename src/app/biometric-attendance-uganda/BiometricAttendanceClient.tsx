@@ -305,7 +305,7 @@ export default function BiometricAttendanceClient() {
                 </footer>
               </blockquote>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-                This is not an isolated experience. Across all 35+ schools using DRAIS, the two most
+                This is not an isolated experience. Across all 31+ schools using DRAIS, the two most
                 consistent benefits reported are: (1) immediate reduction in time spent on
                 administration, and (2) dramatically improved parent confidence in the school.
               </p>

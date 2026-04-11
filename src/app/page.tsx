@@ -69,7 +69,7 @@ const testimonials = [
   {
     name: "Sheikh Isabirye Bilaal",
     position: "School Director",
-    institution: "Islamic Education Institute",
+    institution: "City Parents School",
     quote:
       "Before Xhenvolt, tracking the whereabouts of both learners and staff was a constant struggle. Our manual systems failed to provide the level of control and visibility we needed. Since implementing Xhenvolt, we now have precise, real-time tracking that has completely transformed our operations. It solved a problem we had struggled with for years.",
     logo: null,
@@ -1048,7 +1048,7 @@ export default function HomePage() {
               <div className="text-left">
                 <div className="text-lg font-bold text-white">Sheikh Isabirye Bilaal</div>
                 <div className="text-blue-300 text-sm font-medium">School Director</div>
-                <div className="text-white/50 text-xs mt-0.5">Islamic Education Institute</div>
+                <div className="text-white/50 text-xs mt-0.5">City Parents School</div>
               </div>
             </div>
             <div className="flex justify-center gap-1 mt-6">

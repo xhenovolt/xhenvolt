@@ -4,7 +4,7 @@ import BiometricAttendanceClient from "./BiometricAttendanceClient";
 export const metadata: Metadata = {
   title: "Biometric Attendance System Uganda | Fingerprint School Tracking",
   description:
-    "Install biometric fingerprint attendance in your Ugandan school. DRAIS connects fingerprint scanners to a live dashboard. Works offline. Trusted by 35+ schools. Free demo available.",
+    "Install biometric fingerprint attendance in your Ugandan school. DRAIS connects fingerprint scanners to a live dashboard. Works offline. Trusted by 31+ schools. Free demo available.",
   keywords: [
     "biometric attendance system Uganda",
     "fingerprint attendance Uganda",

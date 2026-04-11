@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Xhenvolt Uganda | Top Tech Company – School Management & Attendance Systems",
     description:
-      "Uganda's leading school management & biometric attendance system. DRAIS is trusted by 35+ institutions. Request your free demo.",
+      "Uganda's leading school management & biometric attendance system. DRAIS is trusted by 37+ institutions. Request your free demo.",
     type: "website",
     locale: "en_UG",
     alternateLocale: "en_US",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Xhenvolt Uganda | School Attendance & Management System",
     description:
-      "Uganda's #1 school management & biometric attendance system. Trusted by 35+ institutions.",
+      "Uganda's #1 school management & biometric attendance system. Trusted by 37+ institutions.",
     images: ["/og-image.png"],
   },
   alternates: {

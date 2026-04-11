@@ -5,7 +5,7 @@ import SchoolAttendanceUgandaClient from "./SchoolAttendanceUgandaClient";
 export const metadata: Metadata = {
   title: "School Attendance System Uganda | DRAIS by Xhenvolt",
   description:
-    "The best school attendance system in Uganda. DRAIS tracks student attendance automatically with biometric devices, SMS alerts, and real-time reports. Trusted by 35+ Ugandan schools.",
+    "The best school attendance system in Uganda. DRAIS tracks student attendance automatically with biometric devices, SMS alerts, and real-time reports. Trusted by 31+ Ugandan schools.",
   keywords: [
     "school attendance system Uganda",
     "attendance tracking Uganda schools",
