@@ -25,6 +25,7 @@ import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import DraisMicroDemo from "../components/DraisMicroDemo";
+import SystemsShowcase from "../components/SystemsShowcase";
 import MiniProductTour from "../components/MiniProductTour";
 import ClientLogosCarousel from "../components/ClientLogosCarousel";
 import InteractiveProductStory from "../components/InteractiveProductStory";
@@ -91,7 +92,7 @@ const testimonials = [
     institution: "Northgate Schools",
     quote:
       "We needed a fully customizable academic reporting system that matched our curriculum perfectly. DRAIS delivered exactly that — and more. Our operations have never been smoother, and the reporting capabilities are truly world-class.",
-    logo: "northgateschool.png",
+    logo: "northgateschool-Photoroom.png",
     category: "drais",
   },
   {
@@ -100,7 +101,7 @@ const testimonials = [
     institution: "Albayan Quran Memorization Center",
     quote:
       "Our programs are structured specifically for Quran memorization — completely different from standard schools. DRAIS was customized perfectly to fit our unique educational model and tracking needs. No other system could have done this.",
-    logo: "albayan.png",
+    logo: "albayan-Photoroom.png",
     category: "drais",
   },
   {
@@ -109,7 +110,7 @@ const testimonials = [
     institution: "Ibun Baz Girls Secondary School",
     quote:
       "The full attendance system deployment at Ibun Baz has transformed how we monitor student presence. The biometric devices work flawlessly, and we get real-time data that helps us make informed decisions about student welfare.",
-    logo: null,
+    logo: "ibunbaz-photoroom.png",
     category: "drais",
   },
   {
@@ -219,63 +220,70 @@ const organizations = [
     name: "Northgate Schools",
     contact: "Ngobi Peter",
     role: "General Director",
-    logo: "northgateschool.png",
+    logo: "northgateschool-Photoroom.png",
     system: "DRAIS",
   },
   {
     name: "Albayan Quran Memorization Center",
     contact: "Wagogo Husama",
     role: "Headteacher",
-    logo: "albayan.png",
+    logo: "albayan-Photoroom.png",
     system: "DRAIS",
   },
   {
     name: "Excel Islamic Schools",
     contact: "Sheikh Hassan Mwaita",
     role: "Director",
-    logo: null,
+    logo: "exlel.png",
     system: "DRAIS",
   },
   {
     name: "Ibun Baz Girls Secondary School",
     contact: "Sheikh Hassan Mwaita",
     role: "Principal",
-    logo: null,
+    logo: "ibunbaz-photoroom.png",
     system: "DRAIS",
   },
   {
     name: "Hill Side Ways Nursery and Primary School",
     contact: "Mwondha Hassan",
     role: "Director",
-    logo: null,
+    logo: "Hillsideways badge-Photoroom.png",
     system: "DRAIS",
   },
   {
     name: "Vision International Academy",
     contact: "Okurut Sylver",
     role: "Head Teacher",
-    logo: null,
+    logo: "vision-international.svg",
     system: "DRAIS",
   },
   {
     name: "Al Hanan Education Center",
     contact: "Sheikh Naminya Faisal",
-    role: "Founder",
-    logo: null,
+    role: "Director",
+    logo: "al-hanan.svg",
+    system: "DRAIS",
+  },
+  {
+    name: "City Parents School",
+    contact: null,
+    role: null,
+    logo: "city Parents-Photoroom.png",
     system: "DRAIS",
   },
   {
     name: "Walugogo Vocational Secondary School",
     contact: "Hon. Rachel Magoola",
     role: "Board Chair",
-    logo: null,
+    logo: "Walugogologo-Photoroom.png",
     system: "Website",
   },
   {
     name: "Seek and Give Charity Organization",
     contact: "Wasukulu Ali Shafik",
-    role: "Leader",
-    logo: null,
+    role: "Director",
+    logo: "seek_and_give.svg",
     system: "Website",
   },
   {
@@ -289,14 +297,14 @@ const organizations = [
     name: "Al Muntahha Online School",
     contact: "Abdul Fattaha Makubugu",
     role: "Founder",
-    logo: null,
+    logo: "almuntahha.svg",
     system: "Website",
   },
   {
     name: "Bugembe Islamic Institute",
     contact: null,
     role: null,
-    logo: "Bugembe.jpeg",
+    logo: "Bugembe-Photoroom.png",
     system: "DRAIS",
   },
 ];
@@ -375,7 +383,7 @@ function ClientLogo({ name, filename, size = 56 }) {
       setHasImage(false);
       setChecked(true);
     };
-    img.src = `/clients_logos/${filename}`;
+    img.src = `/client_logos/${filename}`;
   }, [filename]);
 
   if (!checked)
@@ -389,7 +397,7 @@ function ClientLogo({ name, filename, size = 56 }) {
   if (hasImage && filename) {
     return (
       <Image
-        src={`/clients_logos/${filename}`}
+        src={`/client_logos/${filename}`}
         alt={name}
         width={size}
         height={size}
@@ -716,7 +724,7 @@ export default function HomePage() {
             {[
               { step: "PROBLEM", color: "from-red-500 to-orange-500", bg: "bg-red-50 dark:bg-red-900/20", border: "border-red-100 dark:border-red-800/30", icon: "⚠️", title: "Manual Systems Fail", desc: "Missing registers, proxy attendance, and inaccurate records undermine your school's operations and credibility." },
               { step: "SOLUTION", color: "from-blue-500 to-purple-600", bg: "bg-blue-50 dark:bg-blue-900/20", border: "border-blue-100 dark:border-blue-800/30", icon: "🎯", title: "DRAIS Automates Everything", desc: "Biometric attendance, automated reports, parent alerts, and real-time dashboards — all in one school management system." },
-              { step: "PROOF", color: "from-green-500 to-emerald-500", bg: "bg-green-50 dark:bg-green-900/20", border: "border-green-100 dark:border-green-800/30", icon: "✅", title: "31 Schools Trust DRAIS", desc: "Northgate, Excel Islamic, Albayan, Ibun Baz, and 27+ more institutions run on DRAIS daily across Uganda." },
+              { step: "PROOF", color: "from-green-500 to-emerald-500", bg: "bg-green-50 dark:bg-green-900/20", border: "border-green-100 dark:border-green-800/30", icon: "✅", title: "31 Schools Trust DRAIS", desc: "Northgate, Albayan, City Parents, Ibun Baz, Hillside Ways, and 26+ more institutions run on DRAIS daily across Uganda." },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -1001,6 +1009,9 @@ export default function HomePage() {
       <div id="drais-demo">
         <DraisMicroDemo />
       </div>
+
+      {/* ═══════ SECTION 3c — SYSTEMS SCREENSHOT SHOWCASE ═══════ */}
+      <SystemsShowcase />
 
       {/* ═══════ SECTION 4 — FEATURED TESTIMONIAL ═══════ */}
       <section className="py-20 bg-gradient-to-b from-slate-900 to-blue-950 text-white relative overflow-hidden">

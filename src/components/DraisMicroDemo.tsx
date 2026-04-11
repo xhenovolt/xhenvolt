@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   Fingerprint,
   BarChart3,
@@ -23,6 +24,8 @@ const slides = [
     subtitle: "Real-time biometric tracking across all campuses",
     icon: <Fingerprint className="w-6 h-6" />,
     color: "#3b82f6",
+    screenshot: "/systems/screenshots/drais-dark-attendance.png",
+    screenshotAlt: "DRAIS attendance dashboard showing real-time biometric data",
   },
   {
     id: "biometric",
@@ -30,6 +33,8 @@ const slides = [
     subtitle: "Fingerprint & face recognition for students and staff",
     icon: <Users className="w-6 h-6" />,
     color: "#8b5cf6",
+    screenshot: "/systems/screenshots/drais-dark-dashboard.png",
+    screenshotAlt: "DRAIS biometric system dashboard overview",
   },
   {
     id: "reporting",
@@ -37,6 +42,8 @@ const slides = [
     subtitle: "Generate term reports, transcripts, and analytics instantly",
     icon: <FileText className="w-6 h-6" />,
     color: "#06b6d4",
+    screenshot: "/systems/screenshots/drais-dashboard-with-popup-light.png",
+    screenshotAlt: "DRAIS automated reporting and transcript generation",
   },
   {
     id: "multischool",
@@ -44,6 +51,8 @@ const slides = [
     subtitle: "Manage multiple campuses from a single admin panel",
     icon: <Building2 className="w-6 h-6" />,
     color: "#10b981",
+    screenshot: "/systems/screenshots/drais-dark-dashboard-with-popup.png",
+    screenshotAlt: "DRAIS multi-school management dashboard with campus overview",
   },
   {
     id: "analytics",
@@ -51,6 +60,8 @@ const slides = [
     subtitle: "Performance insights, trends, and data-driven decisions",
     icon: <TrendingUp className="w-6 h-6" />,
     color: "#f59e0b",
+    screenshot: "/systems/screenshots/drais-light-attendance.png",
+    screenshotAlt: "DRAIS school analytics and performance dashboard",
   },
 ];
 
@@ -330,7 +341,6 @@ export default function DraisMicroDemo() {
   }, [paused, next]);
 
   const slide = slides[current];
-  const MockupComponent = mockups[slide.id];
 
   return (
     <section className="py-24">
@@ -423,9 +433,9 @@ export default function DraisMicroDemo() {
               </div>
             </div>
 
-            {/* Mockup content */}
+            {/* Screenshot panel */}
             <div
-              className="px-6 py-6 min-h-[320px]"
+              className="relative overflow-hidden min-h-[320px] bg-gray-950"
               onMouseEnter={() => setHoveredSlide(true)}
               onMouseLeave={() => setHoveredSlide(false)}
             >
@@ -436,8 +446,16 @@ export default function DraisMicroDemo() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -40 }}
                   transition={{ duration: 0.35 }}
+                  className="w-full"
                 >
-                  <MockupComponent hovered={hoveredSlide} />
+                  <Image
+                    src={slide.screenshot}
+                    alt={slide.screenshotAlt}
+                    width={900}
+                    height={560}
+                    className="w-full object-cover"
+                    priority={current === 0}
+                  />
                 </motion.div>
               </AnimatePresence>
             </div>

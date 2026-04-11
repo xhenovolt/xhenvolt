@@ -5,20 +5,21 @@ import Image from "next/image";
 import { School, Building2, Award } from "lucide-react";
 
 const allClients = [
-  { name: "Northgate Schools", logo: "northgateschool.png", badge: false },
-  { name: "Albayan Quran Memorization Center", logo: "albayan.png", badge: false },
-  { name: "Bugembe Islamic Institute", logo: "Bugembe.jpeg", badge: false },
-  { name: "Bumwena Scrap SACCO", logo: "bumwenascrap.jpeg", badge: false },
-  { name: "Excel Islamic Schools", logo: null, badge: false },
-  { name: "Ibun Baz Girls Secondary School", logo: null, badge: false },
-  { name: "Hill Side Ways Nursery and Primary School", logo: null, badge: false },
-  { name: "Vision International Academy", logo: null, badge: false },
-  { name: "Walugogo Vocational Secondary School", logo: null, badge: false },
-  { name: "Al Hanan Education Center", logo: null, badge: false },
-  { name: "Al Muntahha Online School", logo: null, badge: false },
-  { name: "Seek and Give Charity Organization", logo: null, badge: false },
+  { name: "Northgate Schools", logo: "northgateschool-Photoroom.png", badge: false },
+  { name: "Albayan Quran Memorization Center", logo: "albayan-Photoroom.png", badge: false },
+  { name: "Bugembe Islamic Institute", logo: "Bugembe-Photoroom.png", badge: false },
+  { name: "Bumwena Scrap SACCO", logo: "bumwenascrap-Photoroom.png", badge: false },
+  { name: "Excel Islamic Schools", logo: "exlel.png", badge: false },
+  { name: "Ibun Baz Girls Secondary School", logo: "ibunbaz-photoroom.png", badge: false },
+  { name: "Hill Side Ways Nursery and Primary School", logo: "Hillsideways badge-Photoroom.png", badge: false },
+  { name: "Vision International Academy", logo: "vision-international.svg", badge: false },
+  { name: "Walugogo Vocational Secondary School", logo: "Walugogologo-Photoroom.png", badge: false },
+  { name: "Al Hanan Education Center", logo: "al-hanan.svg", badge: false },
+  { name: "Al Muntahha Online School", logo: "almuntahha.svg", badge: false },
+  { name: "Seek and Give Charity Organization", logo: "seek_and_give.svg", badge: false },
   { name: "Unity Bridge Foundation", logo: null, badge: false },
-  { name: "Excel Islamic Secondary School", logo: null, badge: false },
+  { name: "Excel Islamic Secondary School", logo: "exlel.png", badge: false },
+  { name: "City Parents School", logo: "city Parents-Photoroom.png", badge: true },
 ];
 
 function getInitials(name: string) {
@@ -79,13 +80,13 @@ function ClientLogoImage({ client, size = 64 }: { client: (typeof allClients)[0]
     const img = new window.Image();
     img.onload = () => { setOk(true); setChecked(true); };
     img.onerror = () => { setOk(false); setChecked(true); };
-    img.src = `/clients_logos/${client.logo}`;
+    img.src = `/client_logos/${client.logo}`;
   }, [client.logo]);
 
   if (!checked) return <div style={{ width: size, height: size }} className="rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />;
   if (ok && client.logo) return (
     <Image
-      src={`/clients_logos/${client.logo}`}
+      src={`/client_logos/${client.logo}`}
       alt={client.name}
       width={size}
       height={size}

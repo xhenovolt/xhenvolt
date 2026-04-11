@@ -24,7 +24,7 @@ const deployments = [
     system: "Attendance Monitoring System",
     type: "drais",
     impact: "100% accurate biometric attendance with real-time parent notifications. Complete elimination of proxy attendance.",
-    logo: null,
+    logo: "ibunbaz-photoroom.png",
     region: "Uganda",
   },
   {
@@ -34,7 +34,7 @@ const deployments = [
     system: "Attendance Tracking System",
     type: "drais",
     impact: "Automated attendance monitoring deployed across the entire school, providing administrators real-time visibility into learner and staff presence.",
-    logo: null,
+    logo: "Hillsideways badge-Photoroom.png",
     region: "Uganda",
   },
   {
@@ -44,7 +44,7 @@ const deployments = [
     system: "Customized Program-Based Management",
     type: "drais",
     impact: "Fully customized system tailored for Quran memorization programs. Unique tracking and reporting for specialized education.",
-    logo: "albayan.png",
+    logo: "albayan-Photoroom.png",
     region: "Uganda",
   },
   {
@@ -54,7 +54,7 @@ const deployments = [
     system: "Advanced Academic Reporting System",
     type: "drais",
     impact: "Highly customizable report system matching their specific curriculum. Streamlined operations across all departments.",
-    logo: "northgateschool.png",
+    logo: "northgateschool-Photoroom.png",
     region: "Uganda",
   },
   {
@@ -64,17 +64,17 @@ const deployments = [
     system: "School Management & Attendance",
     type: "drais",
     impact: "Comprehensive school management system with biometric integration. Automated record-keeping and parent communication.",
-    logo: null,
+    logo: "exlel.png",
     region: "Uganda",
   },
   {
     institution: "Seek and Give Charity Organization",
     person: "Wasukulu Ali Shafik",
-    role: "Leader",
+    role: "Director",
     system: "Institutional Website",
     type: "website",
     impact: "Professional web presence enabling donor engagement, program tracking, and organizational credibility online.",
-    logo: null,
+    logo: "seek_and_give.svg",
     region: "Uganda",
   },
   {
@@ -94,7 +94,7 @@ const deployments = [
     system: "Institutional Website",
     type: "website",
     impact: "Professional website serving as a 24/7 information hub for parents, students, and potential enrollees.",
-    logo: null,
+    logo: "vision-international.svg",
     region: "Uganda",
   },
 ];
@@ -192,13 +192,13 @@ function DeploymentLogo({ institution, logo }) {
     const img = new window.Image();
     img.onload = () => { setOk(true); setChecked(true); };
     img.onerror = () => { setChecked(true); };
-    img.src = `/clients_logos/${logo}`;
+    img.src = `/client_logos/${logo}`;
   }, [logo]);
 
   if (!checked) return <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />;
   
   if (ok && logo) {
-    return <Image src={`/clients_logos/${logo}`} alt={institution} width={48} height={48} className="rounded-xl object-cover" />;
+    return <Image src={`/client_logos/${logo}`} alt={institution} width={48} height={48} className="rounded-xl object-cover" />;
   }
 
   const initials = institution.split(" ").filter(w => w.length > 2).map(w => w[0]).join("").toUpperCase().slice(0, 2);
