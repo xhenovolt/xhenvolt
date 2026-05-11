@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx drizzle-kit *)",
+      "Bash(npx tsx *)",
+      "Bash(getent hosts *)",
+      "Bash(timeout 8 bash -c \"</dev/tcp/ep-aged-sound-aikn69qe-pooler.c-4.us-east-1.aws.neon.tech/5432\")",
+      "Bash(timeout 8 bash -c \"</dev/tcp/ep-aged-sound-aikn69qe-pooler.c-4.us-east-1.aws.neon.tech/443\")",
+      "Bash(curl -sS -o /dev/null -w \"https=%{http_code}\\\\n\" -m 8 https://ep-aged-sound-aikn69qe-pooler.c-4.us-east-1.aws.neon.tech/)",
+      "Bash(command -v psql)",
+      "Bash(PGCONNECT_TIMEOUT=15 psql \"postgresql://neondb_owner:npg_PhV1plrb7BwI@ep-aged-sound-aikn69qe-pooler.c-4.us-east-1.aws.neon.tech/xhenvolt_website?sslmode=require\" -c \"select version\\(\\);\")",
+      "Bash(curl -4 -sS -o /dev/null -w \"ipv4 https=%{http_code}\\\\n\" -m 15 https://ep-aged-sound-aikn69qe-pooler.c-4.us-east-1.aws.neon.tech/sql)",
+      "Bash(curl -4 -sS -m 15 -X POST https://ep-aged-sound-aikn69qe-pooler.c-4.us-east-1.aws.neon.tech/sql -H \"Content-Type: application/json\" -d '{\"query\":\"select 1\"}')",
+      "Bash(NODE_OPTIONS='--dns-result-order=ipv4first' npx tsx scripts/migrate.ts)",
+      "Bash(npx tsc *)",
+      "Bash(grep -E \"\\\\.\\(png|jpg|jpeg|svg\\)$\")",
+      "Bash(sed -n '548,555p' /home/xhenvolt/development/xhenvolt/src/app/page.tsx)",
+      "Bash(sed -n '1366,1370p' /home/xhenvolt/development/xhenvolt/src/app/page.tsx)",
+      "Bash(npm run *)",
+      "Bash(git check-ignore *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
