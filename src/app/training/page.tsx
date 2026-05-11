@@ -14,8 +14,6 @@ import {
   MessageCircle,
   Sparkles,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 /* ─── Training Journey Diagram ─── */
 function TrainingJourneyDiagram() {
@@ -97,7 +95,6 @@ const trainingFeatures = [
 export default function TrainingPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
-      <Navbar />
 
       {/* Hero */}
       <section className="pt-32 pb-20 bg-gradient-to-br from-amber-500 via-orange-600 to-amber-700 text-white relative overflow-hidden">
@@ -212,7 +209,6 @@ export default function TrainingPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

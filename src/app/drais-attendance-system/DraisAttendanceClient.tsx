@@ -7,8 +7,6 @@ import {
   School, Phone, ArrowRight, CheckCircle, Star, Globe,
   ChevronDown, ChevronUp, Play, Shield, Zap,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const testimonials = [
   {
@@ -143,7 +141,6 @@ export default function DraisAttendanceClient() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-        <Navbar />
 
         {/* Hero */}
         <section className="pt-28 pb-20 px-6">
@@ -371,7 +368,6 @@ export default function DraisAttendanceClient() {
           </div>
         </section>
 
-        <Footer />
       </main>
     </>
   );

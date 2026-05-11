@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 import { motion } from "framer-motion";
 import { Clock, ArrowRight } from "lucide-react";
 
@@ -115,7 +113,6 @@ export default function BlogPage() {
 
   return (
     <main className="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 text-gray-900 dark:text-gray-100 min-h-screen font-sans">
-      <Navbar />
       <div className="pt-24 md:pt-32 max-w-6xl mx-auto px-6">
         <section className="text-center mb-14">
           <motion.span
@@ -221,7 +218,6 @@ export default function BlogPage() {
           </Link>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }

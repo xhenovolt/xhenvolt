@@ -13,8 +13,6 @@ import {
   AlertTriangle,
   Wifi,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 /* ─── Device Flow Diagram ─── */
 function DeviceFlowDiagram() {
@@ -98,7 +96,6 @@ const integrationFeatures = [
 export default function DeviceIntegrationPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
-      <Navbar />
 
       {/* Hero */}
       <section className="pt-32 pb-20 bg-gradient-to-br from-purple-600 via-purple-700 to-pink-700 text-white relative overflow-hidden">
@@ -204,7 +201,6 @@ export default function DeviceIntegrationPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

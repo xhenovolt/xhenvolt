@@ -13,8 +13,6 @@ import {
   UserCheck,
   ServerCrash,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 /* ─── Security Layers Diagram ─── */
 function SecurityLayersDiagram() {
@@ -78,7 +76,6 @@ const securityLayers = [
 export default function SecurityPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
-      <Navbar />
 
       {/* Hero */}
       <section className="pt-32 pb-20 bg-gradient-to-br from-emerald-600 via-teal-700 to-green-800 text-white relative overflow-hidden">
@@ -180,7 +177,6 @@ export default function SecurityPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

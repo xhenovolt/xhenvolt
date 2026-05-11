@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { headers } from "next/headers";
 import "./globals.css";
 import IntelligentChatbot from "../components/IntelligentChatbot";
 import WhatsAppCTA from "../components/WhatsAppCTA";
+import WhatsAppCTAServer from "../components/WhatsAppCTAServer";
+import NavbarServer from "../components/NavbarServer";
+import FooterServer from "../components/FooterServer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const BASE_URL = "https://xhenvolt.com";
 
@@ -75,11 +82,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const h = await headers();
+  const pathname = h.get("x-xhv-path") ?? "";
+  const isAdmin = pathname.startsWith("/admin");
+
+  if (isAdmin) {
+    return (
+      <html lang="en">
+        <body className="bg-slate-50 text-slate-900 antialiased font-sans min-h-screen">
+          {children}
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en" className="scroll-smooth">
       <body className="font-sans antialiased bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 transition-colors duration-300">
@@ -89,11 +110,19 @@ export default function RootLayout({
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl animate-pulse"></div>
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
           </div>
+          <Suspense fallback={<Navbar />}>
+            <NavbarServer />
+          </Suspense>
           <div className="relative z-10">
             {children}
           </div>
+          <Suspense fallback={<Footer />}>
+            <FooterServer />
+          </Suspense>
           <IntelligentChatbot />
-          <WhatsAppCTA />
+          <Suspense fallback={<WhatsAppCTA />}>
+            <WhatsAppCTAServer />
+          </Suspense>
         </div>
       </body>
     </html>

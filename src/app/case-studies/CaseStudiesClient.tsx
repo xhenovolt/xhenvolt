@@ -2,8 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const caseStudies = [
 	{
@@ -51,7 +49,6 @@ const caseStudies = [
 export default function CaseStudiesClient() {
 	return (
 		<main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen font-sans">
-			<Navbar />
 			<div className="pt-24 md:pt-32 max-w-5xl mx-auto px-6">
 				{/* Headline */}
 				<section className="text-center mb-12">
@@ -164,7 +161,6 @@ export default function CaseStudiesClient() {
 					</motion.div>
 				</section>
 			</div>
-			<Footer />
 		</main>
 	);
 }

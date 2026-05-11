@@ -3,8 +3,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, Phone, Globe, Code2, GraduationCap, Smartphone, Award, Users, School } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const products = [
   {
@@ -86,7 +84,6 @@ export default function TopTechCompanyClient() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-        <Navbar />
 
         <section className="pt-28 pb-20 px-6">
           <div className="max-w-6xl mx-auto">
@@ -276,7 +273,6 @@ export default function TopTechCompanyClient() {
           </div>
         </section>
 
-        <Footer />
       </main>
     </>
   );

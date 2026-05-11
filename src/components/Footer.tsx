@@ -4,43 +4,75 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 
-export default function Footer() {
-  const footerLinks = {
-    "Company": [
-      { name: "About Us", href: "/about" },
-      { name: "Our Team", href: "/about#team" },
-      { name: "Contact", href: "/contact" }
-    ],
-    "Products": [
-      { name: "DRAIS — School System", href: "https://drais.pro", external: true },
-      { name: "School Attendance System Uganda", href: "/school-attendance-system-uganda" },
-      { name: "Biometric Attendance Uganda", href: "/biometric-attendance-uganda" },
-      { name: "School Management System Uganda", href: "/school-management-system-uganda" },
-      { name: "Jeton — Financial System", href: "https://jeton.xhenvolt.com", external: true },
-      { name: "Xhaira — HR System", href: "https://xhaira.xhenvolt.com", external: true },
-      { name: "Consty — Project Management", href: "https://consty.xhenvolt.com", external: true },
-      { name: "Custom Software", href: "/services" }
-    ],
-    "Resources": [
-      { name: "Case Studies", href: "/case-studies" },
-      { name: "Testimonials", href: "/testimonials" },
-      { name: "Blog", href: "/blog" },
-      { name: "FAQ", href: "/faq" }
-    ],
-    "Legal": [
-      { name: "Privacy Policy", href: "/privacy-policy" },
-      { name: "Terms of Service", href: "/terms-of-service" },
-      { name: "Cookie Policy", href: "/cookie-policy" },
-      { name: "Sitemap", href: "/sitemap" }
-    ]
-  };
+export interface FooterLinkItem {
+  name: string;
+  href: string;
+  external?: boolean;
+}
+
+export interface FooterContact {
+  address: string;
+  phones: string[];
+  email: string;
+}
+
+export interface FooterSocial {
+  platform: string;
+  label: string;
+  href: string;
+  icon?: string | null;
+}
+
+interface FooterProps {
+  columns?: Record<string, FooterLinkItem[]>;
+  contact?: FooterContact;
+  socials?: FooterSocial[];
+}
+
+const FALLBACK_COLUMNS: Record<string, FooterLinkItem[]> = {
+  Company: [
+    { name: "About Us", href: "/about" },
+    { name: "Our Team", href: "/about#team" },
+    { name: "Contact", href: "/contact" },
+  ],
+  Products: [
+    { name: "DRAIS — School System", href: "https://drais.pro", external: true },
+    { name: "School Attendance System Uganda", href: "/school-attendance-system-uganda" },
+    { name: "Jeton — Financial System", href: "https://jeton.xhenvolt.com", external: true },
+    { name: "Xhaira — HR System", href: "https://xhaira.xhenvolt.com", external: true },
+    { name: "Consty — Project Management", href: "https://consty.xhenvolt.com", external: true },
+    { name: "Custom Software", href: "/services" },
+  ],
+  Resources: [
+    { name: "Case Studies", href: "/case-studies" },
+    { name: "Testimonials", href: "/testimonials" },
+    { name: "Blog", href: "/blog" },
+    { name: "FAQ", href: "/faq" },
+  ],
+  Legal: [
+    { name: "Privacy Policy", href: "/privacy-policy" },
+    { name: "Terms of Service", href: "/terms-of-service" },
+    { name: "Cookie Policy", href: "/cookie-policy" },
+    { name: "Sitemap", href: "/sitemap" },
+  ],
+};
+
+const FALLBACK_CONTACT: FooterContact = {
+  address: "Bulubandi, Iganga, Uganda",
+  phones: ["0741 341 483", "0760 700 954", "0745 726 350"],
+  email: "drais@xhenvolt.com",
+};
+
+export default function Footer({ columns, contact, socials }: FooterProps) {
+  const footerLinks =
+    columns && Object.keys(columns).length > 0 ? columns : FALLBACK_COLUMNS;
+  const c = contact ?? FALLBACK_CONTACT;
+  const socialList = socials ?? [];
 
   return (
     <footer className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-t border-white/20 dark:border-gray-700/50">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-12">
-          {/* Company Info */}
           <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -54,30 +86,33 @@ export default function Footer() {
               <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                 Building digital infrastructure for modern institutions. We develop powerful software systems that help schools, organizations, and institutions manage operations and build strong digital presence.
               </p>
-              
-              {/* Contact Info */}
+
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-blue-600" />
-                  <span className="text-gray-600 dark:text-gray-300">Bulubandi, Iganga, Uganda</span>
+                  <span className="text-gray-600 dark:text-gray-300">{c.address}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-blue-600" />
                   <div className="text-gray-600 dark:text-gray-300">
-                    <div>0741 341 483</div>
-                    <div>0760 700 954</div>
-                    <div>0745 726 350</div>
+                    {c.phones.map((p) => (
+                      <div key={p}>{p}</div>
+                    ))}
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-blue-600" />
-                  <span className="text-gray-600 dark:text-gray-300">drais@xhenvolt.com</span>
+                  <a
+                    href={`mailto:${c.email}`}
+                    className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    {c.email}
+                  </a>
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* Footer Links */}
           {Object.entries(footerLinks).map(([category, links], categoryIndex) => (
             <motion.div
               key={category}
@@ -91,20 +126,31 @@ export default function Footer() {
               </h4>
               <ul className="space-y-3">
                 {links.map((link, linkIndex) => {
-                  const isExternal = (link as any).external;
-                  const LinkComponent = isExternal ? 'a' : Link;
-                  const linkProps = isExternal 
-                    ? { href: link.href, target: "_blank", rel: "noopener noreferrer" }
-                    : { href: link.href };
+                  const isExternal = link.external;
+                  if (isExternal) {
+                    return (
+                      <li key={`${link.name}-${linkIndex}`}>
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group"
+                        >
+                          {link.name}
+                          <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                        </a>
+                      </li>
+                    );
+                  }
                   return (
-                    <li key={linkIndex}>
-                      <LinkComponent
-                        {...linkProps}
+                    <li key={`${link.name}-${linkIndex}`}>
+                      <Link
+                        href={link.href}
                         className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group"
                       >
                         {link.name}
                         <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-                      </LinkComponent>
+                      </Link>
                     </li>
                   );
                 })}
@@ -113,7 +159,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Newsletter Signup */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -139,7 +184,6 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* Bottom Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -150,27 +194,23 @@ export default function Footer() {
           <div className="text-gray-600 dark:text-gray-400 mb-4 md:mb-0">
             © {new Date().getFullYear()} Xhenvolt Uganda. All rights reserved.
           </div>
-          
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            {/*
-              { name: "LinkedIn", href: "#", icon: "linkedin" },
-              { name: "Twitter", href: "#", icon: "twitter" },
-              { name: "Facebook", href: "#", icon: "facebook" },
-              { name: "Instagram", href: "#", icon: "instagram" }
-            ].map((social, index) => (
-              <motion.a
-                key={social.name}
-                href={social.href}
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white transition-all duration-300"
-                aria-label={social.name}
-              >
-                <div className="w-5 h-5 bg-current" />
-              </motion.a>
-            ))}
-            */}
-          </div>
+
+          {socialList.length > 0 && (
+            <div className="flex items-center gap-4">
+              {socialList.map((s) => (
+                <a
+                  key={s.platform}
+                  href={s.href}
+                  target={s.href.startsWith("http") ? "_blank" : undefined}
+                  rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  aria-label={s.label}
+                  className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white transition-all duration-300 text-xs font-semibold"
+                >
+                  {s.platform.slice(0, 2).toUpperCase()}
+                </a>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </footer>

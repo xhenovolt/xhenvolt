@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Minus, Search, HelpCircle, MessageCircle, Phone } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const faqs = [
 	{
@@ -94,7 +92,6 @@ export default function FAQPage() {
 
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-			<Navbar />
 
 			{/* Hero Section */}
 			<section className="pt-32 pb-16">
@@ -255,7 +252,6 @@ export default function FAQPage() {
 				</motion.section>
 			</div>
 
-			<Footer />
 		</main>
 	);
 }

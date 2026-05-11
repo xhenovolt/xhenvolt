@@ -14,8 +14,6 @@ import {
   Shield,
   ArrowRight,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 /* ─── Inline SVG Architecture Diagram ─── */
 function UptimeArchitectureDiagram() {
@@ -99,7 +97,6 @@ const uptimeFeatures = [
 export default function ReliabilityPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
-      <Navbar />
 
       {/* Hero */}
       <section className="pt-32 pb-20 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-700 text-white relative overflow-hidden">
@@ -226,7 +223,6 @@ export default function ReliabilityPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

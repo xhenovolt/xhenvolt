@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, AlertCircle } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 export default function ContactClient() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
@@ -29,12 +27,31 @@ export default function ContactClient() {
       return;
     }
     setIsLoading(true);
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: form.subject,
+          message: form.message,
+          source: "contact-page",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.message ?? "We couldn't send your message. Please WhatsApp us at +256 741 341 483.");
+        setIsLoading(false);
+        return;
+      }
       setSubmitted(true);
-      setIsLoading(false);
       setForm({ name: "", email: "", subject: "", message: "" });
-    }, 1500);
+    } catch {
+      setError("Network error. Please WhatsApp us at +256 741 341 483.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -66,7 +83,6 @@ export default function ContactClient() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-      <Navbar />
       
       {/* Hero Section */}
       <section className="pt-32 pb-16">
@@ -320,7 +336,6 @@ export default function ContactClient() {
         </motion.section>
       </div>
       
-      <Footer />
     </main>
   );
 }

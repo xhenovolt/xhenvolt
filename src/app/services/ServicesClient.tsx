@@ -2,10 +2,23 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
-const systems = [
+export interface ServiceSystem {
+  name: string;
+  emoji: string;
+  color: string;
+  badge: string;
+  description: string;
+  highlights: string[];
+  cta: { label: string; href: string; external: boolean };
+}
+
+export interface ProofPoint {
+  stat: string;
+  label: string;
+}
+
+const FALLBACK_SYSTEMS: ServiceSystem[] = [
   {
     name: "DRAIS",
     emoji: "🎓",
@@ -88,17 +101,26 @@ const systems = [
   },
 ];
 
-const proofPoints = [
+const FALLBACK_PROOF: ProofPoint[] = [
   { stat: "31+", label: "Schools running DRAIS" },
   { stat: "37+", label: "Organizations served" },
   { stat: "4", label: "Flagship systems live" },
   { stat: "Jun 2025", label: "Founded in Uganda" },
 ];
 
-export default function ServicesClient() {
+export interface ServicesClientProps {
+  systems?: ServiceSystem[];
+  proofPoints?: ProofPoint[];
+}
+
+export default function ServicesClient({
+  systems: systemsProp,
+  proofPoints: proofProp,
+}: ServicesClientProps = {}) {
+  const systems = systemsProp && systemsProp.length > 0 ? systemsProp : FALLBACK_SYSTEMS;
+  const proofPoints = proofProp && proofProp.length > 0 ? proofProp : FALLBACK_PROOF;
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-      <Navbar />
 
       {/* Hero */}
       <section className="pt-32 pb-16">
@@ -224,7 +246,6 @@ export default function ServicesClient() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

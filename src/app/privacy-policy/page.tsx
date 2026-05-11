@@ -2,8 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Shield, Eye, Lock, FileText, Mail, Calendar } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const sections = [
 	{
@@ -107,7 +105,6 @@ const sections = [
 export default function PrivacyPolicyPage() {
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-			<Navbar />
 
 			{/* Hero Section */}
 			<section className="pt-32 pb-16">
@@ -281,7 +278,6 @@ export default function PrivacyPolicyPage() {
 				</motion.section>
 			</div>
 
-			<Footer />
 		</main>
 	);
 }

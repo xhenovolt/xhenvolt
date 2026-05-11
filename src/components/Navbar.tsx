@@ -4,7 +4,51 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
 
-export default function Navbar() {
+export interface NavItem {
+  name: string;
+  href: string;
+  isExternal?: boolean;
+  dropdown?: Array<{ name: string; href: string; isExternal?: boolean }>;
+}
+
+const FALLBACK_NAV: NavItem[] = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  {
+    name: "DRAIS Solutions",
+    href: "/drais-attendance-system",
+    dropdown: [
+      { name: "School Attendance System", href: "/school-attendance-system-uganda" },
+      { name: "Biometric Attendance", href: "/biometric-attendance-uganda" },
+      { name: "School Management System", href: "/school-management-system-uganda" },
+      { name: "DRAIS Product Overview", href: "/drais-attendance-system" },
+    ],
+  },
+  {
+    name: "Services",
+    href: "/services",
+    dropdown: [
+      { name: "Custom Software", href: "/services#software" },
+      { name: "Mobile Apps", href: "/services#mobile" },
+      { name: "POS Systems", href: "/services#pos" },
+      { name: "UI/UX Design", href: "/services#design" },
+    ],
+  },
+  {
+    name: "Resources",
+    href: "#",
+    dropdown: [
+      { name: "Case Studies", href: "/case-studies" },
+      { name: "Testimonials", href: "/testimonials" },
+      { name: "Blog", href: "/blog" },
+      { name: "FAQ", href: "/faq" },
+    ],
+  },
+  { name: "Contact", href: "/contact" },
+];
+
+export default function Navbar({ items }: { items?: NavItem[] }) {
+  const navItems = items && items.length > 0 ? items : FALLBACK_NAV;
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -14,16 +58,13 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    // Check for saved theme preference or default to light mode
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
     if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
       setIsDark(true);
       document.documentElement.classList.add("dark");
@@ -33,7 +74,6 @@ export default function Navbar() {
   const toggleTheme = () => {
     const newTheme = !isDark;
     setIsDark(newTheme);
-
     if (newTheme) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
@@ -43,52 +83,15 @@ export default function Navbar() {
     }
   };
 
-  const navItems = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    {
-      name: "DRAIS Solutions",
-      href: "/drais-attendance-system",
-      dropdown: [
-        { name: "School Attendance System", href: "/school-attendance-system-uganda" },
-        { name: "Biometric Attendance", href: "/biometric-attendance-uganda" },
-        { name: "School Management System", href: "/school-management-system-uganda" },
-        { name: "DRAIS Product Overview", href: "/drais-attendance-system" }
-      ]
-    },
-    {
-      name: "Services",
-      href: "/services",
-      dropdown: [
-        { name: "Custom Software", href: "/services#software" },
-        { name: "Mobile Apps", href: "/services#mobile" },
-        { name: "POS Systems", href: "/services#pos" },
-        { name: "UI/UX Design", href: "/services#design" }
-      ]
-    },
-    {
-      name: "Resources",
-      href: "#",
-      dropdown: [
-        { name: "Case Studies", href: "/case-studies" },
-        { name: "Testimonials", href: "/testimonials" },
-        { name: "Blog", href: "/blog" },
-        { name: "FAQ", href: "/faq" }
-      ]
-    },
-    { name: "Contact", href: "/contact" }
-  ];
-
   return (
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-white/20 dark:border-gray-700/50"
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-white/20 dark:border-gray-700/50 ${isScrolled ? "shadow-sm" : ""}`}
     >
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -104,7 +107,6 @@ export default function Navbar() {
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <div
@@ -115,6 +117,8 @@ export default function Navbar() {
               >
                 <Link
                   href={item.href}
+                  target={item.isExternal ? "_blank" : undefined}
+                  rel={item.isExternal ? "noopener noreferrer" : undefined}
                   className="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 font-medium"
                 >
                   {item.name}
@@ -133,6 +137,8 @@ export default function Navbar() {
                         <Link
                           key={dropItem.name}
                           href={dropItem.href}
+                          target={dropItem.isExternal ? "_blank" : undefined}
+                          rel={dropItem.isExternal ? "noopener noreferrer" : undefined}
                           className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
                           onClick={() => setActiveDropdown(null)}
                         >
@@ -146,19 +152,17 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right side buttons */}
           <div className="flex items-center gap-4">
-            {/* Theme Toggle */}
             <motion.button
               onClick={toggleTheme}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+              aria-label="Toggle theme"
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </motion.button>
 
-            {/* CTA Button */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -173,17 +177,16 @@ export default function Navbar() {
               </Link>
             </motion.div>
 
-            {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+              aria-label="Toggle menu"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -198,6 +201,8 @@ export default function Navbar() {
                   <div key={item.name}>
                     <Link
                       href={item.href}
+                      target={item.isExternal ? "_blank" : undefined}
+                      rel={item.isExternal ? "noopener noreferrer" : undefined}
                       className="block px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
                       onClick={() => setIsOpen(false)}
                     >
@@ -209,6 +214,8 @@ export default function Navbar() {
                           <Link
                             key={dropdownItem.name}
                             href={dropdownItem.href}
+                            target={dropdownItem.isExternal ? "_blank" : undefined}
+                            rel={dropdownItem.isExternal ? "noopener noreferrer" : undefined}
                             className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
                             onClick={() => setIsOpen(false)}
                           >
@@ -236,4 +243,3 @@ export default function Navbar() {
     </motion.nav>
   );
 }
-                    

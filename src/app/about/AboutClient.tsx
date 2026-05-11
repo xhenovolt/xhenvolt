@@ -2,9 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Target, Eye, Heart, Zap, Shield, Globe, CheckCircle, ArrowRight } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import TeamSection from "../../components/TeamSection";
+import TeamSection, { type TeamMemberItem } from "../../components/TeamSection";
 
 const values = [
 	{
@@ -52,10 +50,13 @@ const milestones = [
 	}
 ];
 
-export default function AboutClient() {
+export interface AboutClientProps {
+	teamMembers?: TeamMemberItem[];
+}
+
+export default function AboutClient({ teamMembers }: AboutClientProps = {}) {
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-			<Navbar />
 			
 			{/* Hero Section */}
 			<section className="pt-32 pb-16">
@@ -261,9 +262,8 @@ export default function AboutClient() {
 			</div>
 
 			{/* Team Section */}
-			<TeamSection />
+			<TeamSection members={teamMembers} />
 
-			<Footer />
 		</main>
 	);
 }

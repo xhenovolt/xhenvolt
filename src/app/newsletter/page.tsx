@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, CheckCircle, AlertCircle, Zap, TrendingUp, Users, Bell } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const benefits = [
 	{
@@ -82,7 +80,6 @@ export default function NewsletterPage() {
 
 	return (
 		<main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-			<Navbar />
 
 			{/* Hero Section */}
 			<section className="pt-32 pb-16">
@@ -286,7 +283,6 @@ export default function NewsletterPage() {
 				</motion.section>
 			</div>
 
-			<Footer />
 		</main>
 	);
 }

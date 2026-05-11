@@ -20,8 +20,6 @@ import {
   TrendingUp,
   Star,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 const painPoints = [
   {
@@ -237,7 +235,6 @@ export default function SchoolAttendanceUgandaClient() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-        <Navbar />
 
         {/* Hero Section */}
         <section className="pt-28 pb-20 px-6">
@@ -725,7 +722,6 @@ export default function SchoolAttendanceUgandaClient() {
           </div>
         </section>
 
-        <Footer />
       </main>
     </>
   );

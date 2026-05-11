@@ -14,8 +14,6 @@ import {
   BarChart3,
   Zap,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 /* ─── Support Ecosystem Diagram ─── */
 function SupportEcosystemDiagram() {
@@ -93,7 +91,6 @@ const supportFeatures = [
 export default function SupportPage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
-      <Navbar />
 
       {/* Hero */}
       <section className="pt-32 pb-20 bg-gradient-to-br from-rose-600 via-red-600 to-pink-700 text-white relative overflow-hidden">
@@ -205,7 +202,6 @@ export default function SupportPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

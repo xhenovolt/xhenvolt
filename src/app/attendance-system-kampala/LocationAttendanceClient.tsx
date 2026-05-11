@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { CheckCircle, Phone, ArrowRight, MapPin, School, Fingerprint, MessageSquare, BarChart3, ChevronDown, ChevronUp } from "lucide-react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
 
 interface Location {
   city: string;
@@ -65,7 +63,6 @@ export default function LocationAttendanceClient({ location }: { location: Locat
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
-        <Navbar />
 
         <section className="pt-28 pb-20 px-6">
           <div className="max-w-5xl mx-auto text-center">
@@ -235,7 +232,6 @@ export default function LocationAttendanceClient({ location }: { location: Locat
           </div>
         </section>
 
-        <Footer />
       </main>
     </>
   );
