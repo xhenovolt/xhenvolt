@@ -8,6 +8,7 @@ import { db, schema } from "@/lib/db";
 import { CACHE_TAGS } from "@/lib/cache/safe";
 import { cookies } from "next/headers";
 import { verifySession, SESSION_COOKIE } from "@/lib/auth/session";
+import { audit } from "@/lib/audit";
 
 async function requireAdmin() {
   const c = await cookies();
@@ -46,18 +47,27 @@ export async function createTestimonial(fd: FormData) {
     throw new Error("invalid: " + JSON.stringify(parsed.error.flatten()));
   }
   if (!db) throw new Error("db_unavailable");
-  await db.insert(schema.testimonials).values({
-    authorName: parsed.data.authorName,
-    authorRole: parsed.data.authorRole ?? null,
-    organization: parsed.data.organization ?? null,
-    location: parsed.data.location ?? null,
-    quote: parsed.data.quote,
-    rating: parsed.data.rating,
-    featured: parsed.data.featured ?? false,
-    published: parsed.data.published ?? true,
-    sortOrder: parsed.data.sortOrder ?? 0,
-  });
+  const [row] = await db
+    .insert(schema.testimonials)
+    .values({
+      authorName: parsed.data.authorName,
+      authorRole: parsed.data.authorRole ?? null,
+      organization: parsed.data.organization ?? null,
+      location: parsed.data.location ?? null,
+      quote: parsed.data.quote,
+      rating: parsed.data.rating,
+      featured: parsed.data.featured ?? false,
+      published: parsed.data.published ?? true,
+      sortOrder: parsed.data.sortOrder ?? 0,
+    })
+    .returning({ id: schema.testimonials.id });
   bust();
+  await audit({
+    action: "create",
+    entityType: "testimonial",
+    entityId: row?.id,
+    summary: `Created testimonial from ${parsed.data.authorName}`,
+  });
   redirect("/admin/testimonials");
 }
 
@@ -83,6 +93,12 @@ export async function updateTestimonial(id: string, fd: FormData) {
     })
     .where(eq(schema.testimonials.id, id));
   bust();
+  await audit({
+    action: "update",
+    entityType: "testimonial",
+    entityId: id,
+    summary: `Updated testimonial from ${parsed.data.authorName}`,
+  });
   redirect("/admin/testimonials");
 }
 
@@ -94,6 +110,11 @@ export async function togglePublished(id: string, next: boolean) {
     .set({ published: next })
     .where(eq(schema.testimonials.id, id));
   bust();
+  await audit({
+    action: next ? "publish" : "unpublish",
+    entityType: "testimonial",
+    entityId: id,
+  });
 }
 
 export async function softDeleteTestimonial(id: string) {
@@ -104,4 +125,9 @@ export async function softDeleteTestimonial(id: string) {
     .set({ deletedAt: sql`now()`, published: false })
     .where(eq(schema.testimonials.id, id));
   bust();
+  await audit({
+    action: "delete",
+    entityType: "testimonial",
+    entityId: id,
+  });
 }

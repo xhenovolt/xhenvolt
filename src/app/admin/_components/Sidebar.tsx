@@ -14,6 +14,8 @@ import {
   BarChart3,
   ExternalLink,
   Type,
+  History,
+  Building,
   type LucideIcon,
 } from "lucide-react";
 
@@ -45,8 +47,8 @@ const SECTIONS: NavSection[] = [
       { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote },
       { href: "/admin/team", label: "Team", icon: Users },
       { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
-      { href: "/admin/clients", label: "Clients", icon: Users, disabled: true, badge: "Soon" },
-      { href: "/admin/timeline", label: "Timeline", icon: BarChart3, disabled: true, badge: "Soon" },
+      { href: "/admin/clients", label: "Clients", icon: Building },
+      { href: "/admin/timeline", label: "Timeline", icon: History },
       { href: "/admin/media", label: "Media", icon: ImageIcon, disabled: true, badge: "Soon" },
     ],
   },
@@ -55,13 +57,14 @@ const SECTIONS: NavSection[] = [
     items: [
       { href: "/admin/pages", label: "Pages", icon: FileText },
       { href: "/admin/navigation", label: "Navigation", icon: Globe },
-      { href: "/admin/seo", label: "SEO", icon: Type, disabled: true, badge: "Soon" },
+      { href: "/admin/footer", label: "Footer", icon: Globe },
+      { href: "/admin/seo", label: "SEO", icon: Type },
     ],
   },
   {
     label: "AI",
     items: [
-      { href: "/admin/ai-docs", label: "Training Docs", icon: Sparkles, disabled: true, badge: "Soon" },
+      { href: "/admin/ai-docs", label: "Training Docs", icon: Sparkles },
       { href: "/admin/ai-logs", label: "Conversation Logs", icon: MessageSquareQuote, disabled: true, badge: "Soon" },
     ],
   },
@@ -69,6 +72,7 @@ const SECTIONS: NavSection[] = [
     label: "Operations",
     items: [
       { href: "/admin/messages", label: "Inbox", icon: Inbox },
+      { href: "/admin/audit", label: "Audit log", icon: History },
       { href: "/admin/settings", label: "Settings", icon: Settings },
     ],
   },

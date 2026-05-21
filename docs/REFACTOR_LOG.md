@@ -1,8 +1,47 @@
 # Refactor Log
 
-Major structural changes shipped across Phases 5 and 6, in the order
-they happened. Use this as the diary; check
+Major structural changes shipped across Phases 5–7, in the order they
+happened. Use this as the diary; check
 [TECHNICAL_DEBT.md](./TECHNICAL_DEBT.md) for what's still owed.
+
+## Phase 7 — Remaining content + audit log
+
+### What changed
+
+1. **Four new CRUD modules**, completing coverage of every content table:
+
+   ```
+   /admin/seo         (per-route SEO metadata)
+   /admin/ai-docs     (Xhenvolt AI training documents)
+   /admin/clients     (school / SACCO / business logos)
+   /admin/timeline    (company history milestones, with inline events list)
+   ```
+
+   The SEO module replaces the placeholder shipped in Phase 6. AI docs
+   automatically nulls the `embedding` column on save so the next ingest
+   pass regenerates vectors. Timeline uses `ListField` for inline event
+   editing (same pattern as Systems' highlights).
+
+2. **Audit log**:
+   - New table `admin_audit_logs` (migration `0003_audit_log.sql`)
+   - `src/lib/audit.ts` helper — `audit({ action, entityType, entityId,
+     summary })`. Best-effort; never throws.
+   - `/admin/audit` viewer — last 200 events with action color-coding,
+     actor email, relative timestamps.
+   - Wired into testimonials CRUD as the canonical example. Other
+     modules can adopt incrementally — the helper is a single import
+     and a single line per action.
+
+3. **Sidebar fully populated**:
+   - Un-disabled Clients, Timeline, SEO, AI Training Docs, Footer
+   - Added Audit log under Operations
+   - Only Media, Conversation Logs, and a few future items remain
+     "Soon".
+
+### Verification
+- typecheck: clean
+- next build: 49 static pages, every admin route compiled
+- All 4 new CRUDs verified end-to-end against Neon
 
 ## Phase 6 — CMS content engine + 9 CRUD modules
 
