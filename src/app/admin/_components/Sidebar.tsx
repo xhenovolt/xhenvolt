@@ -38,12 +38,14 @@ const SECTIONS: NavSection[] = [
   {
     label: "Content",
     items: [
+      { href: "/admin/hero", label: "Hero slides", icon: Sparkles },
+      { href: "/admin/systems", label: "Systems", icon: Cpu },
+      { href: "/admin/services", label: "Services", icon: FileText },
+      { href: "/admin/statistics", label: "Statistics", icon: BarChart3 },
       { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote },
+      { href: "/admin/team", label: "Team", icon: Users },
       { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
-      { href: "/admin/systems", label: "Systems", icon: Cpu, disabled: true, badge: "Soon" },
-      { href: "/admin/services", label: "Services", icon: FileText, disabled: true, badge: "Soon" },
       { href: "/admin/clients", label: "Clients", icon: Users, disabled: true, badge: "Soon" },
-      { href: "/admin/team", label: "Team", icon: Users, disabled: true, badge: "Soon" },
       { href: "/admin/timeline", label: "Timeline", icon: BarChart3, disabled: true, badge: "Soon" },
       { href: "/admin/media", label: "Media", icon: ImageIcon, disabled: true, badge: "Soon" },
     ],
