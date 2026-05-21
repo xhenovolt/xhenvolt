@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronRight, Search } from "lucide-react";
+import HealthPill from "./HealthPill";
 
 interface Crumb {
   href: string;
@@ -61,6 +62,7 @@ export default function TopBar({ path }: { path: string }) {
             className="bg-slate-50 border border-slate-200 rounded-md pl-9 pr-3 py-1.5 text-sm w-64 text-slate-400 placeholder:text-slate-400 cursor-not-allowed"
           />
         </div>
+        <HealthPill />
       </div>
     </header>
   );

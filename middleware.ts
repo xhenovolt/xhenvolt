@@ -9,7 +9,11 @@ import { verifySession, SESSION_COOKIE } from "./src/lib/auth/session";
  * boundary in app/(website)/layout.tsx vs app/admin/layout.tsx.
  */
 export const config = {
-  matcher: ["/admin/:path*"],
+  // Match /admin itself AND every subpath. The two-pattern form is
+  // required: "/admin/:path*" alone does not match bare "/admin" in
+  // Next.js 16, so middleware would silently skip it and let the
+  // layout render without authorization checks.
+  matcher: ["/admin", "/admin/:path*"],
 };
 
 export async function middleware(req: NextRequest) {

@@ -16,6 +16,7 @@ import {
   Type,
   History,
   Building,
+  Activity,
   type LucideIcon,
 } from "lucide-react";
 
@@ -73,6 +74,7 @@ const SECTIONS: NavSection[] = [
     items: [
       { href: "/admin/messages", label: "Inbox", icon: Inbox },
       { href: "/admin/audit", label: "Audit log", icon: History },
+      { href: "/admin/system-health", label: "System health", icon: Activity },
       { href: "/admin/settings", label: "Settings", icon: Settings },
     ],
   },
