@@ -51,8 +51,8 @@ const SECTIONS: NavSection[] = [
   {
     label: "Pages",
     items: [
-      { href: "/admin/pages", label: "Pages", icon: FileText, disabled: true, badge: "Soon" },
-      { href: "/admin/navigation", label: "Navigation", icon: Globe, disabled: true, badge: "Soon" },
+      { href: "/admin/pages", label: "Pages", icon: FileText },
+      { href: "/admin/navigation", label: "Navigation", icon: Globe },
       { href: "/admin/seo", label: "SEO", icon: Type, disabled: true, badge: "Soon" },
     ],
   },

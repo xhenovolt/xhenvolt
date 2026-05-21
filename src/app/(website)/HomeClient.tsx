@@ -34,12 +34,6 @@ import type { HomepageHeroContent } from "@/lib/cms/sections/homepage-hero.secti
 
 /* ─────────────── DATA ─────────────── */
 
-interface HomeClientProps {
-  hero?: HomepageHeroContent;
-  testimonials: HomeTestimonial[];
-  milestones: MilestoneItem[];
-}
-
 const focusAreas = [
   {
     icon: <GraduationCap className="w-8 h-8" />,
