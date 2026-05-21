@@ -5,7 +5,10 @@ import {
   listTimeline,
   getSeoMetadata,
 } from "@/lib/repositories";
+import { resolveCmsSection } from "@/services/cms/section.service";
 import type { Metadata } from "next";
+import type { HomepageHeroContent } from "@/lib/cms/sections/homepage-hero.section";
+import type { TestimonialsContent } from "@/lib/cms/sections/testimonials.section";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeoMetadata("/");
@@ -30,19 +33,50 @@ function logoBasename(url: string | null): string | null {
 }
 
 export default async function Page() {
-  const [rows, timelineRows] = await Promise.all([
+  const [rows, timelineRows, heroSection, testimonialsSection] = await Promise.all([
     listTestimonials({ limit: 50 }),
     listTimeline(),
+    resolveCmsSection<HomepageHeroContent>("homepage_hero"),
+    resolveCmsSection<TestimonialsContent>("site_testimonials"),
   ]);
-  const testimonials: HomeTestimonial[] = rows.map((t) => ({
-    name: t.authorName,
-    position: t.authorRole ?? "",
-    institution: t.organization ?? "",
-    quote: t.quote,
-    logo: logoBasename(t.avatarUrl),
-    category: "drais",
-    featured: t.featured,
-  }));
+
+  const hero =
+    heroSection?.content ??
+    heroSection?.definition?.fallback ?? {
+      eyebrow: "Uganda's #1 School Management System",
+      headline: "School Management & Attendance Tracking for Uganda",
+      subheadline:
+        "DRAIS is Uganda's leading school management system — automating attendance tracking, student reporting, and real-time monitoring for schools that demand excellence.",
+      ctaPrimaryLabel: "Explore DRAIS",
+      ctaPrimaryHref: "https://drais.pro",
+      ctaSecondaryLabel: "Book a Free Demo",
+      ctaSecondaryHref: "/contact",
+      tags: ["Biometric Attendance", "Real-time Monitoring", "School Analytics", "Parent Alerts"],
+      backgroundUrl: null,
+    };
+
+  const testimonialsSource = testimonialsSection?.content?.items ?? [];
+  const testimonials: HomeTestimonial[] =
+    testimonialsSource.length > 0
+      ? testimonialsSource.map((t) => ({
+          name: t.authorName,
+          position: t.authorRole ?? "",
+          institution: t.organization ?? "",
+          quote: t.quote,
+          logo: null,
+          category: "drais",
+          featured: t.featured,
+        }))
+      : rows.map((t) => ({
+          name: t.authorName,
+          position: t.authorRole ?? "",
+          institution: t.organization ?? "",
+          quote: t.quote,
+          logo: logoBasename(t.avatarUrl),
+          category: "drais",
+          featured: t.featured,
+        }));
+
   const milestones: MilestoneItem[] = timelineRows.map((m) => ({
     title: m.title,
     description: m.description,
@@ -52,5 +86,6 @@ export default async function Page() {
     events: Array.isArray(m.events) ? (m.events as string[]) : [],
     highlight: Boolean(m.highlight),
   }));
-  return <HomeClient testimonials={testimonials} milestones={milestones} />;
+
+  return <HomeClient hero={hero} testimonials={testimonials} milestones={milestones} />;
 }

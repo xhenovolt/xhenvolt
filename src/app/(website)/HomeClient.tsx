@@ -30,8 +30,15 @@ import InteractiveProductStory from "@/components/InteractiveProductStory";
 import OurJourney, { type MilestoneItem } from "@/components/OurJourney";
 import RealDeployments from "@/components/RealDeployments";
 import ObjectionCrusher from "@/components/ObjectionCrusher";
+import type { HomepageHeroContent } from "@/lib/cms/sections/homepage-hero.section";
 
 /* ─────────────── DATA ─────────────── */
+
+interface HomeClientProps {
+  hero?: HomepageHeroContent;
+  testimonials: HomeTestimonial[];
+  milestones: MilestoneItem[];
+}
 
 const focusAreas = [
   {
@@ -553,20 +560,70 @@ function TestimonialsSection({ items }: { items: HomeTestimonial[] }) {
 /* ─────────────── PAGE ─────────────── */
 
 export interface HomeClientProps {
+  hero?: HomepageHeroContent;
   testimonials: HomeTestimonial[];
   milestones?: MilestoneItem[];
 }
 
 export default function HomePage({
+  hero,
   testimonials = [],
   milestones = [],
 }: HomeClientProps) {
+  const heroData: HomepageHeroContent = hero ?? {
+    eyebrow: "Uganda's #1 School Management System",
+    headline: "School Management & Attendance Tracking for Uganda",
+    subheadline:
+      "DRAIS is Uganda's leading school management system — automating attendance tracking, student reporting, and real-time monitoring for schools that demand excellence.",
+    ctaPrimaryLabel: "Explore DRAIS",
+    ctaPrimaryHref: "https://drais.pro",
+    ctaSecondaryLabel: "Book a Free Demo",
+    ctaSecondaryHref: "/contact",
+    tags: ["Biometric Attendance", "Real-time Monitoring", "School Analytics", "Parent Alerts"],
+    backgroundUrl: null,
+  };
+
+  const renderCta = (label: string | null | undefined, href: string | null | undefined, primary = false) => {
+    if (!label || !href) return null;
+    const external = href.startsWith("http");
+    const className = primary
+      ? "inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 gap-2"
+      : "inline-flex items-center px-8 py-4 border-2 border-blue-600 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 gap-2";
+
+    if (external) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+          {primary && <Play className="w-5 h-5" />}
+          {label}
+        </a>
+      );
+    }
+
+    return (
+      <Link href={href} className={className}>
+        {primary && <Play className="w-5 h-5" />}
+        {label}
+        {!primary && <ArrowRight className="w-5 h-5" />}
+      </Link>
+    );
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
 
       {/* ═══════ SECTION 1 — HERO ═══════ */}
       <section className="pt-32 pb-24 overflow-hidden relative">
-        {/* Animated SVG background */}
+        {heroData.backgroundUrl ? (
+          <div className="absolute inset-0 opacity-40">
+            <Image
+              src={heroData.backgroundUrl}
+              alt={heroData.headline}
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-slate-950/20" />
+          </div>
+        ) : null}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <svg className="absolute w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -594,19 +651,21 @@ export default function HomePage({
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/40 rounded-full mb-4">
-                <School className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
-                  Uganda&apos;s #1 School Management System
-                </span>
-              </div>
+              {heroData.eyebrow ? (
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/40 rounded-full mb-4">
+                  <School className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
+                    {heroData.eyebrow}
+                  </span>
+                </div>
+              ) : null}
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900/40 rounded-full mb-6 ml-2">
                 <Shield className="w-4 h-4 text-green-600 dark:text-green-400" />
                 <span className="text-sm font-semibold text-green-700 dark:text-green-300">
@@ -616,58 +675,33 @@ export default function HomePage({
 
               <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight mb-6">
                 <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
-                  School Management
-                </span>
-                <br />
-                <span className="text-gray-900 dark:text-white">
-                  &amp; Attendance
-                </span>
-                <br />
-                <span className="text-gray-900 dark:text-white">
-                  Tracking for Uganda
+                  {heroData.headline}
                 </span>
               </h1>
 
-              <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-6 leading-relaxed max-w-xl">
-                DRAIS is Uganda&apos;s leading school management system — automating
-                attendance tracking, student reporting, and real-time monitoring
-                for schools that demand excellence.
-              </p>
+              {heroData.subheadline ? (
+                <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-6 leading-relaxed max-w-xl">
+                  {heroData.subheadline}
+                </p>
+              ) : null}
 
               <div className="flex flex-wrap gap-3 mb-8">
-                {["Biometric Attendance", "Real-time Monitoring", "School Analytics", "Parent Alerts", "Multi-School"].map((tag) => (
-                  <span key={tag} className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium border border-blue-200 dark:border-blue-700">
+                {heroData.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium border border-blue-200 dark:border-blue-700"
+                  >
                     {tag}
                   </span>
                 ))}
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <a
-                    href="https://drais.pro"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 gap-2"
-                  >
-                    <Play className="w-5 h-5" />
-                    Explore DRAIS
-                  </a>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  {renderCta(heroData.ctaPrimaryLabel, heroData.ctaPrimaryHref, true)}
                 </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center px-8 py-4 border-2 border-blue-600 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 gap-2"
-                  >
-                    Book a Free Demo
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  {renderCta(heroData.ctaSecondaryLabel, heroData.ctaSecondaryHref, false)}
                 </motion.div>
               </div>
             </motion.div>
@@ -696,18 +730,14 @@ export default function HomePage({
                 </div>
                 <div className="flex items-center gap-2 mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-5 h-5 text-yellow-400 fill-current"
-                    />
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                   <span className="text-gray-600 dark:text-gray-300 ml-2 text-sm">
                     Trusted by real institutions
                   </span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 italic text-sm">
-                  &quot;Xhenvolt built us a system that actually works for how
-                  our school operates.&quot;
+                  &quot;Xhenvolt built us a system that actually works for how our school operates.&quot;
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                   — Ngobi Peter, General Director, Northgate Schools
