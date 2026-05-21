@@ -49,6 +49,34 @@ async function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise
   });
 }
 
+/**
+ * Walks the cause chain of an error and returns a single human-readable
+ * string with every layer. Drizzle/neon/pg-style errors often nest the
+ * real reason 2-3 levels deep behind "Failed query" wrappers — without
+ * this, the dashboard just shows the outermost (useless) message.
+ */
+function explainError(err: unknown): string {
+  const parts: string[] = [];
+  let cur: unknown = err;
+  const seen = new Set<unknown>();
+  while (cur && !seen.has(cur)) {
+    seen.add(cur);
+    if (cur instanceof Error) {
+      const tag = cur.name && cur.name !== "Error" ? `[${cur.name}] ` : "";
+      const msg = cur.message?.trim();
+      if (msg) parts.push(`${tag}${msg}`);
+      // Drizzle: cause; Node: cause
+      const next = (cur as Error & { cause?: unknown }).cause;
+      cur = next;
+    } else {
+      parts.push(String(cur));
+      break;
+    }
+  }
+  if (parts.length === 0) return String(err);
+  return parts.join("  →  ");
+}
+
 async function timed(name: string, category: ProbeResult["category"], fn: () => Promise<Omit<ProbeResult, "name" | "category" | "durationMs" | "checkedAt">>): Promise<ProbeResult> {
   const start = Date.now();
   try {
@@ -60,7 +88,7 @@ async function timed(name: string, category: ProbeResult["category"], fn: () => 
       category,
       status: "down",
       message: "Probe threw or timed out",
-      detail: err instanceof Error ? err.message : String(err),
+      detail: explainError(err),
       durationMs: Date.now() - start,
       checkedAt: new Date().toISOString(),
     };
