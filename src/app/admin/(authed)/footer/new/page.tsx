@@ -1,5 +1,5 @@
-import FooterForm from "@/app/admin/footer/_form";
-import { createFooterLink } from "@/app/admin/footer/actions";
+import FooterForm from "@/app/admin/(authed)/footer/_form";
+import { createFooterLink } from "@/app/admin/(authed)/footer/actions";
 
 export default function NewFooterLink() {
   return (

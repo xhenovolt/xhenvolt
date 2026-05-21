@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChevronRight, Search } from "lucide-react";
 import HealthPill from "./HealthPill";
 
@@ -9,7 +11,6 @@ interface Crumb {
 
 function buildBreadcrumbs(path: string): Crumb[] {
   const parts = path.split("/").filter(Boolean);
-  // path always starts with "admin"; drop it as label, keep it as the root crumb.
   if (parts.length === 0 || parts[0] !== "admin") return [];
   const crumbs: Crumb[] = [{ href: "/admin", label: "Admin" }];
   let acc = "/admin";
@@ -23,7 +24,8 @@ function buildBreadcrumbs(path: string): Crumb[] {
   return crumbs;
 }
 
-export default function TopBar({ path }: { path: string }) {
+export default function TopBar() {
+  const path = usePathname() ?? "/admin";
   const crumbs = buildBreadcrumbs(path);
   return (
     <header className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-10">

@@ -1,7 +1,7 @@
-import FooterForm from "@/app/admin/footer/_form";
+import FooterForm from "@/app/admin/(authed)/footer/_form";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { updateFooterLink } from "@/app/admin/footer/actions";
+import { updateFooterLink } from "@/app/admin/(authed)/footer/actions";
 
 export default async function EditFooterLink({ params }: { params: { id: string } }) {
   const row = await db

@@ -1,7 +1,7 @@
-import NavigationForm from "@/app/admin/navigation/_form";
+import NavigationForm from "@/app/admin/(authed)/navigation/_form";
 import { db, schema } from "@/lib/db";
 import { eq } from "drizzle-orm";
-import { updateNavigation } from "@/app/admin/navigation/actions";
+import { updateNavigation } from "@/app/admin/(authed)/navigation/actions";
 
 export default async function EditNavigationLink({ params }: { params: { id: string } }) {
   const row = await db

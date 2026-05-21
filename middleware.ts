@@ -2,28 +2,29 @@ import { NextResponse, type NextRequest } from "next/server";
 import { verifySession, SESSION_COOKIE } from "./src/lib/auth/session";
 
 /**
- * Middleware role: protect /admin/* and inject a lightweight pathname
- * header (used by the admin shell for active-state highlighting and
- * breadcrumbs). With route-group layout isolation in place, the header
- * is NOT used to hide public chrome — that's handled at the layout
- * boundary in app/(website)/layout.tsx vs app/admin/layout.tsx.
+ * Middleware role: protect every route under (authed).
+ *
+ * Layout isolation is now done via route groups:
+ *   src/app/admin/login        → bare layout (no auth)
+ *   src/app/admin/(authed)/*   → admin shell + auth check
+ *
+ * So middleware only redirects to /admin/login when the user lacks a
+ * session AND is trying to reach a protected page. /admin/login itself
+ * bypasses the auth check (it's not inside the matcher's redirect path).
+ *
+ * NOTE: the matcher MUST include both /admin and /admin/:path* — bare
+ * /admin doesn't match :path* in Next.js 16.
  */
 export const config = {
-  // Match /admin itself AND every subpath. The two-pattern form is
-  // required: "/admin/:path*" alone does not match bare "/admin" in
-  // Next.js 16, so middleware would silently skip it and let the
-  // layout render without authorization checks.
   matcher: ["/admin", "/admin/:path*"],
 };
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const reqHeaders = new Headers(req.headers);
-  reqHeaders.set("x-xhv-path", pathname);
-
+  // /admin/login is the only admin URL that does NOT require auth.
   if (pathname === "/admin/login") {
-    return NextResponse.next({ request: { headers: reqHeaders } });
+    return NextResponse.next();
   }
 
   const token = req.cookies.get(SESSION_COOKIE)?.value;
@@ -35,5 +36,5 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  return NextResponse.next({ request: { headers: reqHeaders } });
+  return NextResponse.next();
 }

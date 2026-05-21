@@ -1,7 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+
+// useSearchParams() needs to be inside a Suspense boundary at the page
+// root, otherwise Next refuses to prerender the page.
+export const dynamic = "force-dynamic";
 
 type HealthStatus = "ok" | "degraded" | "down" | "unknown";
 type ErrorCategory =
@@ -59,6 +63,14 @@ const CATEGORY_STYLE: Record<ErrorCategory, { card: string; title: string; title
 };
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
   const next = search.get("next") ?? "/admin";

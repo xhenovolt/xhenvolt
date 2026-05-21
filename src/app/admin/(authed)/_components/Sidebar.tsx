@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   MessageSquareQuote,
@@ -81,14 +83,13 @@ const SECTIONS: NavSection[] = [
 ];
 
 export default function Sidebar({
-  path,
   adminEmail,
   adminName,
 }: {
-  path: string;
   adminEmail: string;
   adminName: string | null;
 }) {
+  const path = usePathname() ?? "/admin";
   return (
     <aside className="w-64 bg-slate-950 text-slate-100 flex flex-col border-r border-slate-800">
       <div className="px-5 py-4 border-b border-slate-800">

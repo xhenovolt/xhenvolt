@@ -1,5 +1,5 @@
-import NavigationForm from "@/app/admin/navigation/_form";
-import { createNavigation } from "@/app/admin/navigation/actions";
+import NavigationForm from "@/app/admin/(authed)/navigation/_form";
+import { createNavigation } from "@/app/admin/(authed)/navigation/actions";
 
 export default function NewNavigationLink() {
   return (

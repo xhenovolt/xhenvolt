@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageHeader } from "@/app/admin/_components/ui";
+import { PageHeader } from "@/app/admin/(authed)/_components/ui";
 
 export default function NewPageStub() {
   return (

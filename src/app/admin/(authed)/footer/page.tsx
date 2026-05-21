@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { asc, desc } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { PageHeader, StatusBadge } from "@/app/admin/_components/ui";
+import { PageHeader, StatusBadge } from "@/app/admin/(authed)/_components/ui";
 import { toggleFooterPublished, deleteFooterLink } from "./actions";
 
 export const dynamic = "force-dynamic";

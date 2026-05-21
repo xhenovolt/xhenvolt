@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Card, Field, Input, PrimaryButton, SecondaryButton, Select } from "@/app/admin/_components/ui";
-import { StatusPicker } from "@/app/admin/_components/fields";
-import type { NavItem } from "@/app/admin/navigation/page";
+import { Card, Field, Input, PrimaryButton, SecondaryButton, Select } from "@/app/admin/(authed)/_components/ui";
+import { StatusPicker } from "@/app/admin/(authed)/_components/fields";
+import type { NavItem } from "@/app/admin/(authed)/navigation/page";
 
 interface NavigationFormProps {
   action: (fd: FormData) => void | Promise<void>;
