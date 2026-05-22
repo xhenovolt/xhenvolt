@@ -1,5 +1,11 @@
 import { randomUUID } from "node:crypto";
+import { sql } from "drizzle-orm";
 import { boolean, int, timestamp, varchar } from "drizzle-orm/mysql-core";
+
+// TiDB rejects DEFAULT (now()) — the SQL-standard expression-default form
+// Drizzle emits for .defaultNow(). It accepts only the bare function form
+// CURRENT_TIMESTAMP(3), so timestamps below pass it explicitly via sql``.
+const NOW3 = sql`CURRENT_TIMESTAMP(3)`;
 
 /**
  * Shared column helpers — MySQL/TiDB flavor.
@@ -15,12 +21,12 @@ export const id = () =>
   varchar("id", { length: 36 }).primaryKey().$defaultFn(() => randomUUID());
 
 export const createdAt = () =>
-  timestamp("created_at", { fsp: 3 }).notNull().defaultNow();
+  timestamp("created_at", { fsp: 3 }).notNull().default(NOW3);
 
 export const updatedAt = () =>
   timestamp("updated_at", { fsp: 3 })
     .notNull()
-    .defaultNow()
+    .default(NOW3)
     .$onUpdate(() => new Date());
 
 export const deletedAt = () => timestamp("deleted_at", { fsp: 3 });

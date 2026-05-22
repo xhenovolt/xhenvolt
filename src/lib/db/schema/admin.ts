@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   mysqlTable,
   varchar,
@@ -34,7 +35,7 @@ export const adminSessions = mysqlTable(
     expiresAt: timestamp("expires_at", { fsp: 3 }).notNull(),
     lastActiveAt: timestamp("last_active_at", { fsp: 3 })
       .notNull()
-      .defaultNow(),
+      .default(sql`CURRENT_TIMESTAMP(3)`),
     ipHash: varchar("ip_hash", { length: 64 }),
     userAgent: text("user_agent"),
     createdAt: createdAt(),
