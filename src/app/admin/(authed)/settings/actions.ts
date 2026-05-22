@@ -46,9 +46,8 @@ async function upsertSetting(key: string, value: unknown, description: string) {
   await db
     .insert(schema.settings)
     .values({ key, value, description })
-    .onConflictDoUpdate({
-      target: schema.settings.key,
-      set: { value, description, updatedAt: sql`now()` },
+    .onDuplicateKeyUpdate({
+      set: { value, description, updatedAt: sql`CURRENT_TIMESTAMP(3)` },
     });
 }
 

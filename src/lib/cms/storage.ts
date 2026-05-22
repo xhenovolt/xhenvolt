@@ -44,12 +44,11 @@ export async function writeBlock<T>(
       value: value as unknown,
       description: description ?? `CMS block: ${sectionKey}`,
     })
-    .onConflictDoUpdate({
-      target: schema.settings.key,
+    .onDuplicateKeyUpdate({
       set: {
         value: value as unknown,
         description: description ?? `CMS block: ${sectionKey}`,
-        updatedAt: sql`now()`,
+        updatedAt: sql`CURRENT_TIMESTAMP(3)`,
       },
     });
 }
