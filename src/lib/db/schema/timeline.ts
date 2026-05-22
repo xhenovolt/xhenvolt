@@ -20,7 +20,7 @@ export const timelineEntries = mysqlTable(
     id: id(),
     title: varchar("title", { length: 200 }).notNull(),
     description: text("description").notNull(),
-    occurredOn: date("occurred_on").notNull(),
+    occurredOn: date("occurred_on", { mode: "string" }).notNull(),
     label: varchar("label", { length: 80 }),
     icon: varchar("icon", { length: 80 }),
     accentColor: varchar("accent_color", { length: 30 }),

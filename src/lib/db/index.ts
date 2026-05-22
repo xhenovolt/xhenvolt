@@ -26,8 +26,9 @@ function createDb(): DrizzleDb | undefined {
   const cfg = readTidbConfig();
   if (!cfg.ok) {
     if (process.env.NODE_ENV !== "production") {
+      const missing = "missing" in cfg ? cfg.missing.join(", ") : "unknown";
       console.warn(
-        `[db] TiDB credentials missing (${cfg.missing.join(", ")}). Repositories will use fallbacks.`,
+        `[db] TiDB credentials missing (${missing}). Repositories will use fallbacks.`,
       );
     }
     return undefined;
@@ -36,10 +37,10 @@ function createDb(): DrizzleDb | undefined {
   if (process.env.NODE_ENV !== "production") {
     globalThis.__xhenvoltDbPool = pool;
   }
-  return drizzle(pool, { schema, mode: "default" });
+  return drizzle(pool, { schema, mode: "default" }) as unknown as DrizzleDb;
 }
 
-const db = globalThis.__xhenvoltDb ?? createDb();
+const db = (globalThis.__xhenvoltDb ?? createDb()) as unknown as DrizzleDb | undefined;
 
 if (process.env.NODE_ENV !== "production" && db) {
   globalThis.__xhenvoltDb = db;

@@ -132,7 +132,7 @@ export async function probeDatabaseDeep(): Promise<DbProbeResult> {
     return {
       ok: false,
       cause: "missing_credentials",
-      message: `TiDB credentials missing: ${cfg.missing.join(", ")}`,
+      message: `TiDB credentials missing: ${"missing" in cfg ? cfg.missing.join(", ") : "unknown"}`,
       hint:
         "Set TIDB_HOST, TIDB_USER, TIDB_PASSWORD, TIDB_DB in .env.local, then restart the dev server. Next.js only reads env files at startup.",
       durationMs: Date.now() - start,

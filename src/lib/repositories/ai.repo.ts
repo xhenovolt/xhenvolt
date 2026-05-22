@@ -61,7 +61,15 @@ export async function searchTrainingDocumentsByKeywords(
         ORDER BY score DESC
         LIMIT ${limit}
       `);
-      return rows.rows ?? (rows as unknown as Array<AiTrainingDocument & { score: number }>);
+      // mysql2 returns [rows, fields]; older neon-http returned { rows: [...] }.
+      type Row = AiTrainingDocument & { score: number };
+      if (Array.isArray(rows)) {
+        const inner = (rows as unknown as [Row[], unknown])[0];
+        if (Array.isArray(inner)) return inner;
+        return rows as unknown as Row[];
+      }
+      const maybe = rows as unknown as { rows?: Row[] };
+      return maybe.rows ?? [];
     },
     {
       key: `ai-search:${query}:${limit}`,
