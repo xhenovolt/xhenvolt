@@ -55,6 +55,26 @@ async function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise
  * real reason 2-3 levels deep behind "Failed query" wrappers — without
  * this, the dashboard just shows the outermost (useless) message.
  */
+/**
+ * Drizzle's mysql2 driver returns the raw mysql2 result from `db.execute`,
+ * which is the tuple `[rows, fields]`. The Postgres neon-http driver
+ * used to return `{rows: [...]}`. This helper handles both shapes so
+ * probe code stays driver-agnostic.
+ */
+function firstRow<T>(r: unknown): T | undefined {
+  if (Array.isArray(r)) {
+    const inner = r[0];
+    if (Array.isArray(inner)) return inner[0] as T;
+    if (inner && typeof inner === "object") return inner as T;
+    return undefined;
+  }
+  if (r && typeof r === "object" && "rows" in r) {
+    const rows = (r as { rows: unknown[] }).rows;
+    return Array.isArray(rows) ? (rows[0] as T) : undefined;
+  }
+  return undefined;
+}
+
 function explainError(err: unknown): string {
   const parts: string[] = [];
   let cur: unknown = err;
@@ -156,14 +176,12 @@ async function probeAuthTables(): Promise<ProbeResult> {
     }
     const r = await db.execute(sql`
       SELECT
-        (SELECT count(*) FROM information_schema.tables
-         WHERE table_schema = 'public' AND table_name = 'admin_users') AS users_exists,
-        (SELECT count(*) FROM information_schema.tables
-         WHERE table_schema = 'public' AND table_name = 'admin_sessions') AS sessions_exists
+        (SELECT COUNT(*) FROM information_schema.tables
+         WHERE table_schema = DATABASE() AND table_name = 'admin_users') AS users_exists,
+        (SELECT COUNT(*) FROM information_schema.tables
+         WHERE table_schema = DATABASE() AND table_name = 'admin_sessions') AS sessions_exists
     `);
-    const rows = ((r as unknown as { rows?: Array<{ users_exists: string; sessions_exists: string }> }).rows
-      ?? (r as unknown as Array<{ users_exists: string; sessions_exists: string }>));
-    const row = Array.isArray(rows) ? rows[0] : undefined;
+    const row = firstRow<{ users_exists: number | string; sessions_exists: number | string }>(r);
     const users = Number(row?.users_exists ?? 0);
     const sessions = Number(row?.sessions_exists ?? 0);
     if (users < 1 || sessions < 1) {
@@ -183,9 +201,7 @@ async function probeAdminUserCount(): Promise<ProbeResult> {
       return { status: "unknown", message: "Skipped — DB unavailable" };
     }
     const r = await db.execute(sql`SELECT COUNT(*) AS c FROM admin_users`);
-    const rows = ((r as unknown as { rows?: Array<{ c: number }> }).rows
-      ?? (r as unknown as Array<{ c: number }>));
-    const row = Array.isArray(rows) ? rows[0] : undefined;
+    const row = firstRow<{ c: number | string }>(r);
     const c = Number(row?.c ?? 0);
     if (c === 0) {
       return {
@@ -208,9 +224,7 @@ async function probeActiveSessions(): Promise<ProbeResult> {
         (SELECT COUNT(*) FROM admin_sessions WHERE expires_at > now()) AS live,
         (SELECT COUNT(*) FROM admin_sessions WHERE expires_at <= now()) AS expired
     `);
-    const rows = ((r as unknown as { rows?: Array<{ live: number; expired: number }> }).rows
-      ?? (r as unknown as Array<{ live: number; expired: number }>));
-    const row = Array.isArray(rows) ? rows[0] : undefined;
+    const row = firstRow<{ live: number | string; expired: number | string }>(r);
     const live = Number(row?.live ?? 0);
     const expired = Number(row?.expired ?? 0);
     return {
@@ -234,11 +248,9 @@ async function probeCmsContent(): Promise<ProbeResult> {
         (SELECT COUNT(*) FROM hero_slides WHERE published = true) AS hero,
         (SELECT COUNT(*) FROM statistics WHERE published = true) AS statistics
     `);
-    const rows = ((r as unknown as { rows?: Array<Record<string, number>> }).rows
-      ?? (r as unknown as Array<Record<string, number>>));
-    const row = Array.isArray(rows) ? rows[0] : undefined;
+    const row = firstRow<Record<string, number | string>>(r);
     if (!row) return { status: "degraded", message: "Could not read content counts" };
-    const total = Object.values(row).reduce((a, b) => a + Number(b), 0);
+    const total = Object.values(row).reduce<number>((a, b) => a + Number(b), 0);
     return {
       status: total > 0 ? "ok" : "degraded",
       message: `${total} published items across core tables`,
@@ -258,9 +270,7 @@ async function probeAiCorpus(): Promise<ProbeResult> {
         (SELECT COUNT(*) FROM ai_training_documents WHERE embedding IS NOT NULL) AS with_embedding,
         (SELECT COUNT(*) FROM faqs WHERE published = true AND deleted_at IS NULL) AS faqs
     `);
-    const rows = ((r as unknown as { rows?: Array<Record<string, number>> }).rows
-      ?? (r as unknown as Array<Record<string, number>>));
-    const row = Array.isArray(rows) ? rows[0] : undefined;
+    const row = firstRow<Record<string, number | string>>(r);
     const docs = Number(row?.docs ?? 0);
     const withEmb = Number(row?.with_embedding ?? 0);
     const faqs = Number(row?.faqs ?? 0);
