@@ -1,25 +1,42 @@
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 import * as schema from "./schema";
+import { readTidbConfig, toPoolOptions } from "./config";
+
+/**
+ * Singleton Drizzle client backed by a mysql2 connection pool against
+ * TiDB Serverless. Cached on globalThis in dev to survive HMR.
+ *
+ * If credentials are missing, returns undefined and hasDb() reports
+ * false — repositories must use that to fall back instead of throwing.
+ * This is intentional: a misconfigured runtime should render *something*
+ * (so the admin can reach /admin/system-health to diagnose), not crash.
+ */
+
+type DrizzleDb = ReturnType<typeof drizzle<typeof schema>>;
 
 declare global {
   // eslint-disable-next-line no-var
-  var __xhenvoltDb: ReturnType<typeof drizzle<typeof schema>> | undefined;
+  var __xhenvoltDb: DrizzleDb | undefined;
+  // eslint-disable-next-line no-var
+  var __xhenvoltDbPool: mysql.Pool | undefined;
 }
 
-const connectionString = process.env.DATABASE_URL;
-
-function createDb() {
-  if (!connectionString) {
+function createDb(): DrizzleDb | undefined {
+  const cfg = readTidbConfig();
+  if (!cfg.ok) {
     if (process.env.NODE_ENV !== "production") {
       console.warn(
-        "[db] DATABASE_URL is not set. Repositories will return safe fallbacks.",
+        `[db] TiDB credentials missing (${cfg.missing.join(", ")}). Repositories will use fallbacks.`,
       );
     }
     return undefined;
   }
-  const sql = neon(connectionString);
-  return drizzle(sql, { schema });
+  const pool = mysql.createPool(toPoolOptions(cfg.config));
+  if (process.env.NODE_ENV !== "production") {
+    globalThis.__xhenvoltDbPool = pool;
+  }
+  return drizzle(pool, { schema, mode: "default" });
 }
 
 const db = globalThis.__xhenvoltDb ?? createDb();

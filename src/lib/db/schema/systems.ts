@@ -1,13 +1,12 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  jsonb,
+  json,
   index,
   uniqueIndex,
-  uuid,
-  integer,
-} from "drizzle-orm/pg-core";
+  int,
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -17,7 +16,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const systems = pgTable(
+export const systems = mysqlTable(
   "systems",
   {
     id: id(),
@@ -28,16 +27,16 @@ export const systems = pgTable(
     longDescription: text("long_description"),
     category: varchar("category", { length: 80 }),
     status: varchar("status", { length: 20 }).notNull().default("active"),
-    externalUrl: text("external_url"),
-    logoUrl: text("logo_url"),
+    externalUrl: varchar("external_url", { length: 500 }),
+    logoUrl: varchar("logo_url", { length: 500 }),
     accentColor: varchar("accent_color", { length: 30 }),
     icon: varchar("icon", { length: 80 }),
-    deployments: integer("deployments").default(0),
-    highlights: jsonb("highlights"),
-    techStack: jsonb("tech_stack"),
+    deployments: int("deployments").default(0),
+    highlights: json("highlights"),
+    techStack: json("tech_stack"),
     sortOrder: sortOrder(),
     published: published(),
-    isFlagship: jsonb("is_flagship"),
+    isFlagship: json("is_flagship"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
     deletedAt: deletedAt(),
@@ -48,11 +47,11 @@ export const systems = pgTable(
   ],
 );
 
-export const systemFeatures = pgTable(
+export const systemFeatures = mysqlTable(
   "system_features",
   {
     id: id(),
-    systemId: uuid("system_id")
+    systemId: varchar("system_id", { length: 36 })
       .references(() => systems.id, { onDelete: "cascade" })
       .notNull(),
     title: varchar("title", { length: 200 }).notNull(),
@@ -66,19 +65,19 @@ export const systemFeatures = pgTable(
   (t) => [index("system_features_system_idx").on(t.systemId)],
 );
 
-export const systemScreenshots = pgTable(
+export const systemScreenshots = mysqlTable(
   "system_screenshots",
   {
     id: id(),
-    systemId: uuid("system_id")
+    systemId: varchar("system_id", { length: 36 })
       .references(() => systems.id, { onDelete: "cascade" })
       .notNull(),
     title: varchar("title", { length: 200 }),
     caption: text("caption"),
-    imageUrl: text("image_url").notNull(),
-    alt: text("alt").notNull().default(""),
-    width: integer("width"),
-    height: integer("height"),
+    imageUrl: varchar("image_url", { length: 500 }).notNull(),
+    alt: varchar("alt", { length: 500 }).notNull().default(""),
+    width: int("width"),
+    height: int("height"),
     sortOrder: sortOrder(),
     published: published(),
     createdAt: createdAt(),

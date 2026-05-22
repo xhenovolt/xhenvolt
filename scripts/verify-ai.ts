@@ -1,10 +1,4 @@
-import "dotenv/config";
-import { config } from "dotenv";
-import { setDefaultResultOrder } from "node:dns";
-import { neonClient } from "./neon-http";
-
-setDefaultResultOrder("ipv4first");
-config({ path: ".env.local" });
+import { getPool, endPool } from "./_tidb";
 
 const STOPWORDS = new Set([
   "the","a","an","is","are","was","were","be","been","being",
@@ -17,12 +11,15 @@ const STOPWORDS = new Set([
 ]);
 
 function tokens(s: string): string[] {
-  return s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ")
-    .split(/\s+/).filter((t) => t.length > 1 && !STOPWORDS.has(t));
+  return s
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .split(/\s+/)
+    .filter((t) => t.length > 1 && !STOPWORDS.has(t));
 }
 
 async function main() {
-  const client = neonClient(process.env.DATABASE_URL!);
+  const pool = getPool();
 
   const queries = [
     "What is DRAIS?",
@@ -33,37 +30,44 @@ async function main() {
     "completely unrelated question about astronauts",
   ];
 
-  const faqs = (
-    await client.exec<{ id: string; question: string; answer: string; keywords: string[] | null }>(
-      `SELECT id, question, answer, keywords FROM faqs WHERE published = true AND deleted_at IS NULL`,
-    )
-  ).rows;
+  const [faqs] = (await pool.query(
+    `SELECT id, question, answer, keywords FROM faqs WHERE published = 1 AND deleted_at IS NULL`,
+  )) as [
+    Array<{ id: string; question: string; answer: string; keywords: unknown }>,
+    unknown,
+  ];
 
   for (const q of queries) {
     const qt = new Set(tokens(q));
     let bestFaq = { id: "", q: "", score: 0 };
     for (const f of faqs) {
+      const kwList = Array.isArray(f.keywords)
+        ? (f.keywords as string[])
+        : [];
       const ft = new Set([
         ...tokens(f.question),
-        ...(Array.isArray(f.keywords) ? f.keywords.flatMap((k) => tokens(k)) : []),
+        ...kwList.flatMap((k) => tokens(k)),
       ]);
       let overlap = 0;
       for (const t of qt) if (ft.has(t)) overlap++;
       const score = qt.size === 0 ? 0 : overlap / qt.size;
       if (score > bestFaq.score) bestFaq = { id: f.id, q: f.question, score };
     }
-    const docMatch = (
-      await client.exec<{ id: string; title: string; score: number }>(
-        `SELECT id, title,
-          (CASE WHEN lower(title) LIKE $1 THEN 3 ELSE 0 END) +
-          (CASE WHEN lower(coalesce(summary,'')) LIKE $1 THEN 2 ELSE 0 END) +
-          (CASE WHEN lower(content) LIKE $1 THEN 1 ELSE 0 END) AS score
-         FROM ai_training_documents
-         WHERE lower(title) LIKE $1 OR lower(content) LIKE $1
-         ORDER BY score DESC LIMIT 1`,
-        ["%" + q.toLowerCase().split(/\s+/).filter((t) => !STOPWORDS.has(t))[0] + "%"],
-      )
-    ).rows[0];
+
+    const needle = "%" +
+      q.toLowerCase().split(/\s+/).filter((t) => !STOPWORDS.has(t))[0] +
+      "%";
+    const [docs] = (await pool.query(
+      `SELECT id, title,
+        (CASE WHEN LOWER(title) LIKE ? THEN 3 ELSE 0 END) +
+        (CASE WHEN LOWER(COALESCE(summary,'')) LIKE ? THEN 2 ELSE 0 END) +
+        (CASE WHEN LOWER(content) LIKE ? THEN 1 ELSE 0 END) AS score
+       FROM ai_training_documents
+       WHERE LOWER(title) LIKE ? OR LOWER(content) LIKE ?
+       ORDER BY score DESC LIMIT 1`,
+      [needle, needle, needle, needle, needle],
+    )) as [Array<{ id: string; title: string; score: number }>, unknown];
+    const docMatch = docs[0];
     console.log(`Q: ${q}`);
     console.log(
       `  best FAQ : score=${bestFaq.score.toFixed(2)}  "${bestFaq.q || "(none)"}"`,
@@ -73,4 +77,11 @@ async function main() {
     );
   }
 }
-main().catch((e) => { console.error(e); process.exit(1); });
+
+main()
+  .then(() => endPool())
+  .catch(async (e) => {
+    console.error(e);
+    await endPool();
+    process.exit(1);
+  });

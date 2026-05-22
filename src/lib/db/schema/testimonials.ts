@@ -1,12 +1,11 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  integer,
+  int,
   index,
-  uuid,
   boolean,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import { systems } from "./systems";
 import {
   id,
@@ -17,7 +16,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const testimonials = pgTable(
+export const testimonials = mysqlTable(
   "testimonials",
   {
     id: id(),
@@ -26,11 +25,12 @@ export const testimonials = pgTable(
     organization: varchar("organization", { length: 200 }),
     location: varchar("location", { length: 160 }),
     quote: text("quote").notNull(),
-    rating: integer("rating").notNull().default(5),
-    avatarUrl: text("avatar_url"),
-    systemId: uuid("system_id").references(() => systems.id, {
-      onDelete: "set null",
-    }),
+    rating: int("rating").notNull().default(5),
+    avatarUrl: varchar("avatar_url", { length: 500 }),
+    systemId: varchar("system_id", { length: 36 }).references(
+      () => systems.id,
+      { onDelete: "set null" },
+    ),
     featured: boolean("featured").notNull().default(false),
     sortOrder: sortOrder(),
     published: published(),

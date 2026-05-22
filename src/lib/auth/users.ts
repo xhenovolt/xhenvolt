@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { eq, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { hashPassword, verifyPassword } from "./password";
@@ -59,21 +60,18 @@ export async function createAdmin(input: {
 }): Promise<AdminUser> {
   if (!db) throw new Error("db_unavailable");
   const passwordHash = await hashPassword(input.password);
-  const [row] = await db
-    .insert(schema.adminUsers)
-    .values({
-      email: input.email.toLowerCase().trim(),
-      passwordHash,
-      name: input.name ?? null,
-      role: input.role ?? "admin",
-    })
-    .returning({
-      id: schema.adminUsers.id,
-      email: schema.adminUsers.email,
-      name: schema.adminUsers.name,
-      role: schema.adminUsers.role,
-    });
-  return row;
+  const id = randomUUID();
+  const email = input.email.toLowerCase().trim();
+  const name = input.name ?? null;
+  const role = input.role ?? "admin";
+  await db.insert(schema.adminUsers).values({
+    id,
+    email,
+    passwordHash,
+    name,
+    role,
+  });
+  return { id, email, name, role };
 }
 
 export async function setAdminPassword(
@@ -85,7 +83,7 @@ export async function setAdminPassword(
   const res = await db
     .update(schema.adminUsers)
     .set({ passwordHash })
-    .where(eq(schema.adminUsers.email, email.toLowerCase().trim()))
-    .returning({ id: schema.adminUsers.id });
-  return res.length > 0;
+    .where(eq(schema.adminUsers.email, email.toLowerCase().trim()));
+  const header = res as unknown as { affectedRows?: number };
+  return (header.affectedRows ?? 0) > 0;
 }

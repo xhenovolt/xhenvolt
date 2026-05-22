@@ -127,7 +127,7 @@ async function probeDatabase(): Promise<ProbeResult> {
       return {
         status: "down",
         message: "DB client not initialized",
-        detail: "DATABASE_URL is not loaded into the running process.",
+        detail: "TIDB_* credentials are not loaded into the running process.",
       };
     }
     const r = await db.execute(sql`SELECT 1 AS ok`);
@@ -182,7 +182,7 @@ async function probeAdminUserCount(): Promise<ProbeResult> {
     if (!hasDb() || !db) {
       return { status: "unknown", message: "Skipped — DB unavailable" };
     }
-    const r = await db.execute(sql`SELECT count(*)::int AS c FROM admin_users`);
+    const r = await db.execute(sql`SELECT COUNT(*) AS c FROM admin_users`);
     const rows = ((r as unknown as { rows?: Array<{ c: number }> }).rows
       ?? (r as unknown as Array<{ c: number }>));
     const row = Array.isArray(rows) ? rows[0] : undefined;
@@ -205,8 +205,8 @@ async function probeActiveSessions(): Promise<ProbeResult> {
     }
     const r = await db.execute(sql`
       SELECT
-        (SELECT count(*)::int FROM admin_sessions WHERE expires_at > now()) AS live,
-        (SELECT count(*)::int FROM admin_sessions WHERE expires_at <= now()) AS expired
+        (SELECT COUNT(*) FROM admin_sessions WHERE expires_at > now()) AS live,
+        (SELECT COUNT(*) FROM admin_sessions WHERE expires_at <= now()) AS expired
     `);
     const rows = ((r as unknown as { rows?: Array<{ live: number; expired: number }> }).rows
       ?? (r as unknown as Array<{ live: number; expired: number }>));
@@ -228,11 +228,11 @@ async function probeCmsContent(): Promise<ProbeResult> {
     }
     const r = await db.execute(sql`
       SELECT
-        (SELECT count(*)::int FROM testimonials WHERE published = true AND deleted_at IS NULL) AS testimonials,
-        (SELECT count(*)::int FROM systems WHERE published = true AND deleted_at IS NULL) AS systems,
-        (SELECT count(*)::int FROM faqs WHERE published = true AND deleted_at IS NULL) AS faqs,
-        (SELECT count(*)::int FROM hero_slides WHERE published = true) AS hero,
-        (SELECT count(*)::int FROM statistics WHERE published = true) AS statistics
+        (SELECT COUNT(*) FROM testimonials WHERE published = true AND deleted_at IS NULL) AS testimonials,
+        (SELECT COUNT(*) FROM systems WHERE published = true AND deleted_at IS NULL) AS systems,
+        (SELECT COUNT(*) FROM faqs WHERE published = true AND deleted_at IS NULL) AS faqs,
+        (SELECT COUNT(*) FROM hero_slides WHERE published = true) AS hero,
+        (SELECT COUNT(*) FROM statistics WHERE published = true) AS statistics
     `);
     const rows = ((r as unknown as { rows?: Array<Record<string, number>> }).rows
       ?? (r as unknown as Array<Record<string, number>>));
@@ -254,9 +254,9 @@ async function probeAiCorpus(): Promise<ProbeResult> {
     }
     const r = await db.execute(sql`
       SELECT
-        (SELECT count(*)::int FROM ai_training_documents WHERE published = true AND deleted_at IS NULL) AS docs,
-        (SELECT count(*)::int FROM ai_training_documents WHERE embedding IS NOT NULL) AS with_embedding,
-        (SELECT count(*)::int FROM faqs WHERE published = true AND deleted_at IS NULL) AS faqs
+        (SELECT COUNT(*) FROM ai_training_documents WHERE published = true AND deleted_at IS NULL) AS docs,
+        (SELECT COUNT(*) FROM ai_training_documents WHERE embedding IS NOT NULL) AS with_embedding,
+        (SELECT COUNT(*) FROM faqs WHERE published = true AND deleted_at IS NULL) AS faqs
     `);
     const rows = ((r as unknown as { rows?: Array<Record<string, number>> }).rows
       ?? (r as unknown as Array<Record<string, number>>));

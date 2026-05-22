@@ -1,13 +1,13 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
   index,
-  jsonb,
-} from "drizzle-orm/pg-core";
+  json,
+} from "drizzle-orm/mysql-core";
 import { id, createdAt, updatedAt } from "./_shared";
 
-export const contactMessages = pgTable(
+export const contactMessages = mysqlTable(
   "contact_messages",
   {
     id: id(),
@@ -18,7 +18,7 @@ export const contactMessages = pgTable(
     message: text("message").notNull(),
     source: varchar("source", { length: 80 }),
     status: varchar("status", { length: 30 }).notNull().default("new"),
-    metadata: jsonb("metadata"),
+    metadata: json("metadata"),
     ipHash: varchar("ip_hash", { length: 64 }),
     userAgent: text("user_agent"),
     createdAt: createdAt(),

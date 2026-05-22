@@ -1,11 +1,11 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
   index,
   date,
-  jsonb,
-} from "drizzle-orm/pg-core";
+  json,
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -14,7 +14,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const timelineEntries = pgTable(
+export const timelineEntries = mysqlTable(
   "timeline_entries",
   {
     id: id(),
@@ -24,8 +24,8 @@ export const timelineEntries = pgTable(
     label: varchar("label", { length: 80 }),
     icon: varchar("icon", { length: 80 }),
     accentColor: varchar("accent_color", { length: 30 }),
-    highlight: jsonb("highlight"),
-    events: jsonb("events"),
+    highlight: json("highlight"),
+    events: json("events"),
     sortOrder: sortOrder(),
     published: published(),
     createdAt: createdAt(),

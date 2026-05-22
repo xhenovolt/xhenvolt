@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { eq, sql } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
@@ -47,25 +48,24 @@ export async function createTestimonial(fd: FormData) {
     throw new Error("invalid: " + JSON.stringify(parsed.error.flatten()));
   }
   if (!db) throw new Error("db_unavailable");
-  const [row] = await db
-    .insert(schema.testimonials)
-    .values({
-      authorName: parsed.data.authorName,
-      authorRole: parsed.data.authorRole ?? null,
-      organization: parsed.data.organization ?? null,
-      location: parsed.data.location ?? null,
-      quote: parsed.data.quote,
-      rating: parsed.data.rating,
-      featured: parsed.data.featured ?? false,
-      published: parsed.data.published ?? true,
-      sortOrder: parsed.data.sortOrder ?? 0,
-    })
-    .returning({ id: schema.testimonials.id });
+  const newId = randomUUID();
+  await db.insert(schema.testimonials).values({
+    id: newId,
+    authorName: parsed.data.authorName,
+    authorRole: parsed.data.authorRole ?? null,
+    organization: parsed.data.organization ?? null,
+    location: parsed.data.location ?? null,
+    quote: parsed.data.quote,
+    rating: parsed.data.rating,
+    featured: parsed.data.featured ?? false,
+    published: parsed.data.published ?? true,
+    sortOrder: parsed.data.sortOrder ?? 0,
+  });
   bust();
   await audit({
     action: "create",
     entityType: "testimonial",
-    entityId: row?.id,
+    entityId: newId,
     summary: `Created testimonial from ${parsed.data.authorName}`,
   });
   redirect("/admin/testimonials");

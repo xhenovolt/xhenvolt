@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { db, schema } from "@/lib/db";
 import { contactMessageInput } from "@/lib/validators/contact";
 
@@ -61,25 +61,24 @@ export async function POST(req: NextRequest) {
 
   const userAgent = req.headers.get("user-agent") ?? null;
   try {
-    const [row] = await db
-      .insert(schema.contactMessages)
-      .values({
-        name: parsed.data.name,
-        email: parsed.data.email,
-        phone: parsed.data.phone ?? null,
-        subject: parsed.data.subject ?? null,
-        message: parsed.data.message,
-        source: parsed.data.source ?? "web",
-        status: "new",
-        userAgent,
-        ipHash,
-      })
-      .returning({ id: schema.contactMessages.id });
+    const newId = randomUUID();
+    await db.insert(schema.contactMessages).values({
+      id: newId,
+      name: parsed.data.name,
+      email: parsed.data.email,
+      phone: parsed.data.phone ?? null,
+      subject: parsed.data.subject ?? null,
+      message: parsed.data.message,
+      source: parsed.data.source ?? "web",
+      status: "new",
+      userAgent,
+      ipHash,
+    });
 
     return NextResponse.json(
       {
         ok: true,
-        id: row.id,
+        id: newId,
         message: "Thanks — we received your message and will reply within a business day.",
       },
       { status: 201 },

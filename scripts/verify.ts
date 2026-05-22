@@ -1,26 +1,29 @@
-import "dotenv/config";
-import { config } from "dotenv";
-import { neonClient } from "./neon-http";
-
-config({ path: ".env.local" });
+import { getPool, endPool } from "./_tidb";
 
 async function main() {
-  const client = neonClient(process.env.DATABASE_URL!);
-  const res = await client.exec<{ table_name: string }>(
-    `SELECT table_name FROM information_schema.tables
-     WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
-     ORDER BY table_name`,
-  );
-  console.log(`tables (${res.rows.length}):`);
-  for (const r of res.rows) console.log("  -", r.table_name);
+  const pool = getPool();
 
-  const ext = await client.exec<{ extname: string }>(
-    `SELECT extname FROM pg_extension WHERE extname IN ('pgcrypto', 'vector') ORDER BY extname`,
-  );
-  console.log("\nextensions:");
-  for (const r of ext.rows) console.log("  -", r.extname);
+  const [versionRows] = (await pool.query("SELECT VERSION() AS v")) as [
+    Array<{ v: string }>,
+    unknown,
+  ];
+  console.log("Server version:", versionRows[0]?.v ?? "unknown");
+
+  const [tableRows] = (await pool.query(
+    `SELECT TABLE_NAME AS table_name
+     FROM information_schema.tables
+     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_TYPE = 'BASE TABLE'
+     ORDER BY TABLE_NAME`,
+  )) as [Array<{ table_name: string }>, unknown];
+
+  console.log(`\ntables (${tableRows.length}):`);
+  for (const r of tableRows) console.log("  -", r.table_name);
 }
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+
+main()
+  .then(() => endPool())
+  .catch(async (e) => {
+    console.error(e);
+    await endPool();
+    process.exit(1);
+  });

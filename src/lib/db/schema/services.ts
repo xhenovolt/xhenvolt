@@ -1,11 +1,11 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  jsonb,
+  json,
   index,
   uniqueIndex,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -15,7 +15,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const services = pgTable(
+export const services = mysqlTable(
   "services",
   {
     id: id(),
@@ -26,7 +26,7 @@ export const services = pgTable(
     longDescription: text("long_description"),
     icon: varchar("icon", { length: 80 }),
     accentColor: varchar("accent_color", { length: 30 }),
-    deliverables: jsonb("deliverables"),
+    deliverables: json("deliverables"),
     audience: varchar("audience", { length: 200 }),
     priceFrom: varchar("price_from", { length: 80 }),
     sortOrder: sortOrder(),

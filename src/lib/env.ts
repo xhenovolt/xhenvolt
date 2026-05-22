@@ -19,10 +19,36 @@ export interface EnvVarSpec {
 
 export const ENV_VARS: EnvVarSpec[] = [
   {
-    name: "DATABASE_URL",
+    name: "TIDB_HOST",
     required: true,
-    description: "Postgres connection string (Neon). Used by Drizzle for all reads + writes.",
-    pattern: /^postgres(ql)?:\/\//i,
+    description:
+      "TiDB Serverless gateway hostname (gateway01.<region>.prod.aws.tidbcloud.com).",
+  },
+  {
+    name: "TIDB_USER",
+    required: true,
+    description: "TiDB username (looks like <id>.<role>).",
+  },
+  {
+    name: "TIDB_PASSWORD",
+    required: true,
+    description: "TiDB password issued in the TiDB Cloud console.",
+  },
+  {
+    name: "TIDB_DB",
+    required: true,
+    description: "TiDB database name (default: test).",
+  },
+  {
+    name: "TIDB_PORT",
+    required: false,
+    description: "TiDB port. Defaults to 4000.",
+    pattern: /^\d+$/,
+  },
+  {
+    name: "DATABASE_MODE",
+    required: false,
+    description: "tidb (TLS on, default) or mysql (TLS off, local container).",
   },
   {
     name: "REVALIDATE_SECRET",
@@ -41,7 +67,7 @@ export interface EnvSnapshot {
   ok: boolean;
   missingRequired: EnvIssue[];
   warnings: EnvIssue[];
-  set: string[]; // names of vars that are present (values not exposed)
+  set: string[];
 }
 
 export function inspectEnv(): EnvSnapshot {
@@ -83,9 +109,7 @@ export function inspectEnv(): EnvSnapshot {
 }
 
 /**
- * Server-side fail-loud check. Call at module-load from anywhere that
- * absolutely cannot run without these vars (db client, auth helpers).
- * Throws — never silently degrades.
+ * Server-side fail-loud check. Throws — never silently degrades.
  */
 export function requireEnv(...names: string[]): void {
   const missing: string[] = [];

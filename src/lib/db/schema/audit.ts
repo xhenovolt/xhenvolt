@@ -1,31 +1,30 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  uuid,
   index,
-  jsonb,
-} from "drizzle-orm/pg-core";
+  json,
+} from "drizzle-orm/mysql-core";
 import { id, createdAt } from "./_shared";
 import { adminUsers } from "./admin";
 
 /**
- * Append-only log of admin mutations. Helps answer "who changed X and when?"
- * Never updated or deleted by application code.
+ * Append-only log of admin mutations. Never updated or deleted by app code.
  */
-export const adminAuditLogs = pgTable(
+export const adminAuditLogs = mysqlTable(
   "admin_audit_logs",
   {
     id: id(),
-    actorId: uuid("actor_id").references(() => adminUsers.id, {
-      onDelete: "set null",
-    }),
+    actorId: varchar("actor_id", { length: 36 }).references(
+      () => adminUsers.id,
+      { onDelete: "set null" },
+    ),
     actorEmail: varchar("actor_email", { length: 240 }),
     action: varchar("action", { length: 80 }).notNull(),
     entityType: varchar("entity_type", { length: 80 }).notNull(),
     entityId: varchar("entity_id", { length: 64 }),
     summary: text("summary"),
-    metadata: jsonb("metadata"),
+    metadata: json("metadata"),
     ipHash: varchar("ip_hash", { length: 64 }),
     userAgent: text("user_agent"),
     createdAt: createdAt(),

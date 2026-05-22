@@ -1,14 +1,13 @@
-import { sql } from "drizzle-orm";
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  jsonb,
+  json,
   index,
   uniqueIndex,
-  integer,
+  int,
   customType,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -18,6 +17,14 @@ import {
   sortOrder,
 } from "./_shared";
 
+/**
+ * TiDB native VECTOR type. Syntax is identical to pgvector at the
+ * column-definition level (VECTOR(N)) but operators differ: TiDB uses
+ * vec_cosine_distance(a, b) instead of the `<=>` infix.
+ *
+ * Values round-trip as the string form "[1.0, 2.0, ...]" — same wire
+ * format as pgvector — which is why toDriver is unchanged.
+ */
 const vector = customType<{ data: number[]; driverData: string }>({
   dataType(config) {
     const dims = (config as { dimensions?: number })?.dimensions ?? 1536;
@@ -28,7 +35,7 @@ const vector = customType<{ data: number[]; driverData: string }>({
   },
 });
 
-export const aiTrainingDocuments = pgTable(
+export const aiTrainingDocuments = mysqlTable(
   "ai_training_documents",
   {
     id: id(),
@@ -36,13 +43,13 @@ export const aiTrainingDocuments = pgTable(
     title: varchar("title", { length: 240 }).notNull(),
     source: varchar("source", { length: 120 }),
     category: varchar("category", { length: 80 }),
-    keywords: jsonb("keywords"),
+    keywords: json("keywords"),
     content: text("content").notNull(),
     summary: text("summary"),
-    tokenEstimate: integer("token_estimate"),
+    tokenEstimate: int("token_estimate"),
     embedding: vector("embedding", { dimensions: 1536 }),
     embeddingModel: varchar("embedding_model", { length: 80 }),
-    metadata: jsonb("metadata"),
+    metadata: json("metadata"),
     sortOrder: sortOrder(),
     published: published(),
     createdAt: createdAt(),
@@ -55,17 +62,17 @@ export const aiTrainingDocuments = pgTable(
   ],
 );
 
-export const aiConversationLogs = pgTable(
+export const aiConversationLogs = mysqlTable(
   "ai_conversation_logs",
   {
     id: id(),
     sessionId: varchar("session_id", { length: 80 }).notNull(),
     role: varchar("role", { length: 20 }).notNull(),
     message: text("message").notNull(),
-    matchedDocIds: jsonb("matched_doc_ids"),
-    matchedFaqIds: jsonb("matched_faq_ids"),
-    confidence: integer("confidence"),
-    latencyMs: integer("latency_ms"),
+    matchedDocIds: json("matched_doc_ids"),
+    matchedFaqIds: json("matched_faq_ids"),
+    confidence: int("confidence"),
+    latencyMs: int("latency_ms"),
     userAgent: text("user_agent"),
     ipHash: varchar("ip_hash", { length: 64 }),
     createdAt: createdAt(),

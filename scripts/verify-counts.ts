@@ -1,8 +1,4 @@
-import "dotenv/config";
-import { config } from "dotenv";
-import { neonClient } from "./neon-http";
-
-config({ path: ".env.local" });
+import { getPool, endPool } from "./_tidb";
 
 const TABLES = [
   "settings",
@@ -34,19 +30,31 @@ const TABLES = [
   "tags",
   "gallery_images",
   "media_assets",
+  "admin_users",
+  "admin_sessions",
+  "admin_audit_logs",
 ];
 
 async function main() {
-  const client = neonClient(process.env.DATABASE_URL!);
+  const pool = getPool();
   console.log("Row counts:");
   for (const t of TABLES) {
-    const r = await client.exec<{ c: string }>(
-      `SELECT count(*)::text AS c FROM "${t}"`,
-    );
-    console.log(`  ${t.padEnd(28)} ${r.rows[0].c}`);
+    try {
+      const [rows] = (await pool.query(
+        `SELECT COUNT(*) AS c FROM \`${t}\``,
+      )) as [Array<{ c: number }>, unknown];
+      console.log(`  ${t.padEnd(28)} ${rows[0]?.c ?? 0}`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.log(`  ${t.padEnd(28)} (missing) ${msg.slice(0, 80)}`);
+    }
   }
 }
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+
+main()
+  .then(() => endPool())
+  .catch(async (e) => {
+    console.error(e);
+    await endPool();
+    process.exit(1);
+  });

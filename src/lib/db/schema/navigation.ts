@@ -1,11 +1,10 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
   index,
-  uuid,
   boolean,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -14,7 +13,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const navigationLinks = pgTable(
+export const navigationLinks = mysqlTable(
   "navigation_links",
   {
     id: id(),
@@ -22,7 +21,7 @@ export const navigationLinks = pgTable(
     href: varchar("href", { length: 240 }).notNull(),
     target: varchar("target", { length: 20 }).default("_self"),
     icon: varchar("icon", { length: 80 }),
-    parentId: uuid("parent_id"),
+    parentId: varchar("parent_id", { length: 36 }),
     location: varchar("location", { length: 40 }).notNull().default("primary"),
     description: text("description"),
     isExternal: boolean("is_external").notNull().default(false),
@@ -37,7 +36,7 @@ export const navigationLinks = pgTable(
   ],
 );
 
-export const footerLinks = pgTable(
+export const footerLinks = mysqlTable(
   "footer_links",
   {
     id: id(),
@@ -53,17 +52,14 @@ export const footerLinks = pgTable(
   (t) => [index("footer_column_idx").on(t.column)],
 );
 
-export const socialLinks = pgTable(
-  "social_links",
-  {
-    id: id(),
-    platform: varchar("platform", { length: 60 }).notNull().unique(),
-    label: varchar("label", { length: 120 }).notNull(),
-    href: varchar("href", { length: 240 }).notNull(),
-    icon: varchar("icon", { length: 80 }),
-    sortOrder: sortOrder(),
-    published: published(),
-    createdAt: createdAt(),
-    updatedAt: updatedAt(),
-  },
-);
+export const socialLinks = mysqlTable("social_links", {
+  id: id(),
+  platform: varchar("platform", { length: 60 }).notNull().unique(),
+  label: varchar("label", { length: 120 }).notNull(),
+  href: varchar("href", { length: 240 }).notNull(),
+  icon: varchar("icon", { length: 80 }),
+  sortOrder: sortOrder(),
+  published: published(),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});

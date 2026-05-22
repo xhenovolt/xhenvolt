@@ -1,12 +1,11 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  jsonb,
+  json,
   index,
   uniqueIndex,
-  uuid,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -16,7 +15,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const pages = pgTable(
+export const pages = mysqlTable(
   "pages",
   {
     id: id(),
@@ -26,7 +25,7 @@ export const pages = pgTable(
     summary: text("summary"),
     status: varchar("status", { length: 20 }).notNull().default("published"),
     published: published(),
-    metadata: jsonb("metadata"),
+    metadata: json("metadata"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
     deletedAt: deletedAt(),
@@ -37,11 +36,11 @@ export const pages = pgTable(
   ],
 );
 
-export const sections = pgTable(
+export const sections = mysqlTable(
   "sections",
   {
     id: id(),
-    pageId: uuid("page_id")
+    pageId: varchar("page_id", { length: 36 })
       .references(() => pages.id, { onDelete: "cascade" })
       .notNull(),
     key: varchar("key", { length: 120 }).notNull(),
@@ -49,7 +48,7 @@ export const sections = pgTable(
     title: varchar("title", { length: 240 }),
     subtitle: text("subtitle"),
     body: text("body"),
-    content: jsonb("content"),
+    content: json("content"),
     sortOrder: sortOrder(),
     published: published(),
     createdAt: createdAt(),
@@ -62,7 +61,7 @@ export const sections = pgTable(
   ],
 );
 
-export const seoMetadata = pgTable(
+export const seoMetadata = mysqlTable(
   "seo_metadata",
   {
     id: id(),
@@ -70,16 +69,16 @@ export const seoMetadata = pgTable(
     title: varchar("title", { length: 200 }).notNull(),
     description: text("description").notNull(),
     keywords: text("keywords"),
-    canonical: text("canonical"),
+    canonical: varchar("canonical", { length: 500 }),
     ogTitle: varchar("og_title", { length: 200 }),
     ogDescription: text("og_description"),
-    ogImage: text("og_image"),
+    ogImage: varchar("og_image", { length: 500 }),
     ogType: varchar("og_type", { length: 40 }).default("website"),
     twitterCard: varchar("twitter_card", { length: 40 }).default(
       "summary_large_image",
     ),
-    robots: jsonb("robots"),
-    structuredData: jsonb("structured_data"),
+    robots: json("robots"),
+    structuredData: json("structured_data"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },

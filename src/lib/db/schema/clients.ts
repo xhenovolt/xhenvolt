@@ -1,11 +1,11 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
   index,
   uniqueIndex,
   boolean,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -15,7 +15,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const clients = pgTable(
+export const clients = mysqlTable(
   "clients",
   {
     id: id(),
@@ -23,8 +23,8 @@ export const clients = pgTable(
     name: varchar("name", { length: 200 }).notNull(),
     kind: varchar("kind", { length: 60 }).notNull().default("school"),
     location: varchar("location", { length: 160 }),
-    logoUrl: text("logo_url"),
-    website: text("website"),
+    logoUrl: varchar("logo_url", { length: 500 }),
+    website: varchar("website", { length: 500 }),
     description: text("description"),
     featured: boolean("featured").notNull().default(false),
     sortOrder: sortOrder(),
@@ -39,14 +39,14 @@ export const clients = pgTable(
   ],
 );
 
-export const partners = pgTable(
+export const partners = mysqlTable(
   "partners",
   {
     id: id(),
     slug: varchar("slug", { length: 160 }).notNull().unique(),
     name: varchar("name", { length: 200 }).notNull(),
-    logoUrl: text("logo_url"),
-    website: text("website"),
+    logoUrl: varchar("logo_url", { length: 500 }),
+    website: varchar("website", { length: 500 }),
     description: text("description"),
     sortOrder: sortOrder(),
     published: published(),

@@ -30,19 +30,21 @@ export default async function AuthedAdminLayout({ children }: { children: ReactN
             Database connection unavailable
           </div>
           <p className="text-sm text-slate-700 leading-relaxed mb-3">
-            The admin can&apos;t reach Neon.{" "}
-            <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded">DATABASE_URL</code>{" "}
-            is not set in the running process. Common fixes:
+            The admin can&apos;t reach TiDB. One or more of{" "}
+            <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded">TIDB_HOST</code>,{" "}
+            <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded">TIDB_USER</code>,{" "}
+            <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded">TIDB_PASSWORD</code>,{" "}
+            <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded">TIDB_DB</code>{" "}
+            is missing. Common fixes:
           </p>
           <ol className="text-sm text-slate-700 space-y-1.5 list-decimal list-inside">
             <li>
               Ensure{" "}
               <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded">.env.local</code>{" "}
-              exists at the repo root.
+              exists at the repo root with all four TIDB_* variables.
             </li>
             <li>
-              The variable name is exactly{" "}
-              <code className="font-mono text-xs bg-slate-100 px-1.5 py-0.5 rounded">DATABASE_URL</code>.
+              Verify the values match the TiDB Cloud console for this cluster.
             </li>
             <li>
               Restart the dev server (

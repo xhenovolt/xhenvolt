@@ -1,39 +1,38 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
   index,
   uniqueIndex,
   timestamp,
-  uuid,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import { id, createdAt, updatedAt } from "./_shared";
 
-export const adminUsers = pgTable(
+export const adminUsers = mysqlTable(
   "admin_users",
   {
     id: id(),
     email: varchar("email", { length: 240 }).notNull().unique(),
-    passwordHash: text("password_hash").notNull(),
+    passwordHash: varchar("password_hash", { length: 500 }).notNull(),
     name: varchar("name", { length: 160 }),
     role: varchar("role", { length: 40 }).notNull().default("admin"),
-    lastLoginAt: timestamp("last_login_at", { withTimezone: true }),
+    lastLoginAt: timestamp("last_login_at", { fsp: 3 }),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },
   (t) => [uniqueIndex("admin_users_email_uq").on(t.email)],
 );
 
-export const adminSessions = pgTable(
+export const adminSessions = mysqlTable(
   "admin_sessions",
   {
     id: id(),
     token: varchar("token", { length: 64 }).notNull().unique(),
-    userId: uuid("user_id")
+    userId: varchar("user_id", { length: 36 })
       .references(() => adminUsers.id, { onDelete: "cascade" })
       .notNull(),
-    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
-    lastActiveAt: timestamp("last_active_at", { withTimezone: true })
+    expiresAt: timestamp("expires_at", { fsp: 3 }).notNull(),
+    lastActiveAt: timestamp("last_active_at", { fsp: 3 })
       .notNull()
       .defaultNow(),
     ipHash: varchar("ip_hash", { length: 64 }),

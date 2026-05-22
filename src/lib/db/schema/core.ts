@@ -1,21 +1,20 @@
-import { sql } from "drizzle-orm";
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  jsonb,
+  json,
   index,
   uniqueIndex,
-  integer,
-} from "drizzle-orm/pg-core";
+  int,
+} from "drizzle-orm/mysql-core";
 import { id, createdAt, updatedAt, deletedAt, sortOrder } from "./_shared";
 
-export const settings = pgTable(
+export const settings = mysqlTable(
   "settings",
   {
     id: id(),
     key: varchar("key", { length: 100 }).notNull().unique(),
-    value: jsonb("value").notNull(),
+    value: json("value").notNull(),
     description: text("description"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
@@ -23,19 +22,19 @@ export const settings = pgTable(
   (t) => [index("settings_key_idx").on(t.key)],
 );
 
-export const mediaAssets = pgTable(
+export const mediaAssets = mysqlTable(
   "media_assets",
   {
     id: id(),
-    url: text("url").notNull(),
-    publicPath: text("public_path"),
-    alt: text("alt").notNull().default(""),
+    url: varchar("url", { length: 500 }).notNull(),
+    publicPath: varchar("public_path", { length: 500 }),
+    alt: varchar("alt", { length: 500 }).notNull().default(""),
     title: varchar("title", { length: 200 }),
     mimeType: varchar("mime_type", { length: 80 }),
-    width: integer("width"),
-    height: integer("height"),
-    sizeBytes: integer("size_bytes"),
-    metadata: jsonb("metadata"),
+    width: int("width"),
+    height: int("height"),
+    sizeBytes: int("size_bytes"),
+    metadata: json("metadata"),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
     deletedAt: deletedAt(),
@@ -43,7 +42,7 @@ export const mediaAssets = pgTable(
   (t) => [index("media_url_idx").on(t.url)],
 );
 
-export const categories = pgTable(
+export const categories = mysqlTable(
   "categories",
   {
     id: id(),
@@ -57,7 +56,7 @@ export const categories = pgTable(
   (t) => [uniqueIndex("categories_slug_uq").on(t.slug)],
 );
 
-export const tags = pgTable(
+export const tags = mysqlTable(
   "tags",
   {
     id: id(),

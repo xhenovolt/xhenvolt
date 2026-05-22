@@ -1,11 +1,11 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
-  jsonb,
+  json,
   index,
   uniqueIndex,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -15,7 +15,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const teamMembers = pgTable(
+export const teamMembers = mysqlTable(
   "team_members",
   {
     id: id(),
@@ -23,9 +23,9 @@ export const teamMembers = pgTable(
     name: varchar("name", { length: 200 }).notNull(),
     role: varchar("role", { length: 200 }).notNull(),
     bio: text("bio"),
-    avatarUrl: text("avatar_url"),
-    specialties: jsonb("specialties"),
-    socials: jsonb("socials"),
+    avatarUrl: varchar("avatar_url", { length: 500 }),
+    specialties: json("specialties"),
+    socials: json("socials"),
     email: varchar("email", { length: 240 }),
     location: varchar("location", { length: 160 }),
     sortOrder: sortOrder(),

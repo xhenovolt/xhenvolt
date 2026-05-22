@@ -1,10 +1,10 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
   index,
   uniqueIndex,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -13,7 +13,7 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const statistics = pgTable(
+export const statistics = mysqlTable(
   "statistics",
   {
     id: id(),

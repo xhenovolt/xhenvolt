@@ -42,18 +42,14 @@ const CATEGORY_LABEL: Record<ProbeResult["category"], string> = {
 
 const CAUSE_LABEL: Record<DbProbeResult["cause"], string> = {
   ok: "Connected",
-  no_database_url: "DATABASE_URL not set",
-  url_parse_failed: "Connection string malformed",
+  missing_credentials: "TiDB credentials not set",
   dns_failed: "Hostname did not resolve",
   network_unreachable: "Network unreachable",
   tls_failed: "TLS handshake failed",
-  http_4xx: "Neon rejected the request",
-  http_5xx: "Neon returned a server error",
-  neon_endpoint_disabled: "Neon endpoint not found",
-  neon_endpoint_paused: "Neon project paused or scaled to zero",
   auth_failed: "Authentication failed (wrong password?)",
-  channel_binding_unsupported: "channel_binding=require not supported",
-  timeout: "Request timed out",
+  unknown_database: "Database does not exist",
+  host_refused: "Host refused the connection",
+  timeout: "Connection timed out",
   unknown: "Unknown failure",
 };
 
@@ -67,7 +63,6 @@ export default async function SystemHealth() {
     return acc;
   }, {});
 
-  // Show the deep DB diagnostic prominently when overall status is not OK.
   const showDeepDiagnostic = !deep.ok;
 
   return (
@@ -97,15 +92,15 @@ export default async function SystemHealth() {
           <div className="flex items-center justify-between gap-3 mb-3">
             <div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-red-700">
-                Database diagnostic
+                TiDB diagnostic
               </div>
               <div className="text-lg font-semibold text-slate-900 mt-0.5">
                 {CAUSE_LABEL[deep.cause]}
               </div>
             </div>
-            {deep.httpStatus !== undefined && (
+            {deep.errorCode && (
               <span className="font-mono text-sm text-slate-500">
-                HTTP {deep.httpStatus}
+                {deep.errorCode}
               </span>
             )}
           </div>
@@ -119,24 +114,28 @@ export default async function SystemHealth() {
             </div>
           )}
 
-          {deep.parsedUrl && (
+          {deep.parsedConfig && (
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-slate-600 mb-3">
               <div>
                 <div className="text-slate-400 uppercase tracking-wider text-[10px]">Host</div>
-                <div className="font-mono break-all">{deep.parsedUrl.host}</div>
+                <div className="font-mono break-all">{deep.parsedConfig.host}</div>
+              </div>
+              <div>
+                <div className="text-slate-400 uppercase tracking-wider text-[10px]">Port</div>
+                <div className="font-mono">{deep.parsedConfig.port}</div>
               </div>
               <div>
                 <div className="text-slate-400 uppercase tracking-wider text-[10px]">Database</div>
-                <div className="font-mono">{deep.parsedUrl.database}</div>
+                <div className="font-mono">{deep.parsedConfig.database}</div>
               </div>
               <div>
-                <div className="text-slate-400 uppercase tracking-wider text-[10px]">sslmode</div>
-                <div className="font-mono">{deep.parsedUrl.sslmode ?? "(not set)"}</div>
+                <div className="text-slate-400 uppercase tracking-wider text-[10px]">User</div>
+                <div className="font-mono break-all">{deep.parsedConfig.user}</div>
               </div>
               <div>
-                <div className="text-slate-400 uppercase tracking-wider text-[10px]">channel_binding</div>
-                <div className={`font-mono ${deep.parsedUrl.channelBinding ? "text-red-600" : ""}`}>
-                  {deep.parsedUrl.channelBinding ?? "(not set)"}
+                <div className="text-slate-400 uppercase tracking-wider text-[10px]">TLS</div>
+                <div className={`font-mono ${deep.parsedConfig.ssl ? "text-green-700" : "text-red-600"}`}>
+                  {deep.parsedConfig.ssl ? "enabled" : "disabled"}
                 </div>
               </div>
             </div>
@@ -145,7 +144,7 @@ export default async function SystemHealth() {
           {deep.detail && (
             <details className="text-xs">
               <summary className="cursor-pointer text-slate-500 hover:text-slate-700">
-                Raw error / response body
+                Raw error / stack
               </summary>
               <pre className="mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg overflow-x-auto text-slate-700 whitespace-pre-wrap">
                 {deep.detail}
@@ -202,22 +201,24 @@ export default async function SystemHealth() {
         <div className="font-semibold text-slate-700 mb-1">Common fixes</div>
         <ul className="list-disc list-inside space-y-1">
           <li>
-            <strong>DB timing out</strong>: most often Neon is paused (free tier sleeps after inactivity). Open the Neon
-            console once to wake the project, then refresh.
+            <strong>auth_failed</strong>: TIDB_PASSWORD wrong or rotated. Reissue in the TiDB Cloud
+            console and update <code className="font-mono">.env.local</code>.
           </li>
           <li>
-            <strong>channel_binding=require</strong> in the URL: the HTTP driver doesn&apos;t support SCRAM channel
-            binding. Strip that parameter from <code className="font-mono">DATABASE_URL</code>.
+            <strong>dns_failed</strong>: TIDB_HOST malformed. Format is{" "}
+            <code className="font-mono">gateway01.&lt;region&gt;.prod.aws.tidbcloud.com</code>.
           </li>
           <li>
-            <strong>auth_failed</strong>: the Neon password was rotated. Get the current one from the Neon dashboard
-            and update <code className="font-mono">.env.local</code>.
+            <strong>tls_failed</strong>: Keep <code className="font-mono">DATABASE_MODE=tidb</code>{" "}
+            so the client negotiates TLS. Update Node CA certs if the error mentions cert verification.
           </li>
           <li>
-            <strong>network_unreachable / timeout</strong>: IPv6-only routing. Restart with{" "}
-            <code className="font-mono">NODE_OPTIONS=--dns-result-order=ipv4first npm run dev</code> (the{" "}
-            <code className="font-mono">instrumentation.ts</code> hook now sets this automatically, but it only
-            applies after a clean restart).
+            <strong>unknown_database</strong>: TIDB_DB does not exist. Create it in the TiDB Cloud
+            console under the cluster&apos;s SQL editor, or change TIDB_DB to the existing one.
+          </li>
+          <li>
+            <strong>timeout</strong>: TiDB Serverless may be cold. Retry once. If persistent, check
+            egress firewall on port 4000.
           </li>
         </ul>
       </div>

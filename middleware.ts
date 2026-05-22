@@ -1,35 +1,31 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { verifySession, SESSION_COOKIE } from "./src/lib/auth/session";
+import { SESSION_COOKIE } from "./src/lib/auth/cookie";
 
 /**
- * Middleware role: protect every route under (authed).
+ * Edge middleware. Cookie presence check ONLY — the real session lookup
+ * (which hits TiDB via mysql2) runs in (authed)/layout.tsx because mysql2
+ * cannot run on the Edge runtime.
  *
- * Layout isolation is now done via route groups:
  *   src/app/admin/login        → bare layout (no auth)
- *   src/app/admin/(authed)/*   → admin shell + auth check
+ *   src/app/admin/(authed)/*   → admin shell + DB-backed auth check
  *
- * So middleware only redirects to /admin/login when the user lacks a
- * session AND is trying to reach a protected page. /admin/login itself
- * bypasses the auth check (it's not inside the matcher's redirect path).
- *
- * NOTE: the matcher MUST include both /admin and /admin/:path* — bare
- * /admin doesn't match :path* in Next.js 16.
+ * If the cookie is missing we redirect here so the layout never even
+ * has to render. If the cookie exists but the session is expired/invalid,
+ * the layout's verifySession() call catches it on the next render.
  */
 export const config = {
   matcher: ["/admin", "/admin/:path*"],
 };
 
-export async function middleware(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // /admin/login is the only admin URL that does NOT require auth.
   if (pathname === "/admin/login") {
     return NextResponse.next();
   }
 
   const token = req.cookies.get(SESSION_COOKIE)?.value;
-  const session = await verifySession(token);
-  if (!session) {
+  if (!token) {
     const url = req.nextUrl.clone();
     url.pathname = "/admin/login";
     url.searchParams.set("next", pathname);

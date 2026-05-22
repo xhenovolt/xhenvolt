@@ -1,5 +1,5 @@
 /**
- * Real server-side sessions backed by the `admin_sessions` table in Neon.
+ * Real server-side sessions backed by the `admin_sessions` table on TiDB.
  *
  * - The cookie contains an opaque 32-byte random token, base64url-encoded.
  * - The token is the lookup key for a row in `admin_sessions`.
@@ -7,15 +7,15 @@
  *   stateless verification anywhere.
  * - Logout deletes the row.
  *
- * Edge-safe: the helpers in this module use only `crypto` + Drizzle's neon-http
- * client, which works on both Node and Edge runtimes.
+ * Node-only: uses Drizzle's mysql2 driver under the hood. Middleware that
+ * needs to verify sessions must run on the Node runtime, not Edge.
  */
 
 import { and, eq, gt, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
+import { SESSION_COOKIE, SESSION_TTL_SECONDS } from "./cookie";
 
-export const SESSION_COOKIE = "xhv_admin_session";
-export const SESSION_TTL_SECONDS = 60 * 60 * 8; // 8 hours
+export { SESSION_COOKIE, SESSION_TTL_SECONDS };
 
 function generateToken(): string {
   const bytes = new Uint8Array(32);
@@ -113,7 +113,9 @@ export async function purgeExpiredSessions(): Promise<number> {
   if (!db) return 0;
   const res = await db
     .delete(schema.adminSessions)
-    .where(sql`expires_at < now()`)
-    .returning({ id: schema.adminSessions.id });
-  return res.length;
+    .where(sql`expires_at < NOW()`);
+  // mysql2 returns ResultSetHeader with affectedRows.
+  const header = res as unknown as { affectedRows?: number } | Array<unknown>;
+  if (Array.isArray(header)) return header.length;
+  return header.affectedRows ?? 0;
 }

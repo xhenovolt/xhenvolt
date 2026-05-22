@@ -1,18 +1,14 @@
 /**
- * Bootstrap or reset an admin user.
+ * Bootstrap or reset an admin user on TiDB.
  *
  * Usage:
  *   npm run db:create-admin -- <email> <password> [name]
  *
- * If the email already exists, the password is reset and the name is updated.
+ * If the email already exists, the password is reset, the name is
+ * updated, and all sessions for the user are invalidated.
  */
-import "dotenv/config";
-import { config } from "dotenv";
-import { setDefaultResultOrder } from "node:dns";
-import { neonClient } from "./neon-http";
-
-setDefaultResultOrder("ipv4first");
-config({ path: ".env.local" });
+import { randomUUID } from "node:crypto";
+import { getPool, endPool } from "./_tidb";
 
 const ITERATIONS = 210_000;
 const KEY_LEN_BITS = 256;
@@ -22,7 +18,11 @@ function b64encode(bytes: Uint8Array): string {
   return Buffer.from(bytes).toString("base64");
 }
 
-async function pbkdf2(password: string, salt: Uint8Array, iterations: number): Promise<Uint8Array> {
+async function pbkdf2(
+  password: string,
+  salt: Uint8Array,
+  iterations: number,
+): Promise<Uint8Array> {
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(password),
@@ -48,7 +48,9 @@ async function hashPassword(plain: string): Promise<string> {
 async function main() {
   const [, , emailArg, passwordArg, ...nameParts] = process.argv;
   if (!emailArg || !passwordArg) {
-    console.error("Usage: tsx scripts/create-admin.ts <email> <password> [name]");
+    console.error(
+      "Usage: tsx scripts/create-admin.ts <email> <password> [name]",
+    );
     process.exit(1);
   }
   const email = emailArg.toLowerCase().trim();
@@ -62,40 +64,39 @@ async function main() {
   }
   const name = nameParts.join(" ") || null;
 
-  if (!process.env.DATABASE_URL) {
-    console.error("DATABASE_URL is not set.");
-    process.exit(1);
-  }
-  const client = neonClient(process.env.DATABASE_URL);
+  const pool = getPool();
   const passwordHash = await hashPassword(passwordArg);
 
-  const existing = await client.exec<{ id: string }>(
-    "SELECT id FROM admin_users WHERE email = $1",
+  const [rows] = (await pool.query(
+    "SELECT id FROM admin_users WHERE email = ?",
     [email],
-  );
+  )) as [Array<{ id: string }>, unknown];
 
-  if (existing.rows.length > 0) {
-    await client.exec(
-      "UPDATE admin_users SET password_hash = $1, name = COALESCE($2, name), updated_at = now() WHERE email = $3",
+  if (Array.isArray(rows) && rows.length > 0) {
+    const userId = rows[0].id;
+    await pool.query(
+      "UPDATE admin_users SET password_hash = ?, name = COALESCE(?, name), updated_at = CURRENT_TIMESTAMP(3) WHERE email = ?",
       [passwordHash, name, email],
     );
-    // Wipe any existing sessions for this user.
-    await client.exec(
-      "DELETE FROM admin_sessions WHERE user_id = $1",
-      [existing.rows[0].id],
+    await pool.query("DELETE FROM admin_sessions WHERE user_id = ?", [userId]);
+    console.log(
+      `[create-admin] reset password for ${email} (all sessions invalidated)`,
     );
-    console.log(`[create-admin] reset password for ${email} (all sessions invalidated)`);
   } else {
-    const r = await client.exec<{ id: string }>(
-      `INSERT INTO admin_users (email, password_hash, name, role)
-       VALUES ($1, $2, $3, 'admin') RETURNING id`,
-      [email, passwordHash, name],
+    const newId = randomUUID();
+    await pool.query(
+      `INSERT INTO admin_users (id, email, password_hash, name, role)
+       VALUES (?, ?, ?, ?, 'admin')`,
+      [newId, email, passwordHash, name],
     );
-    console.log(`[create-admin] created admin ${email}  id=${r.rows[0].id}`);
+    console.log(`[create-admin] created admin ${email}  id=${newId}`);
   }
 }
 
-main().catch((err) => {
-  console.error("[create-admin] failed:", err.message ?? err);
-  process.exit(1);
-});
+main()
+  .then(() => endPool())
+  .catch(async (err) => {
+    console.error("[create-admin] failed:", err.message ?? err);
+    await endPool();
+    process.exit(1);
+  });

@@ -1,240 +1,204 @@
 /**
- * Low-level database connectivity probe.
+ * Low-level database connectivity probe for TiDB / MySQL.
  *
- * Bypasses Drizzle entirely and hits Neon's HTTP SQL endpoint with a
- * single hand-built request, so the response carries the raw HTTP
- * status and Neon's error body. Surfaces the actual reason the runtime
- * can't reach the DB.
+ * Bypasses Drizzle entirely and opens a raw mysql2 connection so the
+ * caller sees the real failure (DNS, TLS, auth, host unreachable) — not
+ * a wrapped "Failed query" message from the ORM.
  *
- * Used by /api/admin/health/db. Drizzle's normal probe is good for the
- * happy path; this one is for "the happy probe failed, what's actually
- * wrong?".
+ * Used by /api/admin/health/db. The shape of the result is intentionally
+ * stable so the system-health UI can render named diagnostics for each
+ * cause without inspecting the raw error.
  */
+
+import mysql from "mysql2/promise";
+import { readTidbConfig, toPoolOptions } from "@/lib/db/config";
 
 export interface DbProbeResult {
   ok: boolean;
-  /** Stable category for the UI to render diagnostics. */
   cause:
     | "ok"
-    | "no_database_url"
-    | "url_parse_failed"
+    | "missing_credentials"
     | "dns_failed"
     | "network_unreachable"
     | "tls_failed"
-    | "http_4xx"
-    | "http_5xx"
-    | "neon_endpoint_disabled"
-    | "neon_endpoint_paused"
     | "auth_failed"
-    | "channel_binding_unsupported"
+    | "unknown_database"
+    | "host_refused"
     | "timeout"
     | "unknown";
   message: string;
   detail?: string;
   hint?: string;
-  /** HTTP status from Neon's SQL endpoint, if a response was received. */
-  httpStatus?: number;
-  /** Truncated response body, if any. */
-  body?: string;
-  /** Time the probe took, in milliseconds. */
+  /** mysql2 error code, if available (ER_ACCESS_DENIED_ERROR, ECONNREFUSED, ...) */
+  errorCode?: string;
   durationMs: number;
-  /** Connection-string parameters detected (no credentials echoed). */
-  parsedUrl?: {
+  serverVersion?: string;
+  parsedConfig?: {
     host: string;
+    port: number;
     database: string;
-    sslmode: string | null;
-    channelBinding: string | null;
+    user: string;
+    ssl: boolean;
   };
 }
 
 const TIMEOUT_MS = 8000;
 
-function parseUrl(raw: string) {
-  try {
-    const u = new URL(raw);
-    return {
-      ok: true as const,
-      host: u.hostname,
-      database: u.pathname.replace(/^\//, "") || "(root)",
-      sslmode: u.searchParams.get("sslmode"),
-      channelBinding: u.searchParams.get("channel_binding"),
-    };
-  } catch (err) {
-    return { ok: false as const, message: err instanceof Error ? err.message : String(err) };
-  }
-}
-
-function classifyHttp(status: number, body: string): {
+function classify(err: unknown): {
   cause: DbProbeResult["cause"];
   hint: string;
+  code?: string;
 } {
-  if (status === 401 || status === 403) {
-    if (/channel.?binding/i.test(body)) {
-      return {
-        cause: "channel_binding_unsupported",
-        hint: "Remove '&channel_binding=require' from DATABASE_URL — the HTTP driver doesn't support SCRAM channel binding.",
-      };
-    }
+  const e = err as { code?: string; errno?: number; message?: string } & Error;
+  const code = e?.code ?? "";
+  const message = (e?.message ?? "").toLowerCase();
+
+  if (code === "ER_ACCESS_DENIED_ERROR" || /access denied/i.test(message)) {
     return {
       cause: "auth_failed",
-      hint: "Username/password rejected. The Neon password may have been rotated. Verify DATABASE_URL.",
-    };
-  }
-  if (status === 404) {
-    return {
-      cause: "neon_endpoint_disabled",
-      hint: "Neon endpoint not found. The compute may be deleted or the URL is wrong.",
-    };
-  }
-  if (status === 503 || /paused/i.test(body) || /suspended/i.test(body)) {
-    return {
-      cause: "neon_endpoint_paused",
-      hint: "The Neon project is paused or scaled to zero. Trigger a wake by visiting the Neon dashboard, then retry.",
-    };
-  }
-  if (status >= 500) {
-    return { cause: "http_5xx", hint: "Neon returned a server error. Retry in a moment." };
-  }
-  return { cause: "http_4xx", hint: "Neon rejected the request — see the body." };
-}
-
-function classifyFetchError(err: unknown, durationMs: number): {
-  cause: DbProbeResult["cause"];
-  hint: string;
-} {
-  const msg = err instanceof Error ? err.message : String(err);
-  const cause = err instanceof Error ? (err as Error & { cause?: unknown }).cause : undefined;
-  const causeStr = cause instanceof Error ? cause.message : String(cause ?? "");
-  const combined = `${msg}  ${causeStr}`.toLowerCase();
-
-  if (durationMs >= TIMEOUT_MS - 500 || /timeout|timed out/i.test(combined)) {
-    return {
-      cause: "timeout",
+      code,
       hint:
-        "The request didn't complete in time. Possible causes: Neon project is paused, IPv6 routing is broken on your machine, or the network is firewalled. Try setting NODE_OPTIONS=--dns-result-order=ipv4first when starting the dev server.",
+        "Username or password rejected. Verify TIDB_USER and TIDB_PASSWORD in .env.local match the TiDB Cloud console.",
     };
   }
-  if (/enotfound|getaddrinfo|dns/i.test(combined)) {
+  if (code === "ER_BAD_DB_ERROR" || /unknown database/i.test(message)) {
+    return {
+      cause: "unknown_database",
+      code,
+      hint:
+        "The database name doesn't exist on this cluster. Check TIDB_DB and create the database in the TiDB console if needed.",
+    };
+  }
+  if (code === "ENOTFOUND" || /getaddrinfo|enotfound/i.test(message)) {
     return {
       cause: "dns_failed",
-      hint: "Hostname did not resolve. Check the URL — it should look like ep-xxx.region.aws.neon.tech.",
+      code,
+      hint:
+        "TIDB_HOST did not resolve. The TiDB Serverless host looks like gateway01.<region>.prod.aws.tidbcloud.com.",
     };
   }
-  if (/enetunreach|network is unreachable|econnrefused/i.test(combined)) {
+  if (code === "ECONNREFUSED" || /refused/i.test(message)) {
+    return {
+      cause: "host_refused",
+      code,
+      hint:
+        "Host actively refused the connection. Confirm TIDB_PORT (4000 for Serverless) and that nothing local is shadowing the host.",
+    };
+  }
+  if (
+    code === "ENETUNREACH" ||
+    code === "EHOSTUNREACH" ||
+    /unreachable|network/i.test(message)
+  ) {
     return {
       cause: "network_unreachable",
+      code,
       hint:
-        "Cannot route to the host. If it resolves to IPv6 only, your network may not support IPv6. Try NODE_OPTIONS=--dns-result-order=ipv4first.",
+        "Cannot route to the TiDB host. Check egress firewall, VPN, or IPv6-only network issues.",
     };
   }
-  if (/certificate|tls|ssl/i.test(combined)) {
-    return { cause: "tls_failed", hint: "TLS handshake failed. Confirm sslmode=require in the URL." };
+  if (
+    code === "ETIMEDOUT" ||
+    code === "PROTOCOL_CONNECTION_TIMEOUT" ||
+    /timeout|timed out/i.test(message)
+  ) {
+    return {
+      cause: "timeout",
+      code,
+      hint:
+        "Connection didn't complete in time. TiDB Serverless may be cold-starting — retry once, or check network egress.",
+    };
   }
-  return { cause: "unknown", hint: "Fetch failed for an unknown reason." };
+  if (/tls|ssl|certificate|handshake/i.test(message)) {
+    return {
+      cause: "tls_failed",
+      code,
+      hint:
+        "TLS handshake failed. TiDB Serverless requires TLS — keep DATABASE_MODE=tidb and ensure Node has up-to-date CA certs.",
+    };
+  }
+  return {
+    cause: "unknown",
+    code,
+    hint: "Connection failed for an unclassified reason. See raw error.",
+  };
 }
 
 export async function probeDatabaseDeep(): Promise<DbProbeResult> {
   const start = Date.now();
-  const url = process.env.DATABASE_URL;
+  const cfg = readTidbConfig();
 
-  if (!url) {
+  if (!cfg.ok) {
     return {
       ok: false,
-      cause: "no_database_url",
-      message: "DATABASE_URL is not set in the running process.",
+      cause: "missing_credentials",
+      message: `TiDB credentials missing: ${cfg.missing.join(", ")}`,
       hint:
-        "Add DATABASE_URL=\"...\" to .env.local at the repo root, then restart the dev server. Next.js only reads env files at startup.",
+        "Set TIDB_HOST, TIDB_USER, TIDB_PASSWORD, TIDB_DB in .env.local, then restart the dev server. Next.js only reads env files at startup.",
       durationMs: Date.now() - start,
     };
   }
 
-  const parsed = parseUrl(url);
-  if (!parsed.ok) {
-    return {
-      ok: false,
-      cause: "url_parse_failed",
-      message: "DATABASE_URL is malformed.",
-      detail: parsed.message,
-      hint: "Expected format: postgresql://user:password@host/db?sslmode=require",
-      durationMs: Date.now() - start,
-    };
-  }
-
-  const endpoint = `https://${parsed.host}/sql`;
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    "Neon-Connection-String": url,
-    "Neon-Raw-Text-Output": "false",
-    "Neon-Array-Mode": "false",
+  const parsedConfig = {
+    host: cfg.config.host,
+    port: cfg.config.port,
+    database: cfg.config.database,
+    user: cfg.config.user,
+    ssl: cfg.config.ssl,
   };
 
+  let conn: mysql.Connection | undefined;
   try {
-    const ac = new AbortController();
-    const t = setTimeout(() => ac.abort(), TIMEOUT_MS);
-    let res: Response;
-    try {
-      res = await fetch(endpoint, {
-        method: "POST",
-        headers,
-        body: JSON.stringify({ query: "SELECT 1 AS ok", params: [] }),
-        signal: ac.signal,
-      });
-    } finally {
-      clearTimeout(t);
-    }
+    const opts = toPoolOptions(cfg.config);
+    conn = await Promise.race([
+      mysql.createConnection({
+        host: opts.host,
+        port: opts.port,
+        user: opts.user,
+        password: opts.password,
+        database: opts.database,
+        ssl: opts.ssl as mysql.ConnectionOptions["ssl"],
+        connectTimeout: TIMEOUT_MS,
+      }),
+      new Promise<never>((_, reject) =>
+        setTimeout(
+          () => reject(new Error(`probe timeout after ${TIMEOUT_MS}ms`)),
+          TIMEOUT_MS,
+        ),
+      ),
+    ]);
+
+    const [rows] = (await conn.query("SELECT VERSION() AS v, 1 AS ok")) as [
+      Array<{ v: string; ok: number }>,
+      unknown,
+    ];
     const durationMs = Date.now() - start;
-    const body = (await res.text()).slice(0, 600);
-
-    if (res.ok) {
-      return {
-        ok: true,
-        cause: "ok",
-        message: "Reached Neon HTTP endpoint and SELECT 1 returned successfully.",
-        httpStatus: res.status,
-        durationMs,
-        parsedUrl: {
-          host: parsed.host,
-          database: parsed.database,
-          sslmode: parsed.sslmode,
-          channelBinding: parsed.channelBinding,
-        },
-      };
-    }
-
-    const cls = classifyHttp(res.status, body);
     return {
-      ok: false,
-      cause: cls.cause,
-      message: `Neon returned HTTP ${res.status}.`,
-      detail: body,
-      hint: cls.hint,
-      httpStatus: res.status,
-      body,
+      ok: true,
+      cause: "ok",
+      message: "Connected; SELECT VERSION() returned successfully.",
+      serverVersion: rows[0]?.v,
       durationMs,
-      parsedUrl: {
-        host: parsed.host,
-        database: parsed.database,
-        sslmode: parsed.sslmode,
-        channelBinding: parsed.channelBinding,
-      },
+      parsedConfig,
     };
   } catch (err) {
     const durationMs = Date.now() - start;
-    const cls = classifyFetchError(err, durationMs);
-    const innerCause = err instanceof Error ? (err as Error & { cause?: unknown }).cause : undefined;
+    const cls = classify(err);
     return {
       ok: false,
       cause: cls.cause,
       message: err instanceof Error ? err.message : String(err),
-      detail: innerCause instanceof Error ? innerCause.message : innerCause ? String(innerCause) : undefined,
+      detail: err instanceof Error ? err.stack?.split("\n").slice(0, 4).join("\n") : undefined,
       hint: cls.hint,
+      errorCode: cls.code,
       durationMs,
-      parsedUrl: {
-        host: parsed.host,
-        database: parsed.database,
-        sslmode: parsed.sslmode,
-        channelBinding: parsed.channelBinding,
-      },
+      parsedConfig,
     };
+  } finally {
+    try {
+      await conn?.end();
+    } catch {
+      // ignore — already failing
+    }
   }
 }

@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { db, schema, hasDb } from "@/lib/db";
 import { count } from "drizzle-orm";
-import type { PgTable } from "drizzle-orm/pg-core";
+import type { MySqlTable } from "drizzle-orm/mysql-core";
 
 export const dynamic = "force-dynamic";
 
 interface CardDef {
   label: string;
-  table: PgTable;
+  table: MySqlTable;
   tableName: string;
   href: string;
 }
@@ -25,7 +25,7 @@ const CARDS: CardDef[] = [
   { label: "AI Conversation Logs", table: schema.aiConversationLogs, tableName: "ai_conversation_logs", href: "/admin" },
 ];
 
-async function safeCount(table: PgTable): Promise<number | "—"> {
+async function safeCount(table: MySqlTable): Promise<number | "—"> {
   if (!hasDb() || !db) return "—";
   try {
     const r = await Promise.race([

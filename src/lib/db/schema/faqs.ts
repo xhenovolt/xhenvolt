@@ -1,11 +1,11 @@
 import {
-  pgTable,
+  mysqlTable,
   varchar,
   text,
   index,
   uniqueIndex,
-  jsonb,
-} from "drizzle-orm/pg-core";
+  json,
+} from "drizzle-orm/mysql-core";
 import {
   id,
   createdAt,
@@ -15,14 +15,14 @@ import {
   sortOrder,
 } from "./_shared";
 
-export const faqs = pgTable(
+export const faqs = mysqlTable(
   "faqs",
   {
     id: id(),
     slug: varchar("slug", { length: 200 }).notNull().unique(),
     question: text("question").notNull(),
     answer: text("answer").notNull(),
-    keywords: jsonb("keywords"),
+    keywords: json("keywords"),
     category: varchar("category", { length: 80 }),
     scope: varchar("scope", { length: 60 }).default("public"),
     sortOrder: sortOrder(),
