@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { CheckCircle2, XCircle, Loader2, ExternalLink, ShieldQuestion } from "lucide-react";
 
 interface CheckResult {
@@ -28,11 +28,14 @@ export function UrlVerifier({ urlFieldName = "githubReleaseUrl", fileTypeFieldNa
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [currentUrl, setCurrentUrl] = useState<string>("");
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const run = () => {
     setError(null);
     setResult(null);
-    const form = document.querySelector("form");
+    // Use the form this component is actually inside — NOT document's first
+    // form (that would grab the sidebar logout form, which has no URL field).
+    const form = rootRef.current?.closest("form");
     const url = (form?.elements.namedItem(urlFieldName) as HTMLInputElement | null)?.value?.trim() ?? "";
     const fileType = (form?.elements.namedItem(fileTypeFieldName) as HTMLSelectElement | null)?.value ?? "";
     setCurrentUrl(url);
@@ -59,13 +62,13 @@ export function UrlVerifier({ urlFieldName = "githubReleaseUrl", fileTypeFieldNa
   };
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+    <div ref={rootRef} className="rounded-lg border border-slate-200 bg-slate-50 p-3">
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={run}
           disabled={pending}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-60"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ShieldQuestion className="h-3.5 w-3.5" />}
           Verify URL

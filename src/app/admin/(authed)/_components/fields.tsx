@@ -43,9 +43,12 @@ export function SlugInput({
 
   React.useEffect(() => {
     if (touched || !sourceFieldName) return;
-    const form = document.querySelector("form");
-    if (!form) return;
-    const src = form.elements.namedItem(sourceFieldName) as HTMLInputElement | null;
+    // Find the source field directly by name. Using document.querySelector("form")
+    // would grab the sidebar logout form (first in the DOM), which has no such
+    // field, so slug auto-fill silently never ran.
+    const src = document.getElementsByName(sourceFieldName)[0] as
+      | HTMLInputElement
+      | undefined;
     if (!src) return;
     const onInput = () => setValue(slugify(src.value));
     src.addEventListener("input", onInput);

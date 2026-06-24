@@ -69,7 +69,7 @@ export function PrimaryButton(props: React.ButtonHTMLAttributes<HTMLButtonElemen
     <button
       type="submit"
       {...props}
-      className={`inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors disabled:bg-slate-400 ${props.className ?? ""}`}
+      className={`inline-flex cursor-pointer items-center justify-center bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:bg-slate-400 ${props.className ?? ""}`}
     />
   );
 }
@@ -79,7 +79,7 @@ export function SecondaryButton(props: React.ButtonHTMLAttributes<HTMLButtonElem
     <button
       type="button"
       {...props}
-      className={`inline-flex items-center justify-center bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg px-3 py-1.5 transition-colors ${props.className ?? ""}`}
+      className={`inline-flex cursor-pointer items-center justify-center bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg px-3 py-1.5 transition-colors ${props.className ?? ""}`}
     />
   );
 }
@@ -88,7 +88,7 @@ export function DangerButton(props: React.ButtonHTMLAttributes<HTMLButtonElement
   return (
     <button
       {...props}
-      className={`inline-flex items-center justify-center bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs font-medium rounded-md px-2.5 py-1 transition-colors ${props.className ?? ""}`}
+      className={`inline-flex cursor-pointer items-center justify-center bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 text-xs font-medium rounded-md px-2.5 py-1 transition-colors ${props.className ?? ""}`}
     />
   );
 }
