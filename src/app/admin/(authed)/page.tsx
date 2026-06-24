@@ -9,7 +9,8 @@ interface CardDef {
   label: string;
   table: MySqlTable;
   tableName: string;
-  href: string;
+  /** null = informational stat with no dedicated admin page yet (not a link). */
+  href: string | null;
 }
 
 const CARDS: CardDef[] = [
@@ -17,12 +18,13 @@ const CARDS: CardDef[] = [
   { label: "FAQs", table: schema.faqs, tableName: "faqs", href: "/admin/faqs" },
   { label: "Systems", table: schema.systems, tableName: "systems", href: "/admin/systems" },
   { label: "AI Training Docs", table: schema.aiTrainingDocuments, tableName: "ai_training_documents", href: "/admin/ai-docs" },
-  { label: "Clients", table: schema.clients, tableName: "clients", href: "/admin" },
-  { label: "Statistics", table: schema.statistics, tableName: "statistics", href: "/admin" },
-  { label: "Team Members", table: schema.teamMembers, tableName: "team_members", href: "/admin" },
-  { label: "Timeline Entries", table: schema.timelineEntries, tableName: "timeline_entries", href: "/admin" },
+  { label: "Clients", table: schema.clients, tableName: "clients", href: "/admin/clients" },
+  { label: "Statistics", table: schema.statistics, tableName: "statistics", href: "/admin/statistics" },
+  { label: "Team Members", table: schema.teamMembers, tableName: "team_members", href: "/admin/team" },
+  { label: "Timeline Entries", table: schema.timelineEntries, tableName: "timeline_entries", href: "/admin/timeline" },
   { label: "Contact Messages", table: schema.contactMessages, tableName: "contact_messages", href: "/admin/messages" },
-  { label: "AI Conversation Logs", table: schema.aiConversationLogs, tableName: "ai_conversation_logs", href: "/admin" },
+  // No dedicated viewer yet — render as a non-clickable stat (honest, no dead link).
+  { label: "AI Conversation Logs", table: schema.aiConversationLogs, tableName: "ai_conversation_logs", href: null },
 ];
 
 async function safeCount(table: MySqlTable): Promise<number | "—"> {
@@ -49,17 +51,32 @@ export default async function AdminDashboard() {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {CARDS.map((c, i) => (
-          <Link
-            key={c.label}
-            href={c.href}
-            className="block bg-white rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:shadow-sm transition-all"
-          >
-            <div className="text-xs uppercase tracking-wide text-slate-500">{c.label}</div>
-            <div className="mt-2 text-3xl font-bold text-slate-900">{counts[i]}</div>
-            <div className="mt-1 text-xs text-slate-400 font-mono">{c.tableName}</div>
-          </Link>
-        ))}
+        {CARDS.map((c, i) => {
+          const inner = (
+            <>
+              <div className="text-xs uppercase tracking-wide text-slate-500">{c.label}</div>
+              <div className="mt-2 text-3xl font-bold text-slate-900">{counts[i]}</div>
+              <div className="mt-1 text-xs text-slate-400 font-mono">{c.tableName}</div>
+            </>
+          );
+          return c.href ? (
+            <Link
+              key={c.label}
+              href={c.href}
+              className="block bg-white rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:shadow-sm transition-all"
+            >
+              {inner}
+            </Link>
+          ) : (
+            <div
+              key={c.label}
+              className="block bg-white rounded-xl border border-slate-200 p-5 opacity-90"
+              title="No dedicated admin page yet"
+            >
+              {inner}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

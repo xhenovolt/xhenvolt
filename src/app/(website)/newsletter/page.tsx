@@ -70,12 +70,24 @@ export default function NewsletterPage() {
 			return;
 		}
 		setIsLoading(true);
-		// Simulate form submission
-		setTimeout(() => {
+		try {
+			const res = await fetch("/api/newsletter", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(form),
+			});
+			const data = await res.json().catch(() => ({}));
+			if (!res.ok) {
+				setError(data?.message ?? "We couldn't save your subscription. Please try again.");
+				return;
+			}
 			setSubmitted(true);
-			setIsLoading(false);
 			setForm({ name: "", email: "", interests: [] });
-		}, 1500);
+		} catch {
+			setError("Network error. Please check your connection and try again.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (

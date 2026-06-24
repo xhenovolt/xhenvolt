@@ -1,8 +1,84 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+
+/**
+ * Real footer newsletter subscribe. Posts to /api/newsletter, which persists
+ * to the contact_messages table (source="newsletter") and surfaces in the
+ * admin Inbox. No fake success — failures show an honest message.
+ */
+function FooterSubscribe() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [msg, setMsg] = useState("");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setState("error");
+      setMsg("Please enter a valid email address.");
+      return;
+    }
+    setState("loading");
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setState("error");
+        setMsg(data?.message ?? "Subscription failed. Please try again.");
+        return;
+      }
+      setState("done");
+      setMsg(data?.message ?? "You're subscribed!");
+      setEmail("");
+    } catch {
+      setState("error");
+      setMsg("Network error. Please try again.");
+    }
+  };
+
+  if (state === "done") {
+    return (
+      <div className="flex items-center justify-center gap-2 text-white">
+        <CheckCircle className="w-5 h-5" />
+        <span>{msg}</span>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="max-w-md mx-auto">
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (state === "error") setState("idle");
+          }}
+          placeholder="Enter your email"
+          aria-label="Email address"
+          className="flex-1 px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+        />
+        <button
+          type="submit"
+          disabled={state === "loading"}
+          className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300 disabled:opacity-70 inline-flex items-center justify-center gap-2"
+        >
+          {state === "loading" && <Loader2 className="w-4 h-4 animate-spin" />}
+          Subscribe
+        </button>
+      </div>
+      {state === "error" && <p className="mt-2 text-sm text-white/90">{msg}</p>}
+    </form>
+  );
+}
 
 export interface FooterLinkItem {
   name: string;
@@ -36,6 +112,8 @@ const FALLBACK_COLUMNS: Record<string, FooterLinkItem[]> = {
     { name: "Contact", href: "/contact" },
   ],
   Products: [
+    { name: "Xhenvolt Cosmos — Downloads", href: "/cosmos" },
+    { name: "Get DRAIS Desktop", href: "/cosmos" },
     { name: "DRAIS — School System", href: "https://drais.pro", external: true },
     { name: "School Attendance System Uganda", href: "/school-attendance-system-uganda" },
     { name: "Jeton — Financial System", href: "https://jeton.xhenvolt.com", external: true },
@@ -171,16 +249,7 @@ export default function Footer({ columns, contact, socials }: FooterProps) {
             <p className="mb-6 opacity-90">
               Get the latest insights on technology trends and digital transformation.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
-              />
-              <button className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300">
-                Subscribe
-              </button>
-            </div>
+            <FooterSubscribe />
           </div>
         </motion.div>
 
