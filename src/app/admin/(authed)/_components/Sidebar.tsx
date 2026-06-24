@@ -9,6 +9,7 @@ import {
   Sparkles,
   Inbox,
   Mail,
+  Map,
   Settings,
   Image as ImageIcon,
   Users,
@@ -43,7 +44,10 @@ interface NavSection {
 const SECTIONS: NavSection[] = [
   {
     label: "Overview",
-    items: [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }],
+    items: [
+      { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/admin/site-map", label: "Content Map", icon: Map },
+    ],
   },
   {
     label: "Content",

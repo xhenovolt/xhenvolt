@@ -50,6 +50,25 @@ export default async function AdminDashboard() {
           Content overview. Everything visible on the live site is sourced from these tables.
         </p>
       </div>
+
+      <Link
+        href="/admin/site-map"
+        className="mb-8 flex items-center justify-between gap-4 rounded-xl border border-blue-200 bg-blue-50 p-5 transition-colors hover:bg-blue-100"
+      >
+        <div>
+          <div className="text-sm font-semibold text-blue-900">
+            Not sure where to edit something on the website?
+          </div>
+          <div className="mt-0.5 text-sm text-blue-800">
+            Open the <strong>Content Map</strong> — it lists every page and links straight to the
+            screen that edits each part (e.g. the footer address).
+          </div>
+        </div>
+        <span className="flex-shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
+          Open Content Map →
+        </span>
+      </Link>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {CARDS.map((c, i) => {
           const inner = (
