@@ -57,7 +57,7 @@ const SECTIONS: NavSection[] = [
       { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
       { href: "/admin/clients", label: "Clients", icon: Building },
       { href: "/admin/timeline", label: "Timeline", icon: History },
-      { href: "/admin/media", label: "Media", icon: ImageIcon, disabled: true, badge: "Soon" },
+      { href: "/admin/media", label: "Media", icon: ImageIcon },
     ],
   },
   {

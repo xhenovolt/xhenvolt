@@ -9,6 +9,7 @@ import {
   Textarea,
 } from "../../_components/ui";
 import { SlugInput, BoolField } from "../../_components/fields";
+import { MediaPicker } from "../../_components/MediaPicker";
 
 interface FormValues {
   id?: string;
@@ -108,8 +109,8 @@ export default function AppForm({
           <Field label="Icon name" hint={`Lucide icon: ${ICON_NAMES}`}>
             <Input name="icon" defaultValue={v.icon ?? ""} placeholder="monitor" />
           </Field>
-          <Field label="Icon image URL" hint="Optional. Overrides the icon name if set.">
-            <Input name="iconUrl" type="url" defaultValue={v.iconUrl ?? ""} placeholder="https://…/icon.png" />
+          <Field label="Icon image URL" hint="Optional. Overrides the icon name if set. Pick from the Media Library.">
+            <MediaPicker name="iconUrl" defaultValue={v.iconUrl ?? ""} placeholder="https://…/icon.png" />
           </Field>
           <Field label="Brand color (hex)">
             <Input name="brandColor" defaultValue={v.brandColor ?? ""} placeholder="#6366F1" />

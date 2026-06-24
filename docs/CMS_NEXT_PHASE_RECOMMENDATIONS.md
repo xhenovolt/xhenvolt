@@ -2,12 +2,22 @@
 
 Prioritized by founder-independence value vs. effort. Each item is a *real* remaining gap from the audit, not a hypothetical.
 
-## P1 — Media Library + uploads (Medium effort, high value)
-Today image fields accept **URLs only**; `/admin/media` is an honest "Soon" stub. To make content truly self-service:
-- Choose storage: Vercel Blob, S3/R2, or UploadThing (Hobby-friendly).
-- Build `/admin/media`: upload, list, alt-text, delete; persist to existing `media_assets` table (already in schema).
-- Add a media-picker to `fields.tsx` so every image field can pick from the library.
-- Keep an honest warning until storage env is configured (never fake an upload).
+## P1 — Media Library + uploads (registry DONE; upload pending storage)
+**Done (2026-06-24):** `/admin/media` registry over `media_assets` (add by hosted
+URL, alt/title/dimensions, grid browse, soft delete). Session-gated list API
+(`/api/admin/media`) + reusable `MediaPicker` (URL input + "pick from library"
+modal), wired into the Cosmos app icon field as the reference integration. The
+sidebar item is now live (no longer "Soon"). An honest banner states device
+upload needs a storage backend.
+
+**Remaining (needs your decision + credentials):**
+- Choose storage: Vercel Blob, Cloudflare R2/S3, or UploadThing.
+- Add an upload route that streams to that backend and writes a `media_assets`
+  row (url, mimeType, width/height, sizeBytes) — then drop the "device upload"
+  banner.
+- Roll `MediaPicker` into the remaining image fields (hero, team avatar,
+  systems/services logos, testimonial avatar). The component is ready; wiring is
+  mechanical.
 
 ## P2 — Dedicated newsletter subscribers model ✅ DONE (2026-06-24)
 Built: `subscribers` table (email unique, status, interests, source, ipHash). `/api/newsletter` now upserts on email (no duplicates; repeat signup re-subscribes + refreshes interests). Admin `/admin/subscribers` lists subscribers with status toggle, delete, and **CSV export** (`/api/admin/subscribers/export`, session-gated). One-time migration `scripts/migrate-newsletter-to-subscribers.ts` moves legacy `contact_messages(source=newsletter)` rows out of the Inbox. *Remaining optional:* double opt-in / confirmation email.

@@ -30,7 +30,7 @@ Status key: ✅ Working · 🔧 Fixed this phase · 🟡 Honest stub (flagged, n
 | 24 | Cosmos — Downloads | `/admin/cosmos/downloads` | ✅ `download_events` | `/download/[slug]` | ✅ |
 | 25 | System Health | `/admin/system-health` | read (real probes) | — | ✅ |
 | 26 | Audit log | `/admin/audit` | read `admin_audit_logs` | — | ✅ |
-| 27 | Media Library | `/admin/media` | — | — | 🟡 disabled "Soon" (no storage) |
+| 27 | Media Library | `/admin/media` | ✅ `media_assets` (URL registry + picker) | image fields | 🟡 registry live; device upload needs storage provider |
 | 28 | AI Conversation Logs viewer | `/admin/ai-logs` | read `ai_conversation_logs` | — | ✅ session-grouped viewer |
 | 29 | Users / Roles (RBAC UI) | — | `admin_users` exists | — | ❌ single-role only |
 | 30 | Appearance / theme | — | — | client toggle | ❌ not a CMS module |
