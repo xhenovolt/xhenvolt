@@ -10,14 +10,18 @@ modal), wired into the Cosmos app icon field as the reference integration. The
 sidebar item is now live (no longer "Soon"). An honest banner states device
 upload needs a storage backend.
 
-**Remaining (needs your decision + credentials):**
-- Choose storage: Vercel Blob, Cloudflare R2/S3, or UploadThing.
-- Add an upload route that streams to that backend and writes a `media_assets`
-  row (url, mimeType, width/height, sizeBytes) — then drop the "device upload"
-  banner.
-- Roll `MediaPicker` into the remaining image fields (hero, team avatar,
-  systems/services logos, testimonial avatar). The component is ready; wiring is
-  mechanical.
+**Device upload — DONE (Cloudinary):** `/api/admin/media/upload` streams the file
+to Cloudinary (dependency-free signed upload in `src/lib/media/cloudinary.ts`),
+then writes a `media_assets` row (secure_url, mimeType, width/height, bytes).
+`UploadButton` on `/admin/media` shows when `CLOUDINARY_*` env is set; otherwise
+an honest "set env" banner. Verified live (upload returns a real delivery URL).
+Env required on the server: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`,
+`CLOUDINARY_API_SECRET` (set in `.env.local` locally + Vercel project env for prod).
+
+**Remaining (mechanical):**
+- Roll `MediaPicker` into the rest of the image fields (hero, team avatar,
+  systems/services logos, testimonial avatar). The component + upload pipeline
+  are ready; only wiring is left. Currently wired into the Cosmos app icon field.
 
 ## P2 — Dedicated newsletter subscribers model ✅ DONE (2026-06-24)
 Built: `subscribers` table (email unique, status, interests, source, ipHash). `/api/newsletter` now upserts on email (no duplicates; repeat signup re-subscribes + refreshes interests). Admin `/admin/subscribers` lists subscribers with status toggle, delete, and **CSV export** (`/api/admin/subscribers/export`, session-gated). One-time migration `scripts/migrate-newsletter-to-subscribers.ts` moves legacy `contact_messages(source=newsletter)` rows out of the Inbox. *Remaining optional:* double opt-in / confirmation email.

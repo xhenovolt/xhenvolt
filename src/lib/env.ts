@@ -55,6 +55,21 @@ export const ENV_VARS: EnvVarSpec[] = [
     required: false,
     description: "Secret for /api/revalidate webhook. Optional in dev.",
   },
+  {
+    name: "CLOUDINARY_CLOUD_NAME",
+    required: false,
+    description: "Cloudinary cloud name. Enables Media Library device uploads.",
+  },
+  {
+    name: "CLOUDINARY_API_KEY",
+    required: false,
+    description: "Cloudinary API key (paired with CLOUDINARY_API_SECRET).",
+  },
+  {
+    name: "CLOUDINARY_API_SECRET",
+    required: false,
+    description: "Cloudinary API secret. Server-only; never exposed to the client.",
+  },
 ];
 
 export interface EnvIssue {

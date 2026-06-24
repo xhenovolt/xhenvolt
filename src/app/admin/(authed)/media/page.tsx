@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { desc, isNull } from "drizzle-orm";
-import { Plus, Info } from "lucide-react";
+import { Plus, Info, CheckCircle2 } from "lucide-react";
 import { db, schema } from "@/lib/db";
 import { PageHeader } from "../_components/ui";
+import { isCloudinaryConfigured } from "@/lib/media/cloudinary";
 import { deleteMedia } from "./actions";
+import { UploadButton } from "./UploadButton";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,7 @@ async function getRows(): Promise<Row[]> {
 
 export default async function MediaPage() {
   const rows = await getRows();
+  const uploadReady = isCloudinaryConfigured();
 
   return (
     <div>
@@ -32,27 +35,40 @@ export default async function MediaPage() {
         title="Media Library"
         description={`${rows.length} asset${rows.length === 1 ? "" : "s"} · referenced by content forms`}
         action={
-          <Link
-            href="/admin/media/new"
-            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg px-4 py-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add media
-          </Link>
+          <div className="flex items-center gap-2">
+            {uploadReady && <UploadButton />}
+            <Link
+              href="/admin/media/new"
+              className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg px-4 py-2"
+            >
+              <Plus className="w-4 h-4" />
+              Add by URL
+            </Link>
+          </div>
         }
       />
 
-      {/* Honest capability note — no fake upload. */}
-      <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-        <Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
-        <div>
-          <strong>Device upload requires a storage provider.</strong> This library
-          registers assets by their hosted URL (e.g. a GitHub, CDN, or bucket URL)
-          and makes them pickable across content forms. Direct file upload will be
-          enabled once a storage backend (Vercel Blob / Cloudflare R2 / S3) is
-          configured — until then, paste a public image URL.
+      {uploadReady ? (
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900">
+          <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0" />
+          <div>
+            <strong>Uploads enabled via Cloudinary.</strong> Use <em>Upload file</em> to send an
+            image/video straight from your device — it&apos;s stored on Cloudinary and registered
+            here automatically. You can also still <em>Add by URL</em> for already-hosted assets.
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+          <Info className="mt-0.5 h-4 w-4 flex-shrink-0" />
+          <div>
+            <strong>Device upload requires storage env.</strong> Set{" "}
+            <code className="font-mono text-xs">CLOUDINARY_CLOUD_NAME</code>,{" "}
+            <code className="font-mono text-xs">CLOUDINARY_API_KEY</code>,{" "}
+            <code className="font-mono text-xs">CLOUDINARY_API_SECRET</code> to enable uploads.
+            Until then, register assets by hosted URL with <em>Add by URL</em>.
+          </div>
+        </div>
+      )}
 
       {rows.length === 0 ? (
         <div className="rounded-xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">
