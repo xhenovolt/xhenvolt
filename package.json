@@ -9,6 +9,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
+    "db:seed-cosmos": "tsx scripts/seed-cosmos.ts",
     "db:verify": "tsx scripts/verify-counts.ts",
     "db:create-admin": "tsx scripts/create-admin.ts",
     "db:studio": "drizzle-kit studio"

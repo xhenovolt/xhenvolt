@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
+import { Menu, X, ChevronDown, Sun, Moon, Rocket } from "lucide-react";
 
 export interface NavItem {
   name: string;
@@ -163,6 +163,15 @@ export default function Navbar({ items }: { items?: NavItem[] }) {
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </motion.button>
 
+            {/* Cosmos software release center — always present (global CTA). */}
+            <Link
+              href="/cosmos"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300"
+            >
+              <Rocket className="w-4 h-4" />
+              Cosmos
+            </Link>
+
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -226,6 +235,14 @@ export default function Navbar({ items }: { items?: NavItem[] }) {
                     )}
                   </div>
                 ))}
+                <Link
+                  href="/cosmos"
+                  className="flex items-center gap-2 px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Rocket className="w-4 h-4" />
+                  Cosmos — Download Apps
+                </Link>
                 <div className="px-6 py-3">
                   <Link
                     href="/contact"

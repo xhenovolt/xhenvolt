@@ -19,6 +19,10 @@ import {
   History,
   Building,
   Activity,
+  Rocket,
+  AppWindow,
+  Package,
+  Download,
   type LucideIcon,
 } from "lucide-react";
 
@@ -53,6 +57,15 @@ const SECTIONS: NavSection[] = [
       { href: "/admin/clients", label: "Clients", icon: Building },
       { href: "/admin/timeline", label: "Timeline", icon: History },
       { href: "/admin/media", label: "Media", icon: ImageIcon, disabled: true, badge: "Soon" },
+    ],
+  },
+  {
+    label: "Cosmos",
+    items: [
+      { href: "/admin/cosmos", label: "Overview", icon: Rocket },
+      { href: "/admin/cosmos/apps", label: "Apps", icon: AppWindow },
+      { href: "/admin/cosmos/releases", label: "Releases", icon: Package },
+      { href: "/admin/cosmos/downloads", label: "Downloads", icon: Download },
     ],
   },
   {

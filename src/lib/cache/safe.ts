@@ -82,4 +82,5 @@ export const CACHE_TAGS = {
   pages: "pages",
   gallery: "gallery",
   aiDocs: "ai-docs",
+  cosmos: "cosmos",
 } as const;

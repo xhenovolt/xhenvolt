@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   Fingerprint, BarChart3, MessageSquare, Users, FileText,
   School, Phone, ArrowRight, CheckCircle, Star, Globe,
-  ChevronDown, ChevronUp, Play, Shield, Zap,
+  ChevronDown, ChevronUp, Play, Shield, Zap, Download,
 } from "lucide-react";
 
 const testimonials = [
@@ -181,6 +181,13 @@ export default function DraisAttendanceClient() {
                   <Play className="w-5 h-5" />
                   Visit drais.pro
                 </a>
+                <Link
+                  href="/cosmos/drais-desktop"
+                  className="flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 px-8 rounded-xl text-lg transition-colors"
+                >
+                  <Download className="w-5 h-5" />
+                  Get DRAIS Desktop
+                </Link>
               </div>
             </motion.div>
           </div>
