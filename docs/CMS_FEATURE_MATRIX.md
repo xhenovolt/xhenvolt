@@ -31,9 +31,9 @@ Status key: ✅ Working · 🔧 Fixed this phase · 🟡 Honest stub (flagged, n
 | 25 | System Health | `/admin/system-health` | read (real probes) | — | ✅ |
 | 26 | Audit log | `/admin/audit` | read `admin_audit_logs` | — | ✅ |
 | 27 | Media Library | `/admin/media` | — | — | 🟡 disabled "Soon" (no storage) |
-| 28 | AI Conversation Logs viewer | — | data exists | — | 🟡 "Soon" (no viewer UI) |
+| 28 | AI Conversation Logs viewer | `/admin/ai-logs` | read `ai_conversation_logs` | — | ✅ session-grouped viewer |
 | 29 | Users / Roles (RBAC UI) | — | `admin_users` exists | — | ❌ single-role only |
 | 30 | Appearance / theme | — | — | client toggle | ❌ not a CMS module |
 | 31 | Page section builder | — | — | code-rendered | ❌ Phase 7 |
 
-**Tally:** 24 ✅ working · 4 🔧 fixed · 2 🟡 honest stubs · 3 ❌ not built.
+**Tally:** 25 ✅ working · 4 🔧 fixed · 1 🟡 honest stub (Media) · 3 ❌ not built.

@@ -81,7 +81,7 @@ const SECTIONS: NavSection[] = [
     label: "AI",
     items: [
       { href: "/admin/ai-docs", label: "Training Docs", icon: Sparkles },
-      { href: "/admin/ai-logs", label: "Conversation Logs", icon: MessageSquareQuote, disabled: true, badge: "Soon" },
+      { href: "/admin/ai-logs", label: "Conversation Logs", icon: MessageSquareQuote },
     ],
   },
   {
