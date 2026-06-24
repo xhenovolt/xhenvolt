@@ -8,6 +8,7 @@ import {
   Cpu,
   Sparkles,
   Inbox,
+  Mail,
   Settings,
   Image as ImageIcon,
   Users,
@@ -88,6 +89,7 @@ const SECTIONS: NavSection[] = [
     label: "Operations",
     items: [
       { href: "/admin/messages", label: "Inbox", icon: Inbox },
+      { href: "/admin/subscribers", label: "Subscribers", icon: Mail },
       { href: "/admin/audit", label: "Audit log", icon: History },
       { href: "/admin/system-health", label: "System health", icon: Activity },
       { href: "/admin/settings", label: "Settings", icon: Settings },

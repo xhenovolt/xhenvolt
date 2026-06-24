@@ -23,7 +23,7 @@ Status key: ✅ Working · 🔧 Fixed this phase · 🟡 Honest stub (flagged, n
 | 17 | Timeline | `/admin/timeline` | ✅ `timeline_entries` | `/about` | ✅ |
 | 18 | Clients | `/admin/clients` | ✅ `clients` | logos | ✅ |
 | 19 | Contact / Inquiries | `/admin/messages` | ✅ `contact_messages` | `/contact` form | ✅ |
-| 20 | Newsletter | (Inbox, source=newsletter) | ✅ `contact_messages` | `/newsletter`, footer | 🔧 was fake → real |
+| 20 | Newsletter / Subscribers | `/admin/subscribers` | ✅ `subscribers` (upsert, CSV export) | `/newsletter`, footer | ✅ dedicated model (P2) |
 | 21 | AI Training Docs | `/admin/ai-docs` | ✅ `ai_training_documents` | chatbot | ✅ |
 | 22 | Cosmos — Apps | `/admin/cosmos/apps` | ✅ `app_products` | `/cosmos` | ✅ |
 | 23 | Cosmos — Releases | `/admin/cosmos/releases` | ✅ `app_releases` | `/cosmos/[slug]` | ✅ |

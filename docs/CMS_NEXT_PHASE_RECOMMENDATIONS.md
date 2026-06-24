@@ -9,8 +9,8 @@ Today image fields accept **URLs only**; `/admin/media` is an honest "Soon" stub
 - Add a media-picker to `fields.tsx` so every image field can pick from the library.
 - Keep an honest warning until storage env is configured (never fake an upload).
 
-## P2 — Dedicated newsletter subscribers model (Low effort)
-Signups currently land in `contact_messages (source="newsletter")`. Add a `subscribers` table (email unique, status, interests, confirmedAt), migrate existing newsletter rows, and a `/admin/subscribers` list with CSV export. Optional double opt-in.
+## P2 — Dedicated newsletter subscribers model ✅ DONE (2026-06-24)
+Built: `subscribers` table (email unique, status, interests, source, ipHash). `/api/newsletter` now upserts on email (no duplicates; repeat signup re-subscribes + refreshes interests). Admin `/admin/subscribers` lists subscribers with status toggle, delete, and **CSV export** (`/api/admin/subscribers/export`, session-gated). One-time migration `scripts/migrate-newsletter-to-subscribers.ts` moves legacy `contact_messages(source=newsletter)` rows out of the Inbox. *Remaining optional:* double opt-in / confirmation email.
 
 ## P3 — AI Conversation Logs viewer (Low effort)
 Data already writes to `ai_conversation_logs`. Build the read-only `/admin/ai-logs` viewer (paginated, searchable) and flip the sidebar item from `disabled`. Removes the last "Soon" in Operations.

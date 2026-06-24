@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHash, randomUUID } from "node:crypto";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 
 /**
@@ -75,22 +76,30 @@ export async function POST(req: NextRequest) {
   }
 
   const { name, email, interests } = parsed.data;
+  const normalizedEmail = email.toLowerCase();
   try {
-    await db.insert(schema.contactMessages).values({
-      id: randomUUID(),
-      name: name || email.split("@")[0],
-      email,
-      subject: "Newsletter subscription",
-      message:
-        interests.length > 0
-          ? `Newsletter signup. Interests: ${interests.join(", ")}`
-          : "Newsletter signup.",
-      source: "newsletter",
-      status: "new",
-      metadata: { interests },
-      userAgent: req.headers.get("user-agent") ?? null,
-      ipHash,
-    });
+    // Upsert on the unique email: a repeat signup refreshes interests and
+    // re-subscribes (status back to "subscribed") instead of duplicating.
+    await db
+      .insert(schema.subscribers)
+      .values({
+        id: randomUUID(),
+        email: normalizedEmail,
+        name: name || null,
+        status: "subscribed",
+        interests,
+        source: "newsletter",
+        userAgent: req.headers.get("user-agent") ?? null,
+        ipHash,
+      })
+      .onDuplicateKeyUpdate({
+        set: {
+          name: name || null,
+          interests,
+          status: "subscribed",
+          updatedAt: sql`CURRENT_TIMESTAMP(3)`,
+        },
+      });
     return NextResponse.json(
       { ok: true, message: "You're subscribed — thanks for joining the Xhenvolt list." },
       { status: 201 },
