@@ -25,6 +25,9 @@ import {
   AppWindow,
   Package,
   Download,
+  Cookie,
+  Bot,
+  MonitorSmartphone,
   type LucideIcon,
 } from "lucide-react";
 
@@ -34,6 +37,8 @@ interface NavItem {
   icon: LucideIcon;
   disabled?: boolean;
   badge?: string;
+  /** Highlight only on exact path match (for parent items with children). */
+  exact?: boolean;
 }
 
 interface NavSection {
@@ -99,6 +104,19 @@ const SECTIONS: NavSection[] = [
       { href: "/admin/settings", label: "Settings", icon: Settings },
     ],
   },
+  {
+    label: "Analytics",
+    items: [
+      { href: "/admin/analytics", label: "Overview", icon: BarChart3, exact: true },
+      { href: "/admin/analytics/pages", label: "Pages", icon: FileText },
+      { href: "/admin/analytics/sources", label: "Sources", icon: Globe },
+      { href: "/admin/analytics/devices", label: "Devices", icon: MonitorSmartphone },
+      { href: "/admin/analytics/bots", label: "Bots & AI Crawlers", icon: Bot },
+      { href: "/admin/analytics/downloads", label: "Downloads", icon: Download },
+      { href: "/admin/analytics/events", label: "Events", icon: Activity },
+      { href: "/admin/analytics/consent", label: "Cookie Consent", icon: Cookie },
+    ],
+  },
 ];
 
 export default function Sidebar({
@@ -134,8 +152,8 @@ export default function Sidebar({
             {section.items.map((item) => {
               const Icon = item.icon;
               const active =
-                item.href === "/admin"
-                  ? path === "/admin"
+                item.href === "/admin" || item.exact
+                  ? path === item.href
                   : path.startsWith(item.href);
               return (
                 <SidebarItem

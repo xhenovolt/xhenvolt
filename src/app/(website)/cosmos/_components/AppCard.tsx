@@ -93,6 +93,9 @@ export function AppCard({ app }: { app: AppWithReleases }) {
             href={`/download/${app.slug}`}
             className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500"
             rel="nofollow"
+            data-track="cosmos_download"
+            data-track-type="download"
+            data-track-target={app.slug}
           >
             <Download className="h-4 w-4" />
             Download

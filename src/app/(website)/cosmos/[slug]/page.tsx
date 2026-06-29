@@ -148,6 +148,9 @@ export default async function AppDetailPage({
               <Link
                 href={`/download/${app.slug}`}
                 rel="nofollow"
+                data-track="cosmos_download"
+                data-track-type="download"
+                data-track-target={app.slug}
                 className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-500"
               >
                 <Download className="h-4 w-4" />
@@ -310,6 +313,9 @@ function PlatformDownload({
         <Link
           href={`/download/${slug}/${platform}`}
           rel="nofollow"
+          data-track="cosmos_download"
+          data-track-type="download"
+          data-track-target={`${slug}/${platform}`}
           className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 px-3 py-2 text-sm font-semibold text-zinc-900 transition-colors hover:bg-white"
         >
           <Download className="h-4 w-4" />

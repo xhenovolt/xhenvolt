@@ -70,6 +70,17 @@ export const ENV_VARS: EnvVarSpec[] = [
     required: false,
     description: "Cloudinary API secret. Server-only; never exposed to the client.",
   },
+  {
+    name: "ANALYTICS_INTERNAL_TOKEN",
+    required: false,
+    description:
+      "Shared secret between middleware and /api/analytics/bot-hit. Defaults to 'internal' if unset; set a random value in production.",
+  },
+  {
+    name: "ANALYTICS_IP_SALT",
+    required: false,
+    description: "Salt for daily IP hashing in analytics. Falls back to COSMOS_IP_SALT then a default.",
+  },
 ];
 
 export interface EnvIssue {

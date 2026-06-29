@@ -7,6 +7,8 @@ import NavbarServer from "@/components/NavbarServer";
 import FooterServer from "@/components/FooterServer";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AnalyticsProvider } from "@/components/analytics/AnalyticsProvider";
+import { CookieConsent } from "@/components/analytics/CookieConsent";
 
 const BASE_URL = "https://xhenvolt.com";
 
@@ -85,7 +87,9 @@ export default function WebsiteLayout({ children }: { children: ReactNode }) {
         <Suspense fallback={<Navbar />}>
           <NavbarServer />
         </Suspense>
-        <div className="relative z-10">{children}</div>
+        <AnalyticsProvider>
+          <div className="relative z-10">{children}</div>
+        </AnalyticsProvider>
         <Suspense fallback={<Footer />}>
           <FooterServer />
         </Suspense>
@@ -93,6 +97,7 @@ export default function WebsiteLayout({ children }: { children: ReactNode }) {
         <Suspense fallback={<WhatsAppCTA />}>
           <WhatsAppCTAServer />
         </Suspense>
+        <CookieConsent />
       </div>
     </div>
   );

@@ -4,3 +4,4 @@ export * from "./clients.repo";
 export * from "./content.repo";
 export * from "./ai.repo";
 export * from "./cosmos.repo";
+export * from "./analytics.repo";
