@@ -25,10 +25,16 @@ visitors. Component: `src/components/analytics/CookieConsent.tsx`; client state:
 - **Server:** a `cookie_consents` audit row per visitor (latest wins) via
   `POST /api/analytics/consent`, so the CMS can show acceptance rates.
 
-## Gating rule
-Human page views / events are only sent when **analytics consent is granted**.
-Before a choice is made, nothing is tracked client-side. Bot hits are logged
-server-side regardless (no cookies, no personal data — legitimate interest).
+## Gating rule (cookieless-first)
+- **Page views are counted anonymously without consent** — no cookie, no
+  persistent id (path/referrer/device/country only). This gives the owner
+  complete traffic numbers without identifying anyone.
+- **Analytics consent adds identity + events**: persistent `visitorId`/`sessionId`
+  (unique visitors, journeys) and CTA/event tracking.
+- Bot hits are logged server-side regardless (no cookies, no personal data).
+
+This mirrors privacy-first analytics (Plausible/Fathom): anonymous aggregate
+counting needs no consent; cross-visit identification does.
 
 ## Reopening preferences
 Any element can reopen the modal:

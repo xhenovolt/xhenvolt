@@ -21,12 +21,23 @@ What the Xhenvolt Analytics Engine tracks, anonymizes, and deliberately does not
 - `visitorId` is a random opaque id, not tied to any personal identity.
 - Event metadata is capped (2 KB) and is data you choose to attach.
 
-## Consent
-- Necessary cookies only until the visitor chooses. **Analytics tracking does not
-  run until the "Analytics" category is granted.**
+## Consent model (cookieless-first, Plausible/Fathom style)
+- **Anonymous page views are counted without cookies or consent.** Before any
+  consent choice we record path/referrer/device/country only — **no persistent
+  visitorId, no sessionId, no cookie** — so the owner sees complete traffic
+  while no individual is identified or tracked across pages.
+- **The "Analytics" consent category enables identity, not basic counting.** Once
+  granted, a first-party `visitorId`/`sessionId` is attached (for unique-visitor
+  and journey analysis) and CTA/event tracking turns on.
+- **Marketing/Preferences** gate their respective features.
 - Consent choices are stored locally and as a server audit row (`cookie_consents`)
-  keyed by `visitorId` — used only to report acceptance rates.
-- Reject = nothing is tracked client-side for that visitor.
+  used only to report acceptance rates.
+- Reject = page views are still counted **anonymously and cookielessly**; no
+  persistent identity or event tracking occurs.
+
+> If your policy requires *no* analytics at all before consent, revert this by
+> re-adding the `consentRef.current` guard at the top of `logPageView()` in
+> `AnalyticsProvider.tsx`.
 
 ## Bots / AI crawlers
 - Logged server-side from the User-Agent (no cookies, no JS, no personal data).

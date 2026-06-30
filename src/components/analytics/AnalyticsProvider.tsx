@@ -78,11 +78,12 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const consentRef = useRef(false);
   const lastPath = useRef<string | null>(null);
 
-  // Send at most ONE page view per path. Both the route-change effect and the
-  // consent-granted handler call this; the dedupe guard makes the second call
-  // a no-op so a single view is never counted twice.
+  // Page views are counted ANONYMOUSLY for every visit (cookieless — no
+  // persistent id, no cross-page identity), so the owner sees complete traffic.
+  // A persistent visitorId/sessionId is attached ONLY after analytics consent.
+  // Dedupe guard: at most one view per path per transition.
   const logPageView = useCallback(() => {
-    if (!consentRef.current || !pathname) return;
+    if (!pathname) return;
     if (lastPath.current === pathname) return;
     lastPath.current = pathname;
     send("/api/analytics/pageview", {
@@ -90,7 +91,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
       title: typeof document !== "undefined" ? document.title : undefined,
       referrer: typeof document !== "undefined" ? document.referrer : undefined,
       ...utm(),
-      ...ids(),
+      // Identity only with consent — keeps pre-consent views cookieless.
+      ...(consentRef.current ? ids() : {}),
     });
   }, [pathname]);
 
@@ -98,17 +100,15 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const refresh = () => {
       consentRef.current = hasAnalyticsConsent();
-      // If consent was just granted, log the current page immediately.
-      if (consentRef.current) logPageView();
     };
     refresh();
     window.addEventListener(CONSENT_EVENT, refresh);
     return () => window.removeEventListener(CONSENT_EVENT, refresh);
-  }, [pathname, logPageView]);
+  }, []);
 
-  // Page view on every route change.
+  // Page view on every route change (anonymous regardless of consent).
   useEffect(() => {
-    if (consentRef.current) logPageView();
+    logPageView();
   }, [pathname, logPageView]);
 
   const trackEvent = useCallback<AnalyticsApi["trackEvent"]>((name, opts) => {
