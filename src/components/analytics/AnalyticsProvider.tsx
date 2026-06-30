@@ -78,23 +78,12 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const consentRef = useRef(false);
   const lastPath = useRef<string | null>(null);
 
-  // Track current consent state, react to changes from the cookie banner.
-  useEffect(() => {
-    const refresh = () => {
-      consentRef.current = hasAnalyticsConsent();
-      // If consent was just granted, log the current page immediately.
-      if (consentRef.current && lastPath.current !== pathname) {
-        logPageView();
-      }
-    };
-    refresh();
-    window.addEventListener(CONSENT_EVENT, refresh);
-    return () => window.removeEventListener(CONSENT_EVENT, refresh);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
-
+  // Send at most ONE page view per path. Both the route-change effect and the
+  // consent-granted handler call this; the dedupe guard makes the second call
+  // a no-op so a single view is never counted twice.
   const logPageView = useCallback(() => {
     if (!consentRef.current || !pathname) return;
+    if (lastPath.current === pathname) return;
     lastPath.current = pathname;
     send("/api/analytics/pageview", {
       path: pathname,
@@ -104,6 +93,18 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
       ...ids(),
     });
   }, [pathname]);
+
+  // Track current consent state, react to changes from the cookie banner.
+  useEffect(() => {
+    const refresh = () => {
+      consentRef.current = hasAnalyticsConsent();
+      // If consent was just granted, log the current page immediately.
+      if (consentRef.current) logPageView();
+    };
+    refresh();
+    window.addEventListener(CONSENT_EVENT, refresh);
+    return () => window.removeEventListener(CONSENT_EVENT, refresh);
+  }, [pathname, logPageView]);
 
   // Page view on every route change.
   useEffect(() => {
